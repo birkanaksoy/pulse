@@ -1,0 +1,5 @@
+# Disable Jekyll processing — serve our static HTML as-is.
+# This file just tells GitHub Pages "no theme, no markdown processing".
+plugins: []
+exclude:
+  - README.md

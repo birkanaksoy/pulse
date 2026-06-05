@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pulse — Phone Health Scanner</title>
+  <meta name="description" content="Pulse is a phone health scanner that shows only what iOS actually publishes. Honest, on-device diagnostics." />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="site">
+      <a href="index.html" class="logo" aria-label="Pulse"></a>
+      <a href="index.html" class="name">Pulse</a>
+      <nav>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="ring"><span class="score">86</span></div>
+      <h1>Know your phone's health in seconds.</h1>
+      <p class="lead">An honest device diagnostic system. No invented metrics. Everything runs on your iPhone.</p>
+      <a class="cta" href="#" aria-disabled="true">Coming soon to the App Store →</a>
+    </section>
+
+    <section>
+      <h2>What Pulse actually measures</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Storage</h3>
+          <p>Reported by iOS — matches Settings → iPhone Storage.</p>
+        </div>
+        <div class="card">
+          <h3>Thermal state</h3>
+          <p>The same coarse signal iOS uses to decide when to throttle.</p>
+        </div>
+        <div class="card">
+          <h3>Battery</h3>
+          <p>Charge, charging state, Low Power Mode. Battery <em>health</em> stays in Apple's Settings; we link there.</p>
+        </div>
+        <div class="card">
+          <h3>Photo library</h3>
+          <p>Real counts and real GB from PhotoKit. Computed locally. Nothing uploaded.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Honest by design</h2>
+      <p>Pulse has no analytics SDK, no third-party tracking, no advertising identifier. The Pulse Score is a weighted summary of real iOS signals (storage 55% + thermal 45%). Pulse never deletes files — every cleanup action opens the relevant Apple app.</p>
+      <p>iOS does not expose true battery health, per-app storage usage, or precise temperature to apps. Pulse says so and links to Apple's own pages where applicable.</p>
+    </section>
+
+    <footer class="site">
+      <span>© 2026 Pulse</span>
+      <div class="spacer"></div>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="support.html">Support</a>
+    </footer>
+  </div>
+</body>
+</html>
