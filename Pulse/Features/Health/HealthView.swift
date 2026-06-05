@@ -31,8 +31,8 @@ struct HealthView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
-        .sheet(isPresented: $showingPaywall) { PaywallView() }
+        .background(AmbientBackground(tint: PulseColor.blue500))
+        .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
         .sheet(isPresented: $showingShare) {
             if let img = shareImage {
                 ShareSheet(items: [img])
@@ -43,15 +43,11 @@ struct HealthView: View {
 
     private var trendCard: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            HStack {
-                Text("Pulse Score · 7 days")
-                    .font(PulseFont.titleM)
-                    .foregroundStyle(PulseColor.textPrimary)
-                Spacer()
+            SectionHeader("Pulse Score · 7 days", trailing: AnyView(
                 Text("Avg \(avgScore)")
                     .font(PulseFont.callout)
                     .foregroundStyle(PulseColor.textTertiary)
-            }
+            ))
             if recentWeek.isEmpty {
                 EmptyTrendPlaceholder()
             } else {

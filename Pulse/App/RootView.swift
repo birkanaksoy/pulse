@@ -6,22 +6,20 @@ struct RootView: View {
     enum Tab: Hashable { case home, clean, health, settings }
 
     var body: some View {
-        TabView(selection: $selection) {
-            HomeView()
-                .tabItem { Label("Home", systemImage: "waveform.path.ecg") }
-                .tag(Tab.home)
+        ZStack(alignment: .bottom) {
+            TabView(selection: $selection) {
+                HomeView().tag(Tab.home)
+                CleanView().tag(Tab.clean)
+                HealthView().tag(Tab.health)
+                SettingsView().tag(Tab.settings)
+            }
+            .toolbar(.hidden, for: .tabBar)
+            .safeAreaInset(edge: .bottom) {
+                Color.clear.frame(height: 76) // reserve room for floating bar
+            }
 
-            CleanView()
-                .tabItem { Label("Clean", systemImage: "sparkles") }
-                .tag(Tab.clean)
-
-            HealthView()
-                .tabItem { Label("Health", systemImage: "chart.xyaxis.line") }
-                .tag(Tab.health)
-
-            SettingsView()
-                .tabItem { Label("Settings", systemImage: "gearshape") }
-                .tag(Tab.settings)
+            CustomTabBar(selection: $selection)
         }
+        .ignoresSafeArea(.keyboard)
     }
 }

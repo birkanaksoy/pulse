@@ -22,7 +22,7 @@ struct StorageDetailView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
+        .background(AmbientBackground(tint: PulseColor.blue500))
         .navigationTitle("Storage")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -75,9 +75,7 @@ struct StorageDetailView: View {
 
     private var breakdown: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            Text("Status")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
+            SectionHeader("Status")
             HStack(spacing: PulseSpace.m) {
                 Image(systemName: statusIcon)
                     .font(.system(size: 20, weight: .semibold))
@@ -100,9 +98,7 @@ struct StorageDetailView: View {
 
     private var trendCard: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            Text("Used % over recent scans")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
+            SectionHeader("Used % over recent scans")
             let values = records.prefix(14).reversed().map { $0.storageUsed }
             if values.count < 2 {
                 Text("Run more scans to build a trend.")

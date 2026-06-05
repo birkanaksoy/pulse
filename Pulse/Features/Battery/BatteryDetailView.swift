@@ -24,7 +24,7 @@ struct BatteryDetailView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
+        .background(AmbientBackground(tint: PulseColor.good))
         .navigationTitle("Battery")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -114,9 +114,7 @@ struct BatteryDetailView: View {
 
     private var history: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            Text("Charge over recent scans")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
+            SectionHeader("Charge over recent scans")
             let values = records.prefix(14).reversed().compactMap { $0.batteryLevel }
             if values.count < 2 {
                 Text("Run more scans to build a trend.")

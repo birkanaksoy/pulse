@@ -72,10 +72,10 @@ struct SettingsView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
-        .sheet(isPresented: $showingPaywall) { PaywallView() }
-        .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) } }
-        .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) } }
+        .background(AmbientBackground(tint: PulseColor.blue500))
+        .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
+        .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) }.pulseSheet() }
+        .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) }.pulseSheet() }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,

@@ -40,10 +40,10 @@ struct PaywallView: View {
             .padding(PulseSpace.l)
         }
         .sheet(isPresented: $showingTerms) {
-            NavigationStack { LegalView(kind: .terms) }
+            NavigationStack { LegalView(kind: .terms) }.pulseSheet()
         }
         .sheet(isPresented: $showingPrivacy) {
-            NavigationStack { LegalView(kind: .privacy) }
+            NavigationStack { LegalView(kind: .privacy) }.pulseSheet()
         }
     }
 

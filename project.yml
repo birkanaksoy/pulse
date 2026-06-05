@@ -71,6 +71,10 @@ targets:
     sources:
       - path: PulseWidget
       - path: Pulse/Core/Persistence/SharedScoreStore.swift
+      - path: Pulse/Features/Scan/Probes/BatteryProbe.swift
+      - path: Pulse/Features/Scan/Probes/StorageProbe.swift
+      - path: Pulse/Features/Scan/Probes/ThermalProbe.swift
+      - path: Pulse/Features/Scan/ScanIntent.swift
     info:
       path: PulseWidget/Info.plist
       properties:

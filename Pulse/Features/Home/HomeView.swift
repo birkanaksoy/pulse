@@ -27,7 +27,7 @@ struct HomeView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
+        .background(AmbientBackground(tint: PulseStatus(score: score).color))
         .refreshable {
             await engine.runFullScan()
             persistLatest()
@@ -40,6 +40,7 @@ struct HomeView: View {
                 case .temperature: TemperatureDetailView()
                 }
             }
+            .pulseSheet()
         }
         // No auto-scan: respect the empty state. User triggers via the
         // primary button or pull-to-refresh.
@@ -73,24 +74,7 @@ struct HomeView: View {
     }
 
     private var emptyRing: some View {
-        VStack(spacing: PulseSpace.m) {
-            ZStack {
-                Circle()
-                    .stroke(PulseColor.stroke, lineWidth: 14)
-                    .frame(width: 260, height: 260)
-                VStack(spacing: 6) {
-                    Image(systemName: "waveform.path.ecg")
-                        .font(.system(size: 40, weight: .light))
-                        .foregroundStyle(PulseColor.blue500)
-                    Text("Ready to scan")
-                        .font(PulseFont.titleM)
-                        .foregroundStyle(PulseColor.textPrimary)
-                }
-            }
-            Text("Tap the button below to start.")
-                .font(PulseFont.footnote)
-                .foregroundStyle(PulseColor.textTertiary)
-        }
+        EmptyRingState()
     }
 
     private var metricsGrid: some View {
@@ -106,7 +90,8 @@ struct HomeView: View {
                     value: "\(engine.lastResult?.storage.usedPercent ?? 0)%",
                     status: "Used",
                     statusColor: storageColor,
-                    isScanning: isScanning
+                    isScanning: isScanning,
+                    sparkline: storageSparkline
                 )
             }
             tappableCard(.temperature) {
@@ -126,7 +111,8 @@ struct HomeView: View {
                     value: batteryValue,
                     status: engine.lastResult?.battery.stateLabel ?? "—",
                     statusColor: PulseColor.good,
-                    isScanning: isScanning
+                    isScanning: isScanning,
+                    sparkline: batterySparkline
                 )
             }
             MetricCard(
@@ -158,9 +144,7 @@ struct HomeView: View {
         return Group {
             if !insights.isEmpty {
                 VStack(alignment: .leading, spacing: PulseSpace.m) {
-                    Text("Today's insights")
-                        .font(PulseFont.titleM)
-                        .foregroundStyle(PulseColor.textPrimary)
+                    SectionHeader("Today's insights")
 
                     VStack(spacing: 0) {
                         ForEach(Array(insights.enumerated()), id: \.element.id) { idx, insight in
@@ -229,12 +213,18 @@ struct HomeView: View {
     @ViewBuilder
     private func tappableCard<C: View>(_ detail: Detail, @ViewBuilder _ content: () -> C) -> some View {
         Button {
-            Haptics.tap()
             presentedDetail = detail
         } label: {
             content()
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.card)
+    }
+
+    private var storageSparkline: [Double] {
+        records.prefix(12).reversed().map { Double($0.storageUsed) / 100.0 }
+    }
+    private var batterySparkline: [Double] {
+        records.prefix(12).reversed().compactMap { $0.batteryLevel.map { Double($0) / 100.0 } }
     }
 
     private var batteryValue: String {
@@ -301,7 +291,6 @@ struct HomeView: View {
             isPro: entitlements.isPro
         ))
         WidgetCenter.shared.reloadAllTimelines()
-        Haptics.success()
     }
 }
 

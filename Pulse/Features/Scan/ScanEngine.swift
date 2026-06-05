@@ -42,6 +42,7 @@ final class ScanEngine {
     private let thermal = ThermalProbe()
 
     func runFullScan() async {
+        await MainActor.run { Haptics.scanStart() }
         phase = .scanning(progress: 0)
         let b = await step(0.33) { self.battery.read() }
         let s = await step(0.66) { self.storage.read() }
@@ -50,6 +51,7 @@ final class ScanEngine {
         let result = ScanResult(battery: b, storage: s, thermal: t, timestamp: Date())
         lastResult = result
         phase = .complete
+        await MainActor.run { Haptics.scanComplete() }
     }
 
     private func step<T>(_ progress: Double, _ work: () -> T) async -> T {

@@ -20,7 +20,7 @@ struct TemperatureDetailView: View {
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
+        .background(AmbientBackground(tint: currentColor))
         .navigationTitle("Temperature")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
@@ -68,9 +68,7 @@ struct TemperatureDetailView: View {
 
     private var weekStats: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            Text("Past 7 days")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
+            SectionHeader("Past 7 days")
             VStack(spacing: 0) {
                 stat("Scans logged", "\(week.count)")
                 Divider().background(PulseColor.stroke)
@@ -88,9 +86,7 @@ struct TemperatureDetailView: View {
 
     private var causes: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            Text("Common causes")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
+            SectionHeader("Common causes")
             cause("sun.max.fill",     "Direct sunlight or hot environment")
             cause("camera.fill",      "Long camera, AR or video sessions")
             cause("bolt.fill",        "Charging while gaming or streaming")
