@@ -291,6 +291,21 @@ TR = {
     "Mono": "Mono",
     "Alternate icons are a Pulse Pro perk.": "Alternatif simgeler Pulse Pro ayrıcalığıdır.",
     "4 alternate app icons": "4 alternatif uygulama simgesi",
+
+    # Sprint 5: A+B+C launch polish
+    "day": "gün",
+    "days": "gün",
+    "Undo": "Geri al",
+    "All data deleted": "Tüm veri silindi",
+    "How it works": "Nasıl çalışır",
+    "How Pulse works": "Pulse nasıl çalışır",
+    "Every number you see is read from iOS itself. We never guess, never round up, and never invent metrics to look impressive.": "Gördüğün her sayı doğrudan iOS'tan okunur. Tahmin etmez, abartmaz, uydurma metrik üretmeyiz.",
+    "The Pulse Score (0–100)": "Pulse Skoru (0–100)",
+    "Storage pressure × 55% + thermal state × 45%. Both signals come directly from iOS — `volumeAvailableCapacityKey` for storage, `ProcessInfo.thermalState` for thermal. The weights are documented in our source code and never change without an app update.": "Depolama baskısı × %55 + termal durum × %45. Her iki sinyal de doğrudan iOS'tan gelir — depolama için `volumeAvailableCapacityKey`, termal için `ProcessInfo.thermalState`. Ağırlıklar kaynak kodunda belgelidir ve uygulama güncellemesi olmadan değişmez.",
+    "What we measure honestly": "Dürüstçe ölçtüklerimiz",
+    "What iOS hides — and we don't fake": "iOS'un gizlediği — uydurmadıklarımız",
+    "What we never do": "Asla yapmadıklarımız",
+    "Verify it yourself": "Kendin doğrula",
 }
 
 

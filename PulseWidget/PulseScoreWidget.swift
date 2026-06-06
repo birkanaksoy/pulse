@@ -70,6 +70,7 @@ struct PulseScoreWidget: Widget {
                 .containerBackground(for: .widget) {
                     WidgetBackground(score: entry.score, isPro: entry.isPro)
                 }
+                .widgetURL(URL(string: entry.isPro ? "pulse://home" : "pulse://paywall"))
         }
         .configurationDisplayName("Pulse Score")
         .description("Your phone's health at a glance.")

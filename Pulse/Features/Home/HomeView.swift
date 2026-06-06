@@ -52,14 +52,22 @@ struct HomeView: View {
     // MARK: - Sections
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(greeting)
-                .font(PulseFont.callout)
-                .foregroundStyle(PulseColor.textTertiary)
-            Text("Your Pulse")
-                .font(PulseFont.titleXL)
-                .foregroundStyle(PulseColor.textPrimary)
+        HStack(alignment: .firstTextBaseline) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(greeting)
+                    .font(PulseFont.callout)
+                    .foregroundStyle(PulseColor.textTertiary)
+                Text("Your Pulse")
+                    .font(PulseFont.titleXL)
+                    .foregroundStyle(PulseColor.textPrimary)
+            }
+            Spacer()
+            StreakBadge(streak: streak)
         }
+    }
+
+    private var streak: StreakState {
+        StreakTracker.compute(records)
     }
 
     private var ringSection: some View {
@@ -300,6 +308,27 @@ struct HomeView: View {
             isPro: entitlements.isPro
         ))
         WidgetCenter.shared.reloadAllTimelines()
+        SpotlightIndexer.indexLatest(
+            score: r.pulseScore,
+            status: PulseStatus(score: r.pulseScore).label,
+            at: r.timestamp
+        )
+        RatingPrompt.recordScan()
+        Analytics.track(.scanCompleted(scoreBucket: bucket(for: r.pulseScore)))
+
+        // Ask for a rating only on excellent/good scores so the prompt lands well.
+        if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            RatingPrompt.maybeAsk(currentScore: r.pulseScore, in: scene)
+        }
+    }
+
+    private func bucket(for score: Int) -> AnalyticsEvent.ScoreBucket {
+        switch score {
+        case 85...: return .excellent
+        case 65...: return .good
+        case 40...: return .fair
+        default:    return .critical
+        }
     }
 }
 

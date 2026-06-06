@@ -10,11 +10,14 @@ struct SettingsView: View {
     @State private var showingTerms = false
     @State private var showingPrivacy = false
     @State private var showingIconPicker = false
+    @State private var showingHowItWorks = false
+    @State private var pendingDeletion: [ScanRecord] = []
+    @State private var showingUndo = false
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
     @State private var notifAuthorized = false
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             AmbientBackground(tint: PulseColor.blue500)
             ScrollView {
                 VStack(alignment: .leading, spacing: PulseSpace.xxl) {
@@ -64,6 +67,8 @@ struct SettingsView: View {
                 section("About") {
                     row("Version", trailing: "0.1.0")
                     Divider().background(PulseColor.stroke)
+                    button("How it works") { showingHowItWorks = true }
+                    Divider().background(PulseColor.stroke)
                     button("Privacy Policy") { showingPrivacy = true }
                     Divider().background(PulseColor.stroke)
                     button("Terms of Use") { showingTerms = true }
@@ -80,11 +85,25 @@ struct SettingsView: View {
             .padding(.bottom, PulseSpace.xxxl)
             }
             .scrollContentBackground(.hidden)
+
+            if showingUndo {
+                UndoSnackbar(
+                    message: "All data deleted",
+                    onUndo: { undoDelete() },
+                    onDismiss: {
+                        withAnimation { showingUndo = false }
+                        pendingDeletion = []
+                    }
+                )
+                .padding(.bottom, 96)   // clears tab bar
+            }
         }
+        .animation(.spring(response: 0.4, dampingFraction: 0.78), value: showingUndo)
         .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
         .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) }.pulseSheet() }
         .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) }.pulseSheet() }
         .sheet(isPresented: $showingIconPicker) { NavigationStack { AppIconPicker() }.pulseSheet() }
+        .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() }.pulseSheet() }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,
@@ -102,21 +121,39 @@ struct SettingsView: View {
     }
 
     private func deleteAllData() {
-        // Scan records
+        // Snapshot all records into pendingDeletion so undo can restore them.
         let descriptor = FetchDescriptor<ScanRecord>()
         if let all = try? context.fetch(descriptor) {
+            pendingDeletion = all.map { record in
+                ScanRecord(
+                    timestamp: record.timestamp,
+                    pulseScore: record.pulseScore,
+                    storageUsed: record.storageUsed,
+                    thermalRaw: record.thermalRaw,
+                    batteryLevel: record.batteryLevel,
+                    batteryStateRaw: record.batteryStateRaw,
+                    lowPowerMode: record.lowPowerMode
+                )
+            }
             for r in all { context.delete(r) }
             try? context.save()
         }
-        // Widget snapshot
+        // Widget snapshot + spotlight
         if let defaults = UserDefaults(suiteName: SharedScoreStore.suiteName) {
             defaults.removeObject(forKey: "pulse.snapshot")
         }
-        // Notifications
+        SpotlightIndexer.clear()
         NotificationScheduler.cancelWeeklyReminder()
         weeklyReminder = false
-        // Refresh widget
         WidgetCenter.shared.reloadAllTimelines()
+        Haptics.success()
+        withAnimation { showingUndo = true }
+    }
+
+    private func undoDelete() {
+        for r in pendingDeletion { context.insert(r) }
+        try? context.save()
+        pendingDeletion = []
         Haptics.success()
     }
 

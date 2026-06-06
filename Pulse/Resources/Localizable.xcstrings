@@ -7290,6 +7290,136 @@
           }
         }
       }
+    },
+    "day": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gün"
+          }
+        }
+      }
+    },
+    "days": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "gün"
+          }
+        }
+      }
+    },
+    "Undo": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri al"
+          }
+        }
+      }
+    },
+    "All data deleted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm veri silindi"
+          }
+        }
+      }
+    },
+    "How it works": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl çalışır"
+          }
+        }
+      }
+    },
+    "How Pulse works": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse nasıl çalışır"
+          }
+        }
+      }
+    },
+    "Every number you see is read from iOS itself. We never guess, never round up, and never invent metrics to look impressive.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gördüğün her sayı doğrudan iOS'tan okunur. Tahmin etmez, abartmaz, uydurma metrik üretmeyiz."
+          }
+        }
+      }
+    },
+    "The Pulse Score (0–100)": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse Skoru (0–100)"
+          }
+        }
+      }
+    },
+    "Storage pressure × 55% + thermal state × 45%. Both signals come directly from iOS — `volumeAvailableCapacityKey` for storage, `ProcessInfo.thermalState` for thermal. The weights are documented in our source code and never change without an app update.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama baskısı × %55 + termal durum × %45. Her iki sinyal de doğrudan iOS'tan gelir — depolama için `volumeAvailableCapacityKey`, termal için `ProcessInfo.thermalState`. Ağırlıklar kaynak kodunda belgelidir ve uygulama güncellemesi olmadan değişmez."
+          }
+        }
+      }
+    },
+    "What we measure honestly": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dürüstçe ölçtüklerimiz"
+          }
+        }
+      }
+    },
+    "What iOS hides — and we don't fake": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS'un gizlediği — uydurmadıklarımız"
+          }
+        }
+      }
+    },
+    "What we never do": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asla yapmadıklarımız"
+          }
+        }
+      }
+    },
+    "Verify it yourself": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kendin doğrula"
+          }
+        }
+      }
     }
   },
   "version": "1.1"
