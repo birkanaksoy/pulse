@@ -39,6 +39,13 @@ struct SettingsView: View {
                     button("Achievements") { showingAchievements = true }
                 }
 
+                section("Live Activity") {
+                    button("Dismiss live activity") {
+                        ScanLiveActivityController.dismissAll()
+                        Haptics.success()
+                    }
+                }
+
                 section("Reminders") {
                     button("Smart Alerts") { showingSmartAlerts = true }
                     Divider().background(PulseColor.stroke)

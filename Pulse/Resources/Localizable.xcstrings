@@ -8619,6 +8619,36 @@
           }
         }
       }
+    },
+    "Updated by background scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arka plan tarama ile güncellendi"
+          }
+        }
+      }
+    },
+    "Live Activity": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Etkinlik"
+          }
+        }
+      }
+    },
+    "Dismiss live activity": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı etkinliği kapat"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

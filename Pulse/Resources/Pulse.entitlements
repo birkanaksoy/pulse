@@ -18,5 +18,7 @@
     <array>
         <string>iCloud.com.birkan.pulse</string>
     </array>
+    <key>aps-environment</key>
+    <string>development</string>
 </dict>
 </plist>

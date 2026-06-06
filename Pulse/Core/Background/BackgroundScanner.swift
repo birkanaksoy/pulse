@@ -49,6 +49,11 @@ enum BackgroundScanner {
             ))
             _ = battery   // silenced — kept so future versions can persist it
             WidgetCenter.shared.reloadAllTimelines()
+            // If a Live Activity is currently displayed, refresh it with the
+            // new score so the user's Lock Screen / Dynamic Island stays in sync.
+            await MainActor.run {
+                ScanLiveActivityController.refreshActiveWith(score: score)
+            }
         }
 
         task.expirationHandler = { work.cancel() }

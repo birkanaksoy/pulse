@@ -112,6 +112,8 @@ targets:
   PulseWatch:
     type: application
     platform: watchOS
+    dependencies:
+      - target: PulseWatchWidget
     sources:
       - path: PulseWatch
       - path: Pulse/Core/Persistence/TrendStore.swift
@@ -131,6 +133,29 @@ targets:
         CODE_SIGN_STYLE: Automatic
         SWIFT_VERSION: "5.10"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+
+  PulseWatchWidget:
+    type: app-extension
+    platform: watchOS
+    sources:
+      - path: PulseWatchWidget
+      - path: Pulse/Core/Persistence/TrendStore.swift
+    info:
+      path: PulseWatchWidget/Info.plist
+      properties:
+        CFBundleDisplayName: Pulse
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse.watchkitapp.complication
+        TARGETED_DEVICE_FAMILY: "4"
+        WATCHOS_DEPLOYMENT_TARGET: "10.0"
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: PulseWatchWidget/PulseWatchWidget.entitlements
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "5.10"
+        SKIP_INSTALL: YES
 
   PulseWidget:
     type: app-extension

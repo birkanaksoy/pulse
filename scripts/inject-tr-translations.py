@@ -435,6 +435,12 @@ TR = {
     "You're %lld points under your weekly average. Take a look at what changed.": "Haftalık ortalamandan %lld puan altındasın. Neyin değiştiğine bir bak.",
     "All clear": "Her şey yolunda",
     "Your phone is in great shape. Keep the streak alive — scan again tomorrow.": "Telefonun harika durumda. Seriyi bozma — yarın tekrar tarama yap.",
+
+    # Sprint 10: Watch complication + Live Activity persistence
+    "No data": "Veri yok",
+    "Updated by background scan": "Arka plan tarama ile güncellendi",
+    "Live Activity": "Canlı Etkinlik",
+    "Dismiss live activity": "Canlı etkinliği kapat",
 }
 
 
