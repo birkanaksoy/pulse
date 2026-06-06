@@ -68,7 +68,15 @@ struct LocalAnalytics: PulseAnalytics {
 
 @MainActor
 enum Analytics {
-    /// Swap this to a TelemetryAnalytics implementation once the package is added.
-    static let provider: any PulseAnalytics = LocalAnalytics()
+    /// Picks TelemetryAnalytics when the TelemetryDeck app ID is configured,
+    /// otherwise falls back to LocalAnalytics (os_log only — nothing leaves
+    /// the device). Set the app ID in `TelemetryAnalyticsBootstrap.appID`.
+    static let provider: any PulseAnalytics = {
+        if TelemetryAnalyticsBootstrap.appID != "REPLACE_WITH_TELEMETRY_APP_ID" {
+            return TelemetryAnalytics()
+        }
+        return LocalAnalytics()
+    }()
+
     static func track(_ event: AnalyticsEvent) { provider.track(event) }
 }

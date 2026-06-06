@@ -92,5 +92,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>WKAppBundleIdentifier</key>
+	<string>com.birkan.pulse.watchkitapp</string>
+	<key>WKCompanionAppBundleIdentifier</key>
+	<string>com.birkan.pulse</string>
 </dict>
 </plist>

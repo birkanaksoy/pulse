@@ -35,6 +35,7 @@ final class ScanRecord {
     }
 }
 
+#if os(iOS)
 extension ScanRecord {
     static func from(_ r: ScanResult) -> ScanRecord {
         let thermalRaw: Int = {
@@ -66,3 +67,4 @@ extension ScanRecord {
         )
     }
 }
+#endif

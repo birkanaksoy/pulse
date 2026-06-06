@@ -30,6 +30,9 @@ struct PulseApp: App {
         UNUserNotificationCenter.current().delegate = NotificationCenterDelegate.shared
         // Register the silent weekly background scan.
         BackgroundScanner.register()
+        // Anonymous analytics — falls back to local logger if app ID not set.
+        TelemetryAnalyticsBootstrap.start()
+        Analytics.track(.appLaunched)
     }
 
     var body: some Scene {
