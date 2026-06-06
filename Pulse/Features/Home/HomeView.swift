@@ -23,6 +23,7 @@ struct HomeView: View {
                     ringSection
                     metricsGrid
                     scanButton
+                    recommendationsSection
                     insightsSection
                 }
                 .padding(.horizontal, PulseSpace.xl)
@@ -146,6 +147,27 @@ struct HomeView: View {
             Task {
                 await engine.runFullScan()
                 persistLatest()
+            }
+        }
+    }
+
+    @State private var dismissedRecommendations: Set<String> = []
+
+    private var recommendationsSection: some View {
+        let all = RecommendationsGenerator.generate(latest: engine.lastResult, records: records)
+        let visible = all.filter { !dismissedRecommendations.contains($0.id) }
+        return Group {
+            if !visible.isEmpty {
+                VStack(alignment: .leading, spacing: PulseSpace.m) {
+                    SectionHeader("Do this next")
+                    VStack(spacing: PulseSpace.m) {
+                        ForEach(visible) { rec in
+                            RecommendationCard(recommendation: rec) {
+                                withAnimation { _ = dismissedRecommendations.insert(rec.id) }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -320,6 +342,9 @@ struct HomeView: View {
         if let scene = UIApplication.shared.connectedScenes.first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
             RatingPrompt.maybeAsk(currentScore: r.pulseScore, in: scene)
         }
+
+        // Evaluate trigger-based smart notifications.
+        Task { await SmartNotificationEngine.evaluate(latest: r, records: records) }
     }
 
     private func bucket(for score: Int) -> AnalyticsEvent.ScoreBucket {

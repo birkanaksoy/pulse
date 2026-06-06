@@ -12,6 +12,7 @@ struct SettingsView: View {
     @State private var showingIconPicker = false
     @State private var showingHowItWorks = false
     @State private var showingAchievements = false
+    @State private var showingSmartAlerts = false
     @State private var pendingDeletion: [ScanRecord] = []
     @State private var showingUndo = false
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
@@ -39,6 +40,8 @@ struct SettingsView: View {
                 }
 
                 section("Reminders") {
+                    button("Smart Alerts") { showingSmartAlerts = true }
+                    Divider().background(PulseColor.stroke)
                     Toggle(isOn: weeklyToggleBinding) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text("Weekly check-in")
@@ -110,6 +113,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showingIconPicker) { NavigationStack { AppIconPicker() }.pulseSheet() }
         .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() }.pulseSheet() }
         .sheet(isPresented: $showingAchievements) { NavigationStack { AchievementsView() }.pulseSheet() }
+        .sheet(isPresented: $showingSmartAlerts) { NavigationStack { SmartAlertsView() }.pulseSheet() }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,

@@ -4039,7 +4039,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ayarları Aç"
+            "value": "Ayarları aç"
           }
         }
       }
@@ -8126,6 +8126,496 @@
           "stringUnit": {
             "state": "translated",
             "value": "Verini CSV olarak dışa aktar"
+          }
+        }
+      }
+    },
+    "Smart Alerts": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı Uyarılar"
+          }
+        }
+      }
+    },
+    "Triggered local notifications — only when something matters.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yalnızca önemli olduğunda — tetikleyiciye göre yerel bildirimler."
+          }
+        }
+      }
+    },
+    "Enable smart alerts": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı uyarıları aç"
+          }
+        }
+      }
+    },
+    "Permission granted at the OS level.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS düzeyinde izin verildi."
+          }
+        }
+      }
+    },
+    "Tap to request permission.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin istemek için dokun."
+          }
+        }
+      }
+    },
+    "All alerts are local. Nothing leaves your phone. Smart alerts are sent only after a scan you ran.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm uyarılar yerel. Hiçbir şey telefonundan çıkmaz. Akıllı uyarılar yalnızca senin yaptığın bir taramadan sonra gönderilir."
+          }
+        }
+      }
+    },
+    "Storage warnings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama uyarıları"
+          }
+        }
+      }
+    },
+    "Performance drops": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Performans düşüşleri"
+          }
+        }
+      }
+    },
+    "Thermal events": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termal olaylar"
+          }
+        }
+      }
+    },
+    "Milestones": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dönüm noktaları"
+          }
+        }
+      }
+    },
+    "Anomalies": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anormallikler"
+          }
+        }
+      }
+    },
+    "Heads-up when your storage is filling up.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama dolmaya başladığında haber verir."
+          }
+        }
+      }
+    },
+    "Heads-up when your Pulse Score drops.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse Skorun düştüğünde haber verir."
+          }
+        }
+      }
+    },
+    "Heads-up when your phone runs hot.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonun ısındığında haber verir."
+          }
+        }
+      }
+    },
+    "Cheers when you reach a new high.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yeni bir rekor kırdığında tebrik eder."
+          }
+        }
+      }
+    },
+    "Heads-up when something unusual happens.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olağan dışı bir şey olduğunda haber verir."
+          }
+        }
+      }
+    },
+    "Storage almost full": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama neredeyse dolu"
+          }
+        }
+      }
+    },
+    "You're at %lld%% used. iOS may start refusing updates above 95%%.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%%%lld dolu. iOS %%95 üstünde güncellemeleri reddetmeye başlayabilir."
+          }
+        }
+      }
+    },
+    "Storage filling up": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama doluyor"
+          }
+        }
+      }
+    },
+    "Your iPhone is at %lld%% used. A bit of cleanup would help.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone'un %%%lld dolu. Biraz temizlik fayda eder."
+          }
+        }
+      }
+    },
+    "Score dropped": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skor düştü"
+          }
+        }
+      }
+    },
+    "Your Pulse is %lld — that's %lld below your weekly average.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse skorun %lld — haftalık ortalamandan %lld düşük."
+          }
+        }
+      }
+    },
+    "Phone is warm": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon ısınıyor"
+          }
+        }
+      }
+    },
+    "iOS may throttle performance. Move to a cooler spot.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS performansı kısabilir. Daha serin bir yere geç."
+          }
+        }
+      }
+    },
+    "Thermal state elevated. Watch heavy apps for a bit.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termal yüksek. Ağır uygulamalara biraz dikkat et."
+          }
+        }
+      }
+    },
+    "Excellent Pulse 🎉": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mükemmel Pulse 🎉"
+          }
+        }
+      }
+    },
+    "You hit %lld today — top form.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bugün %lld'e ulaştın — form zirvede."
+          }
+        }
+      }
+    },
+    "Do this next": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sıradaki adım"
+          }
+        }
+      }
+    },
+    "Open Photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğrafları aç"
+          }
+        }
+      }
+    },
+    "Open Storage": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolamayı aç"
+          }
+        }
+      }
+    },
+    "Open Battery": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pili aç"
+          }
+        }
+      }
+    },
+    "See trend": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trendi gör"
+          }
+        }
+      }
+    },
+    "Run scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama yap"
+          }
+        }
+      }
+    },
+    "Got it": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anladım"
+          }
+        }
+      }
+    },
+    "Free up space": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yer aç"
+          }
+        }
+      }
+    },
+    "Storage is at %lld%%. iOS Storage breaks usage down by app.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama %%%lld dolu. iOS Depolama kullanımı uygulama bazında gösterir."
+          }
+        }
+      }
+    },
+    "Clear photo trash": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf çöpünü boşalt"
+          }
+        }
+      }
+    },
+    "Recently Deleted holds photos for 30 days. Empty it now to free space immediately.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Silinenler fotoğrafları 30 gün tutar. Şimdi boşaltarak anında yer aç."
+          }
+        }
+      }
+    },
+    "Trim your photo library": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf kitaplığını düzenle"
+          }
+        }
+      }
+    },
+    "Storage is getting tight (%lld%%). Photos are usually the biggest category.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama sıkışıyor (%%%lld). Fotoğraflar genelde en büyük kategoridir."
+          }
+        }
+      }
+    },
+    "Cool your phone down": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonu soğut"
+          }
+        }
+      }
+    },
+    "iOS is throttling. Close camera, AR or video apps, and move to a cooler spot.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS performans kısıyor. Kamera, AR veya video uygulamalarını kapat ve daha serin bir yere geç."
+          }
+        }
+      }
+    },
+    "Heavy apps may slow down. A short break usually fixes it.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ağır uygulamalar yavaşlayabilir. Kısa bir mola genelde yeterli."
+          }
+        }
+      }
+    },
+    "Turn on Low Power Mode": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güç Tasarrufunu aç"
+          }
+        }
+      }
+    },
+    "Battery is at %lld%%. Low Power Mode adds an hour or two.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil %%%lld. Güç Tasarrufu bir-iki saat daha kazandırır."
+          }
+        }
+      }
+    },
+    "Score is below trend": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skor trend altında"
+          }
+        }
+      }
+    },
+    "You're %lld points under your weekly average. Take a look at what changed.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftalık ortalamandan %lld puan altındasın. Neyin değiştiğine bir bak."
+          }
+        }
+      }
+    },
+    "All clear": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her şey yolunda"
+          }
+        }
+      }
+    },
+    "Your phone is in great shape. Keep the streak alive — scan again tomorrow.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonun harika durumda. Seriyi bozma — yarın tekrar tarama yap."
           }
         }
       }
