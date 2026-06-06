@@ -18,8 +18,10 @@ struct PulseApp: App {
 
     init() {
         // Wire notification delegate so taps route via the router.
-        NotificationCenterDelegate.shared.router = nil   // set in onAppear, see below
+        NotificationCenterDelegate.shared.router = nil
         UNUserNotificationCenter.current().delegate = NotificationCenterDelegate.shared
+        // Register the silent weekly background scan.
+        BackgroundScanner.register()
     }
 
     var body: some Scene {
@@ -38,6 +40,7 @@ struct PulseApp: App {
             .onOpenURL { url in router.handle(url: url) }
             .task {
                 NotificationCenterDelegate.shared.router = router
+                BackgroundScanner.scheduleNext()
             }
         }
         .modelContainer(container)

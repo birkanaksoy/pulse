@@ -7459,6 +7459,266 @@
           }
         }
       }
+    },
+    "Activity": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Etkinlik"
+          }
+        }
+      }
+    },
+    "Achievements": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başarımlar"
+          }
+        }
+      }
+    },
+    "%lld of %lld unlocked": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld / %lld açıldı"
+          }
+        }
+      }
+    },
+    "First scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlk tarama"
+          }
+        }
+      }
+    },
+    "Take your phone's pulse for the first time.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonunun nabzını ilk kez ölç."
+          }
+        }
+      }
+    },
+    "Regular check-up": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenli kontrol"
+          }
+        }
+      }
+    },
+    "Run 10 scans.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "10 tarama yap."
+          }
+        }
+      }
+    },
+    "Dedicated": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adanmış"
+          }
+        }
+      }
+    },
+    "Run 50 scans.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "50 tarama yap."
+          }
+        }
+      }
+    },
+    "Three-day streak": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3 günlük seri"
+          }
+        }
+      }
+    },
+    "Scan three days in a row.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst üste 3 gün tarama yap."
+          }
+        }
+      }
+    },
+    "Week-long streak": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftalık seri"
+          }
+        }
+      }
+    },
+    "Scan seven days in a row.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst üste 7 gün tarama yap."
+          }
+        }
+      }
+    },
+    "Month-long streak": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aylık seri"
+          }
+        }
+      }
+    },
+    "Scan thirty days in a row.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst üste 30 gün tarama yap."
+          }
+        }
+      }
+    },
+    "Healthy phone": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sağlıklı telefon"
+          }
+        }
+      }
+    },
+    "Reach an Excellent Pulse Score.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mükemmel bir Pulse Skoru'na ulaş."
+          }
+        }
+      }
+    },
+    "Perfect Pulse": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mükemmel Nabız"
+          }
+        }
+      }
+    },
+    "Reach a Pulse Score of 100.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "100 Pulse Skoru'na ulaş."
+          }
+        }
+      }
+    },
+    "Supporter": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Destekçi"
+          }
+        }
+      }
+    },
+    "Unlock Pulse Pro and back the app.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse Pro'yu aç ve uygulamayı destekle."
+          }
+        }
+      }
+    },
+    "Reading sensors…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sensörler okunuyor…"
+          }
+        }
+      }
+    },
+    "Reading battery…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil okunuyor…"
+          }
+        }
+      }
+    },
+    "Reading storage…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama okunuyor…"
+          }
+        }
+      }
+    },
+    "Reading thermal…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termal okunuyor…"
+          }
+        }
+      }
+    },
+    "Complete": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlandı"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

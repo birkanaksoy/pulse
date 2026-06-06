@@ -310,6 +310,34 @@ TR = {
     # Icon swap (Mono primary)
     "3 alternate app icons": "3 alternatif uygulama simgesi",
     "Pro unlocks the three alternate icons. The change is instant.": "Pro üç alternatif simgenin kilidini açar. Değişim anında olur.",
+
+    # Sprint 6: privacy manifest + background + achievements + Live Activity
+    "Activity": "Etkinlik",
+    "Achievements": "Başarımlar",
+    "%lld of %lld unlocked": "%lld / %lld açıldı",
+    "First scan": "İlk tarama",
+    "Take your phone's pulse for the first time.": "Telefonunun nabzını ilk kez ölç.",
+    "Regular check-up": "Düzenli kontrol",
+    "Run 10 scans.": "10 tarama yap.",
+    "Dedicated": "Adanmış",
+    "Run 50 scans.": "50 tarama yap.",
+    "Three-day streak": "3 günlük seri",
+    "Scan three days in a row.": "Üst üste 3 gün tarama yap.",
+    "Week-long streak": "Haftalık seri",
+    "Scan seven days in a row.": "Üst üste 7 gün tarama yap.",
+    "Month-long streak": "Aylık seri",
+    "Scan thirty days in a row.": "Üst üste 30 gün tarama yap.",
+    "Healthy phone": "Sağlıklı telefon",
+    "Reach an Excellent Pulse Score.": "Mükemmel bir Pulse Skoru'na ulaş.",
+    "Perfect Pulse": "Mükemmel Nabız",
+    "Reach a Pulse Score of 100.": "100 Pulse Skoru'na ulaş.",
+    "Supporter": "Destekçi",
+    "Unlock Pulse Pro and back the app.": "Pulse Pro'yu aç ve uygulamayı destekle.",
+    "Reading sensors…": "Sensörler okunuyor…",
+    "Reading battery…": "Pil okunuyor…",
+    "Reading storage…": "Depolama okunuyor…",
+    "Reading thermal…": "Termal okunuyor…",
+    "Complete": "Tamamlandı",
 }
 
 

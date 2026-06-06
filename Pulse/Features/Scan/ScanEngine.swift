@@ -44,21 +44,25 @@ final class ScanEngine {
 
     func runFullScan() async {
         Haptics.scanStart()
+        ScanLiveActivityController.start()
         phase = .scanning(progress: 0)
-        let b = await step(0.33) { self.battery.read() }
-        let s = await step(0.66) { self.storage.read() }
-        let t = await step(1.00) { self.thermal.read() }
+
+        let b = await step(0.33, phase: String(localized: "Reading battery…")) { self.battery.read() }
+        let s = await step(0.66, phase: String(localized: "Reading storage…")) { self.storage.read() }
+        let t = await step(1.00, phase: String(localized: "Reading thermal…")) { self.thermal.read() }
 
         let result = ScanResult(battery: b, storage: s, thermal: t, timestamp: Date())
         lastResult = result
         phase = .complete
+        ScanLiveActivityController.end(score: result.pulseScore)
         Haptics.scanComplete()
     }
 
-    private func step<T>(_ progress: Double, _ work: () -> T) async -> T {
+    private func step<T>(_ progress: Double, phase phaseLabel: String, _ work: () -> T) async -> T {
         try? await Task.sleep(nanoseconds: 500_000_000)
         let value = work()
         phase = .scanning(progress: progress)
+        ScanLiveActivityController.update(progress: progress, phase: phaseLabel)
         return value
     }
 }

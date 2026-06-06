@@ -5,5 +5,6 @@ import SwiftUI
 struct PulseWidgetBundle: WidgetBundle {
     var body: some Widget {
         PulseScoreWidget()
+        ScanLiveActivity()
     }
 }

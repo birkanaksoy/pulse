@@ -11,6 +11,7 @@ struct SettingsView: View {
     @State private var showingPrivacy = false
     @State private var showingIconPicker = false
     @State private var showingHowItWorks = false
+    @State private var showingAchievements = false
     @State private var pendingDeletion: [ScanRecord] = []
     @State private var showingUndo = false
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
@@ -31,6 +32,10 @@ struct SettingsView: View {
 
                 section("Appearance") {
                     button("App Icon") { showingIconPicker = true }
+                }
+
+                section("Activity") {
+                    button("Achievements") { showingAchievements = true }
                 }
 
                 section("Reminders") {
@@ -104,6 +109,7 @@ struct SettingsView: View {
         .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) }.pulseSheet() }
         .sheet(isPresented: $showingIconPicker) { NavigationStack { AppIconPicker() }.pulseSheet() }
         .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() }.pulseSheet() }
+        .sheet(isPresented: $showingAchievements) { NavigationStack { AchievementsView() }.pulseSheet() }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,

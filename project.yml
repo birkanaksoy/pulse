@@ -49,6 +49,8 @@ targets:
         buildPhase: resources
       - path: Pulse/Resources/AppIcon-Sunset@3x.png
         buildPhase: resources
+      - path: Pulse/Resources/PrivacyInfo.xcprivacy
+        buildPhase: resources
     dependencies:
       - target: PulseWidget
     scheme:
@@ -63,6 +65,12 @@ targets:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: false
         ITSAppUsesNonExemptEncryption: false
+        UIBackgroundModes:
+          - fetch
+          - processing
+        BGTaskSchedulerPermittedIdentifiers:
+          - app.pulse.weeklyScan
+        NSSupportsLiveActivities: true
         NSPhotoLibraryUsageDescription: "Pulse needs read access to estimate photo, video, and screenshot usage. Nothing is uploaded."
         NSPhotoLibraryAddUsageDescription: "Pulse can save shareable score cards to your library."
         CFBundleURLTypes:
@@ -101,6 +109,9 @@ targets:
       - path: Pulse/Features/Scan/Probes/StorageProbe.swift
       - path: Pulse/Features/Scan/Probes/ThermalProbe.swift
       - path: Pulse/Features/Scan/ScanIntent.swift
+      - path: Pulse/Features/Scan/ScanActivity.swift
+      - path: PulseWidget/PrivacyInfo.xcprivacy
+        buildPhase: resources
     info:
       path: PulseWidget/Info.plist
       properties:
