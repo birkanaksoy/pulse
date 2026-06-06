@@ -64,9 +64,10 @@ struct PaywallView: View {
 
     private var bullets: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            bullet("calendar", "Weekly health reports")
-            bullet("battery.100.bolt", "Battery diagnostics")
-            bullet("chart.xyaxis.line", "Full scan history")
+            bullet("waveform", "Pro Insights — patterns from your real scans")
+            bullet("thermometer.sun", "Thermal heatmap")
+            bullet("chart.xyaxis.line", "Full scan history + iCloud sync")
+            bullet("square.and.arrow.up", "Export your data as CSV")
             bullet("rectangle.stack.badge.plus", "Home & Lock Screen widgets")
             bullet("app.badge", "3 alternate app icons")
             bullet("heart.text.square", "Support a tiny, honest app")

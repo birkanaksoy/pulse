@@ -7719,6 +7719,416 @@
           }
         }
       }
+    },
+    "Pro Insights": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro İçgörüler"
+          }
+        }
+      }
+    },
+    "Deep insights": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Derin içgörüler"
+          }
+        }
+      }
+    },
+    "Patterns, projections, and a heatmap from your real scans.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek taramalarından desenler, projeksiyonlar ve ısı haritası."
+          }
+        }
+      }
+    },
+    "Thermal heatmap · 7 days × 24 hours": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termal ısı haritası · 7 gün × 24 saat"
+          }
+        }
+      }
+    },
+    "Nominal": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Normal"
+          }
+        }
+      }
+    },
+    "No data": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Veri yok"
+          }
+        }
+      }
+    },
+    "Run at least 7 scans to unlock pattern insights.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desen içgörüleri için en az 7 tarama yap."
+          }
+        }
+      }
+    },
+    "Storage stable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama dengeli"
+          }
+        }
+      }
+    },
+    "Your storage usage isn't trending up over the last %lld days.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son %lld günde depolama kullanımı artmıyor."
+          }
+        }
+      }
+    },
+    "Storage growing slowly": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama yavaş büyüyor"
+          }
+        }
+      }
+    },
+    "At current pace, you have plenty of runway.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut hızda bolca alanın var."
+          }
+        }
+      }
+    },
+    "Storage projection": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depolama projeksiyonu"
+          }
+        }
+      }
+    },
+    "At your current growth rate, you'll hit 100% in about %lld weeks.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mevcut büyüme hızında yaklaşık %lld hafta sonra %100'e ulaşırsın."
+          }
+        }
+      }
+    },
+    "Warmest weekday": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En sıcak gün"
+          }
+        }
+      }
+    },
+    "Your phone runs warmer on %@ than other days.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonun %@ günü diğer günlerden daha sıcak çalışıyor."
+          }
+        }
+      }
+    },
+    "Very stable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çok dengeli"
+          }
+        }
+      }
+    },
+    "Your score barely moves between scans.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skorun taramalar arasında neredeyse hiç değişmiyor."
+          }
+        }
+      }
+    },
+    "Stable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dengeli"
+          }
+        }
+      }
+    },
+    "Your score holds steady most days.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skorun çoğu gün sabit kalıyor."
+          }
+        }
+      }
+    },
+    "Variable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değişken"
+          }
+        }
+      }
+    },
+    "Your score swings a fair bit between scans.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skorun taramalar arasında belirgin dalgalanıyor."
+          }
+        }
+      }
+    },
+    "Unstable": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dengesiz"
+          }
+        }
+      }
+    },
+    "Your score swings widely — something is changing day-to-day.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skorun çok dalgalanıyor — günden güne bir şey değişiyor."
+          }
+        }
+      }
+    },
+    "Score stability": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skor istikrarı"
+          }
+        }
+      }
+    },
+    "Morning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sabah"
+          }
+        }
+      }
+    },
+    "Afternoon": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Öğleden sonra"
+          }
+        }
+      }
+    },
+    "Evening": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akşam"
+          }
+        }
+      }
+    },
+    "Night": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gece"
+          }
+        }
+      }
+    },
+    "Best time to scan": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama için en iyi saat"
+          }
+        }
+      }
+    },
+    "Your phone scores highest in the %@.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonun en yüksek skoru %@ saatlerinde alıyor."
+          }
+        }
+      }
+    },
+    "Low Power Mode use": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Güç Tasarrufu kullanımı"
+          }
+        }
+      }
+    },
+    "%lld%% of your scans were taken with Low Power Mode on.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Taramalarının %%%lld'i Güç Tasarrufu açıkken yapıldı."
+          }
+        }
+      }
+    },
+    "All-time average": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm zamanların ortalaması"
+          }
+        }
+      }
+    },
+    "Across %lld scans, you average %lld. Best: %lld. Worst: %lld.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld tarama boyunca ortalama %lld. En iyi: %lld. En kötü: %lld."
+          }
+        }
+      }
+    },
+    "Export scan history": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tarama geçmişini dışa aktar"
+          }
+        }
+      }
+    },
+    "CSV file with every scan.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm taramaların olduğu CSV dosyası."
+          }
+        }
+      }
+    },
+    "Pro perk — own your data.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro ayrıcalığı — veri senin."
+          }
+        }
+      }
+    },
+    "Pro Insights — patterns from your real scans": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro İçgörüler — gerçek taramalardan desenler"
+          }
+        }
+      }
+    },
+    "Thermal heatmap": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Termal ısı haritası"
+          }
+        }
+      }
+    },
+    "Full scan history + iCloud sync": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm tarama geçmişi + iCloud senkronu"
+          }
+        }
+      }
+    },
+    "Export your data as CSV": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verini CSV olarak dışa aktar"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

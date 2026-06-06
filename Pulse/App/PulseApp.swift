@@ -5,10 +5,18 @@ import UserNotifications
 @main
 struct PulseApp: App {
     let container: ModelContainer = {
+        // iCloud-backed store: SwiftData mirrors records to the user's private
+        // CloudKit DB so reinstalls and second devices stay in sync.
+        let config = ModelConfiguration(
+            "PulseStore",
+            schema: Schema([ScanRecord.self]),
+            cloudKitDatabase: .private("iCloud.com.birkan.pulse")
+        )
         do {
-            return try ModelContainer(for: ScanRecord.self)
+            return try ModelContainer(for: ScanRecord.self, configurations: config)
         } catch {
-            fatalError("Failed to create ModelContainer: \(error)")
+            // Fall back to local-only store if CloudKit isn't configured.
+            return try! ModelContainer(for: ScanRecord.self)
         }
     }()
 

@@ -7,6 +7,8 @@ struct HealthView: View {
     @State private var shareImage: UIImage?
     @State private var showingShare = false
     @State private var showingPaywall = false
+    @State private var exportURL: URL?
+    @State private var showingExportSheet = false
 
     private var records: [ScanRecord] {
         HistoryFilter.visible(allRecords, isPro: entitlements.isPro)
@@ -29,8 +31,10 @@ struct HealthView: View {
                         trendCard
                         statsCard
                         if isLimited { proHistoryHint }
+                        ProInsightsSection(records: allRecords) { showingPaywall = true }
                         WeeklyReportCard()
                         PersonalityCard(personality: personality, onShare: shareTapped)
+                        exportButton
                     }
                 }
                 .padding(.horizontal, PulseSpace.xl)
@@ -40,12 +44,57 @@ struct HealthView: View {
             .scrollContentBackground(.hidden)
         }
         .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
+        .sheet(isPresented: $showingExportSheet) {
+            if let url = exportURL { ShareSheet(items: [url]) }
+        }
         .sheet(isPresented: $showingShare) {
             if let img = shareImage {
                 ShareSheet(items: [img])
                     .presentationDetents([.medium, .large])
             }
         }
+    }
+
+    private var exportButton: some View {
+        Button {
+            Haptics.tap()
+            if !entitlements.isPro {
+                showingPaywall = true
+                return
+            }
+            if let url = try? CSVExporter.writeToTemp(allRecords) {
+                exportURL = url
+                showingExportSheet = true
+            }
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Image(systemName: "square.and.arrow.up")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(PulseColor.blue500)
+                    .frame(width: 36, height: 36)
+                    .background(Circle().fill(PulseColor.blue50))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Export scan history")
+                        .font(PulseFont.titleM)
+                        .foregroundStyle(PulseColor.textPrimary)
+                    Text(entitlements.isPro ? "CSV file with every scan." : "Pro perk — own your data.")
+                        .font(PulseFont.callout)
+                        .foregroundStyle(PulseColor.textSecondary)
+                }
+                Spacer()
+                if !entitlements.isPro {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(PulseColor.textTertiary)
+                } else {
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(PulseColor.textTertiary)
+                }
+            }
+            .pulseCard()
+        }
+        .buttonStyle(.card)
     }
 
     private var emptyState: some View {

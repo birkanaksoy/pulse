@@ -3,12 +3,13 @@ import SwiftData
 
 @Model
 final class ScanRecord {
-    var timestamp: Date
-    var pulseScore: Int
-    var storageUsed: Int           // 0–100
-    var thermalRaw: Int            // 0 nominal · 1 fair · 2 serious · 3 critical
-    var batteryLevel: Int?         // 0–100, nil if unknown
-    var batteryStateRaw: Int?      // 0 unknown · 1 unplugged · 2 charging · 3 full
+    // All properties default — required for SwiftData + CloudKit sync.
+    var timestamp: Date = Date.distantPast
+    var pulseScore: Int = 0
+    var storageUsed: Int = 0           // 0–100
+    var thermalRaw: Int = 0            // 0 nominal · 1 fair · 2 serious · 3 critical
+    var batteryLevel: Int?             // 0–100, nil if unknown
+    var batteryStateRaw: Int?          // 0 unknown · 1 unplugged · 2 charging · 3 full
     var lowPowerMode: Bool?
 
     // Deprecated, kept for SwiftData lightweight migration. Do not use.
