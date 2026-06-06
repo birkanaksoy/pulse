@@ -12,11 +12,10 @@ struct AppIconOption: Identifiable {
 @MainActor
 enum AppIconManager {
     static let options: [AppIconOption] = [
-        .init(name: nil,         displayName: "Default",  previewAsset: "AppIcon-Default-Preview"),
+        .init(name: nil,         displayName: "Mono",     previewAsset: "AppIcon-Default-Preview"),
         .init(name: "Midnight",  displayName: "Midnight", previewAsset: "AppIcon-Midnight@3x"),
         .init(name: "Health",    displayName: "Health",   previewAsset: "AppIcon-Health@3x"),
         .init(name: "Sunset",    displayName: "Sunset",   previewAsset: "AppIcon-Sunset@3x"),
-        .init(name: "Mono",      displayName: "Mono",     previewAsset: "AppIcon-Mono@3x"),
     ]
 
     static var current: String? {
@@ -71,7 +70,7 @@ struct AppIconPicker: View {
             Text("Pick your look")
                 .font(PulseFont.titleXL)
                 .foregroundStyle(PulseColor.textPrimary)
-            Text("Pro unlocks the four alternate icons. The change is instant.")
+            Text("Pro unlocks the three alternate icons. The change is instant.")
                 .font(PulseFont.callout)
                 .foregroundStyle(PulseColor.textSecondary)
         }
@@ -134,25 +133,25 @@ struct AppIconPicker: View {
     @ViewBuilder
     private func iconPreview(_ opt: AppIconOption) -> some View {
         if opt.name == nil {
-            // Primary icon — render an in-app preview matching the brand
+            // Primary icon (Mono) — in-app preview that mirrors the rendered PNG
             ZStack {
-                LinearGradient(
-                    colors: [Color.white, Color(red: 0.949, green: 0.965, blue: 1.000)],
-                    startPoint: .top, endPoint: .bottom
-                )
+                Color.white
                 Circle()
                     .strokeBorder(
-                        LinearGradient(
-                            colors: [PulseColor.blue500, PulseColor.blue300],
-                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        AngularGradient(
+                            colors: [Color.black, Color(white: 0.4)],
+                            center: .center,
+                            startAngle: .degrees(-90),
+                            endAngle: .degrees(270)
                         ),
                         lineWidth: 12
                     )
                     .frame(width: 78, height: 78)
                 Circle()
                     .fill(LinearGradient(
-                        colors: [PulseColor.blue500, PulseColor.blue300],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
+                        colors: [Color.black, Color(white: 0.4)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
                     ))
                     .frame(width: 24, height: 24)
             }

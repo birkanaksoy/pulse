@@ -49,10 +49,6 @@ targets:
         buildPhase: resources
       - path: Pulse/Resources/AppIcon-Sunset@3x.png
         buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Mono@2x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Mono@3x.png
-        buildPhase: resources
     dependencies:
       - target: PulseWidget
     scheme:
@@ -82,9 +78,6 @@ targets:
               UIPrerenderedIcon: false
             Sunset:
               CFBundleIconFiles: ["AppIcon-Sunset"]
-              UIPrerenderedIcon: false
-            Mono:
-              CFBundleIconFiles: ["AppIcon-Mono"]
               UIPrerenderedIcon: false
     settings:
       base:

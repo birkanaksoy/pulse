@@ -306,6 +306,10 @@ TR = {
     "What iOS hides — and we don't fake": "iOS'un gizlediği — uydurmadıklarımız",
     "What we never do": "Asla yapmadıklarımız",
     "Verify it yourself": "Kendin doğrula",
+
+    # Icon swap (Mono primary)
+    "3 alternate app icons": "3 alternatif uygulama simgesi",
+    "Pro unlocks the three alternate icons. The change is instant.": "Pro üç alternatif simgenin kilidini açar. Değişim anında olur.",
 }
 
 

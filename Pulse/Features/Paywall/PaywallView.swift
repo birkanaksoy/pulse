@@ -68,7 +68,7 @@ struct PaywallView: View {
             bullet("battery.100.bolt", "Battery diagnostics")
             bullet("chart.xyaxis.line", "Full scan history")
             bullet("rectangle.stack.badge.plus", "Home & Lock Screen widgets")
-            bullet("app.badge", "4 alternate app icons")
+            bullet("app.badge", "3 alternate app icons")
             bullet("heart.text.square", "Support a tiny, honest app")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
