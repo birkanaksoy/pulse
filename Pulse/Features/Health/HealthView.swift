@@ -16,22 +16,29 @@ struct HealthView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: PulseSpace.xxl) {
-                Text("Health")
-                    .font(PulseFont.titleXL)
-                    .foregroundStyle(PulseColor.textPrimary)
-                trendCard
-                statsCard
-                if isLimited { proHistoryHint }
-                WeeklyReportCard()
-                PersonalityCard(personality: personality, onShare: shareTapped)
+        ZStack {
+            AmbientBackground(tint: PulseColor.blue500)
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
+                    Text("Health")
+                        .font(PulseFont.titleXL)
+                        .foregroundStyle(PulseColor.textPrimary)
+                    if allRecords.isEmpty {
+                        emptyState
+                    } else {
+                        trendCard
+                        statsCard
+                        if isLimited { proHistoryHint }
+                        WeeklyReportCard()
+                        PersonalityCard(personality: personality, onShare: shareTapped)
+                    }
+                }
+                .padding(.horizontal, PulseSpace.xl)
+                .padding(.top, PulseSpace.l)
+                .padding(.bottom, PulseSpace.xxxl)
             }
-            .padding(.horizontal, PulseSpace.xl)
-            .padding(.top, PulseSpace.l)
-            .padding(.bottom, PulseSpace.xxxl)
+            .scrollContentBackground(.hidden)
         }
-        .background(AmbientBackground(tint: PulseColor.blue500))
         .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
         .sheet(isPresented: $showingShare) {
             if let img = shareImage {
@@ -39,6 +46,32 @@ struct HealthView: View {
                     .presentationDetents([.medium, .large])
             }
         }
+    }
+
+    private var emptyState: some View {
+        VStack(spacing: PulseSpace.l) {
+            Spacer().frame(height: PulseSpace.xxxl)
+            Image(systemName: "chart.xyaxis.line")
+                .font(.system(size: 56, weight: .light))
+                .foregroundStyle(
+                    LinearGradient(
+                        colors: [PulseColor.blue500, PulseColor.blue300],
+                        startPoint: .topLeading, endPoint: .bottomTrailing
+                    )
+                )
+                .padding(PulseSpace.xxl)
+                .background(Circle().fill(PulseColor.blue50))
+            Text("No scans yet")
+                .font(PulseFont.titleM)
+                .foregroundStyle(PulseColor.textPrimary)
+            Text("Once you run a scan from Home, your trend, stats, and weekly report will appear here.")
+                .font(PulseFont.body)
+                .foregroundStyle(PulseColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, PulseSpace.l)
+            Spacer().frame(height: PulseSpace.xxxl)
+        }
+        .frame(maxWidth: .infinity)
     }
 
     private var trendCard: some View {

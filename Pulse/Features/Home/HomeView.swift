@@ -6,7 +6,7 @@ struct HomeView: View {
     @Environment(\.modelContext) private var context
     @Environment(EntitlementStore.self) private var entitlements
     @Query(sort: \ScanRecord.timestamp, order: .reverse) private var records: [ScanRecord]
-    @State private var engine = ScanEngine()
+    var engine: ScanEngine
     @State private var presentedDetail: Detail?
 
     enum Detail: String, Identifiable {
@@ -15,19 +15,22 @@ struct HomeView: View {
     }
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: PulseSpace.xxl) {
-                header
-                ringSection
-                metricsGrid
-                scanButton
-                insightsSection
+        ZStack {
+            AmbientBackground(tint: PulseStatus(score: score).color)
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
+                    header
+                    ringSection
+                    metricsGrid
+                    scanButton
+                    insightsSection
+                }
+                .padding(.horizontal, PulseSpace.xl)
+                .padding(.top, PulseSpace.l)
+                .padding(.bottom, PulseSpace.xxxl)
             }
-            .padding(.horizontal, PulseSpace.xl)
-            .padding(.top, PulseSpace.l)
-            .padding(.bottom, PulseSpace.xxxl)
+            .scrollContentBackground(.hidden)
         }
-        .background(AmbientBackground(tint: PulseStatus(score: score).color))
         .refreshable {
             await engine.runFullScan()
             persistLatest()
@@ -184,10 +187,16 @@ struct HomeView: View {
         guard let ts = engine.lastResult?.timestamp else {
             return String(localized: "No scan yet")
         }
-        let f = RelativeDateTimeFormatter()
-        f.locale = .current
-        f.unitsStyle = .short
-        let relative = f.localizedString(for: ts, relativeTo: Date())
+        let elapsed = Date().timeIntervalSince(ts)
+        let relative: String
+        if elapsed < 60 {
+            relative = String(localized: "just now")
+        } else {
+            let f = RelativeDateTimeFormatter()
+            f.locale = .current
+            f.unitsStyle = .short
+            relative = f.localizedString(for: ts, relativeTo: Date())
+        }
         return String(localized: "Last scan · \(relative)")
     }
 
@@ -294,4 +303,4 @@ struct HomeView: View {
     }
 }
 
-#Preview { HomeView() }
+#Preview { HomeView(engine: ScanEngine()) }

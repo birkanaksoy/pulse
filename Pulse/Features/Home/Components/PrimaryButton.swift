@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct PrimaryButton: View {
-    var title: String
+    var title: LocalizedStringKey
     var systemImage: String? = "arrow.right"
     var isLoading: Bool = false
     var action: () -> Void

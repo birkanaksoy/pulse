@@ -2,21 +2,27 @@ import SwiftUI
 
 struct RootView: View {
     @State private var selection: Tab = .home
+    /// Owned at root so state survives tab switches.
+    @State private var engine = ScanEngine()
+    @State private var cleanScanner = CleanScanner()
 
     enum Tab: Hashable { case home, clean, health, settings }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            TabView(selection: $selection) {
-                HomeView().tag(Tab.home)
-                CleanView().tag(Tab.clean)
-                HealthView().tag(Tab.health)
-                SettingsView().tag(Tab.settings)
+            Group {
+                switch selection {
+                case .home:     HomeView(engine: engine)
+                case .clean:    CleanView(scanner: cleanScanner)
+                case .health:   HealthView()
+                case .settings: SettingsView()
+                }
             }
-            .toolbar(.hidden, for: .tabBar)
             .safeAreaInset(edge: .bottom) {
-                Color.clear.frame(height: 76) // reserve room for floating bar
+                Color.clear.frame(height: 76)
             }
+            .transition(.opacity)
+            .animation(.easeInOut(duration: 0.18), value: selection)
 
             CustomTabBar(selection: $selection)
         }

@@ -19,20 +19,20 @@ struct CustomTabBar: View {
     ]
 
     var body: some View {
-        HStack(spacing: 0) {
+        HStack(spacing: 4) {
             ForEach(items) { item in
                 tabButton(item)
             }
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 6)
+        .padding(.horizontal, 6)
+        .frame(height: 56)
         .background(
-            Capsule()
+            Capsule(style: .continuous)
                 .fill(.ultraThinMaterial)
                 .overlay(
                     Capsule().strokeBorder(
                         LinearGradient(
-                            colors: [.white.opacity(0.4), .white.opacity(0.1)],
+                            colors: [.white.opacity(0.4), .white.opacity(0.08)],
                             startPoint: .topLeading,
                             endPoint: .bottomTrailing
                         ),
@@ -40,49 +40,62 @@ struct CustomTabBar: View {
                     )
                 )
         )
-        .shadow(color: .black.opacity(0.15), radius: 20, y: 8)
-        .padding(.horizontal, 24)
+        .shadow(color: .black.opacity(0.14), radius: 18, y: 8)
+        .padding(.horizontal, 20)
         .padding(.bottom, 8)
     }
 
+    @ViewBuilder
     private func tabButton(_ item: Item) -> some View {
+        let active = selection == item.id
+
         Button {
-            if selection != item.id {
-                Haptics.tap(0.35)
-                if reduceMotion {
+            guard selection != item.id else { return }
+            Haptics.tap(0.35)
+            if reduceMotion {
+                selection = item.id
+            } else {
+                withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
                     selection = item.id
-                } else {
-                    withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
-                        selection = item.id
-                    }
                 }
             }
         } label: {
-            let active = selection == item.id
-            ZStack {
+            HStack(spacing: 6) {
+                Image(systemName: item.icon)
+                    .font(.system(size: 17, weight: .semibold))
+                    .symbolVariant(active ? .fill : .none)
                 if active {
-                    Capsule()
-                        .fill(PulseColor.blue500.opacity(0.12))
-                        .matchedGeometryEffect(id: "tab", in: ns)
+                    Text(item.label)
+                        .font(.system(size: 13, weight: .semibold))
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .truncationMode(.tail)
+                        .transition(
+                            .asymmetric(
+                                insertion: .scale(scale: 0.6).combined(with: .opacity),
+                                removal: .opacity
+                            )
+                        )
                 }
-                HStack(spacing: 6) {
-                    Image(systemName: item.icon)
-                        .font(.system(size: 17, weight: .semibold))
-                        .symbolVariant(active ? .fill : .none)
+            }
+            .foregroundStyle(active ? PulseColor.blue500 : PulseColor.textTertiary)
+            .padding(.horizontal, active ? 14 : 6)
+            .frame(height: 40)
+            .frame(minWidth: active ? nil : 44, maxWidth: active ? nil : .infinity)
+            .background(
+                ZStack {
                     if active {
-                        Text(item.label)
-                            .font(.system(size: 13, weight: .semibold))
-                            .transition(.scale.combined(with: .opacity))
+                        Capsule(style: .continuous)
+                            .fill(PulseColor.blue500.opacity(0.12))
+                            .matchedGeometryEffect(id: "tabHighlight", in: ns)
                     }
                 }
-                .foregroundStyle(active ? PulseColor.blue500 : PulseColor.textTertiary)
-                .padding(.horizontal, active ? 16 : 12)
-                .padding(.vertical, 10)
-            }
-            .frame(maxWidth: .infinity)
+            )
+            .contentShape(Capsule())
+            .fixedSize(horizontal: active, vertical: false)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(item.label))
-        .accessibilityAddTraits(selection == item.id ? .isSelected : [])
+        .accessibilityAddTraits(active ? .isSelected : [])
     }
 }

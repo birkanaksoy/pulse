@@ -37,6 +37,22 @@ targets:
       - path: Pulse
       - path: Pulse/Resources/Localizable.xcstrings
       - path: Pulse.storekit
+      - path: Pulse/Resources/AppIcon-Midnight@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Midnight@3x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Health@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Health@3x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Sunset@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Sunset@3x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Mono@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Mono@3x.png
+        buildPhase: resources
     dependencies:
       - target: PulseWidget
     scheme:
@@ -53,6 +69,20 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         NSPhotoLibraryUsageDescription: "Pulse needs read access to estimate photo, video, and screenshot usage. Nothing is uploaded."
         NSPhotoLibraryAddUsageDescription: "Pulse can save shareable score cards to your library."
+        CFBundleIcons:
+          CFBundleAlternateIcons:
+            Midnight:
+              CFBundleIconFiles: ["AppIcon-Midnight"]
+              UIPrerenderedIcon: false
+            Health:
+              CFBundleIconFiles: ["AppIcon-Health"]
+              UIPrerenderedIcon: false
+            Sunset:
+              CFBundleIconFiles: ["AppIcon-Sunset"]
+              UIPrerenderedIcon: false
+            Mono:
+              CFBundleIconFiles: ["AppIcon-Mono"]
+              UIPrerenderedIcon: false
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse

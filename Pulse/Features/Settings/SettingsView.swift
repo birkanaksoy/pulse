@@ -9,18 +9,25 @@ struct SettingsView: View {
     @State private var showingDeleteConfirm = false
     @State private var showingTerms = false
     @State private var showingPrivacy = false
+    @State private var showingIconPicker = false
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
     @State private var notifAuthorized = false
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: PulseSpace.xxl) {
-                Text("Settings")
-                    .font(PulseFont.titleXL)
-                    .foregroundStyle(PulseColor.textPrimary)
+        ZStack {
+            AmbientBackground(tint: PulseColor.blue500)
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
+                    Text("Settings")
+                        .font(PulseFont.titleXL)
+                        .foregroundStyle(PulseColor.textPrimary)
 
                 if !entitlements.isPro {
                     proBanner
+                }
+
+                section("Appearance") {
+                    button("App Icon") { showingIconPicker = true }
                 }
 
                 section("Reminders") {
@@ -71,11 +78,13 @@ struct SettingsView: View {
             .padding(.horizontal, PulseSpace.xl)
             .padding(.top, PulseSpace.l)
             .padding(.bottom, PulseSpace.xxxl)
+            }
+            .scrollContentBackground(.hidden)
         }
-        .background(AmbientBackground(tint: PulseColor.blue500))
         .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
         .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) }.pulseSheet() }
         .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) }.pulseSheet() }
+        .sheet(isPresented: $showingIconPicker) { NavigationStack { AppIconPicker() }.pulseSheet() }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,

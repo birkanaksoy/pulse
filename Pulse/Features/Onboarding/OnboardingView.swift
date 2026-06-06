@@ -1,9 +1,14 @@
 import SwiftUI
+import UserNotifications
 
 struct OnboardingView: View {
     @Binding var didOnboard: Bool
     @State private var page: Int = 0
+    @State private var weeklyReminderRequested = false
+    @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    private let totalPages = 4
 
     var body: some View {
         ZStack {
@@ -13,7 +18,8 @@ struct OnboardingView: View {
                 TabView(selection: $page) {
                     welcomePage.tag(0)
                     valuePropsPage.tag(1)
-                    firstScanPage.tag(2)
+                    notificationPage.tag(2)
+                    firstScanPage.tag(3)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(reduceMotion ? nil : .smooth(duration: 0.6), value: page)
@@ -21,6 +27,7 @@ struct OnboardingView: View {
                 Spacer(minLength: 0)
                 indicator
                 cta
+                if page == 2 { skipReminder }
             }
             .padding(.bottom, PulseSpace.xxl)
         }
@@ -69,8 +76,29 @@ struct OnboardingView: View {
         }
     }
 
-    private var firstScanPage: some View {
+    private var notificationPage: some View {
         ParallaxPage(page: page, index: 2) {
+            VStack(spacing: PulseSpace.xxl) {
+                Spacer()
+                glyph(systemName: "bell.badge")
+                VStack(spacing: PulseSpace.s) {
+                    Text("One nudge a week.")
+                        .font(PulseFont.titleL)
+                        .foregroundStyle(PulseColor.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Text("A Sunday reminder to scan. Local only — nothing leaves your phone.")
+                        .font(PulseFont.body)
+                        .foregroundStyle(PulseColor.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, PulseSpace.xxl)
+                }
+                Spacer()
+            }
+        }
+    }
+
+    private var firstScanPage: some View {
+        ParallaxPage(page: page, index: 3) {
             VStack(spacing: PulseSpace.xl) {
                 Spacer()
                 ZStack {
@@ -98,6 +126,8 @@ struct OnboardingView: View {
         }
     }
 
+    // MARK: - Glyph
+
     private func glyph(systemName: String) -> some View {
         Image(systemName: systemName)
             .font(.system(size: 80, weight: .light))
@@ -108,9 +138,7 @@ struct OnboardingView: View {
                 )
             )
             .padding(PulseSpace.xxxl)
-            .background(
-                Circle().fill(PulseColor.blue50)
-            )
+            .background(Circle().fill(PulseColor.blue50))
             .shadow(color: PulseColor.blue500.opacity(0.25), radius: 30, y: 12)
     }
 
@@ -140,7 +168,7 @@ struct OnboardingView: View {
 
     private var indicator: some View {
         HStack(spacing: PulseSpace.s) {
-            ForEach(0..<3) { i in
+            ForEach(0..<totalPages, id: \.self) { i in
                 Capsule()
                     .fill(i == page ? PulseColor.blue500 : PulseColor.stroke)
                     .frame(width: i == page ? 28 : 8, height: 8)
@@ -152,16 +180,63 @@ struct OnboardingView: View {
 
     private var cta: some View {
         PrimaryButton(
-            title: page < 2 ? "Continue" : "Run my first scan",
+            title: ctaTitle,
             systemImage: "arrow.right"
         ) {
-            if page < 2 {
-                withAnimation(reduceMotion ? nil : .smooth(duration: 0.5)) { page += 1 }
-            } else {
-                didOnboard = true
-            }
+            handleCTA()
         }
         .padding(.horizontal, PulseSpace.xl)
+    }
+
+    private var ctaTitle: LocalizedStringKey {
+        switch page {
+        case 2:  return weeklyReminderRequested ? "Continue" : "Enable weekly check-in"
+        case 3:  return "Run my first scan"
+        default: return "Continue"
+        }
+    }
+
+    private var skipReminder: some View {
+        Button {
+            advance()
+        } label: {
+            Text("Maybe later")
+                .font(PulseFont.callout)
+                .foregroundStyle(PulseColor.textTertiary)
+                .padding(.top, PulseSpace.s)
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Actions
+
+    private func handleCTA() {
+        switch page {
+        case 2 where !weeklyReminderRequested:
+            Task { await requestNotificationPermission() }
+        default:
+            advance()
+        }
+    }
+
+    private func advance() {
+        if page < totalPages - 1 {
+            withAnimation(reduceMotion ? nil : .smooth(duration: 0.5)) { page += 1 }
+        } else {
+            didOnboard = true
+        }
+    }
+
+    @MainActor
+    private func requestNotificationPermission() async {
+        let granted = await NotificationScheduler.requestAuthorization()
+        weeklyReminderRequested = true
+        if granted {
+            NotificationScheduler.scheduleWeeklyReminder()
+            weeklyReminder = true
+        }
+        // Always advance — granted or not, we move on. User can revisit in Settings.
+        advance()
     }
 }
 
@@ -176,7 +251,7 @@ private struct ParallaxPage<Content: View>: View {
             let frame = proxy.frame(in: .global)
             let mid = frame.midX
             let screen = UIScreen.main.bounds.width
-            let offset = (mid - screen / 2) / screen     // -1 ... 1
+            let offset = (mid - screen / 2) / screen
             let opacity = 1 - min(1, abs(offset) * 1.4)
             let scale = 0.96 + (1 - min(1, abs(offset))) * 0.04
 

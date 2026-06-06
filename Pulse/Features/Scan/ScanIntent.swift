@@ -12,7 +12,9 @@ struct ScanIntent: AppIntent {
     static var openAppWhenRun = false
 
     func perform() async throws -> some IntentResult {
-        let battery = BatteryProbe().read()
+        // Battery is read so we warm up monitoring in this process; the
+        // widget snapshot only shows score+status so we don't persist it here.
+        _ = BatteryProbe().read()
         let storage = StorageProbe().read()
         let thermal = ThermalProbe().read()
         let score = computeScore(storage: storage.usedPercent, thermal: thermal)

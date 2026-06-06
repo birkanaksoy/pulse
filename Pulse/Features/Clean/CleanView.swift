@@ -2,26 +2,33 @@ import SwiftUI
 import Photos
 
 struct CleanView: View {
-    @State private var scanner = CleanScanner()
+    var scanner: CleanScanner
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: PulseSpace.xxl) {
-                header
-                if scanner.categories.isEmpty {
-                    initialState
-                } else {
-                    categoryList
-                    disclaimer
+        ZStack {
+            AmbientBackground(tint: PulseColor.blue500)
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
+                    header
+                    if scanner.categories.isEmpty {
+                        initialState
+                    } else {
+                        categoryList
+                        disclaimer
+                    }
                 }
+                .padding(.horizontal, PulseSpace.xl)
+                .padding(.top, PulseSpace.l)
+                .padding(.bottom, PulseSpace.xxxl)
             }
-            .padding(.horizontal, PulseSpace.xl)
-            .padding(.top, PulseSpace.l)
-            .padding(.bottom, PulseSpace.xxxl)
+            .scrollContentBackground(.hidden)
         }
-        .background(PulseColor.muted.ignoresSafeArea())
         .task {
             if scanner.categories.isEmpty { await scanner.scan() }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            // If the user just toggled photo permission in Settings, re-scan.
+            Task { await scanner.scan() }
         }
     }
 

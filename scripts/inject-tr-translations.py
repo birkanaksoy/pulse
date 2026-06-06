@@ -270,6 +270,27 @@ TR = {
 
     # Sprint 3: design pass (mostly tab labels — also in catalog already; re-affirm)
     "Status": "Durum",
+    "just now": "az önce",
+
+    # Sprint 4: gaps & polish
+    "One nudge a week.": "Haftada bir küçük hatırlatma.",
+    "A Sunday reminder to scan. Local only — nothing leaves your phone.": "Pazarları tarama için bir hatırlatma. Yalnızca cihazında — hiçbir şey dışarı çıkmaz.",
+    "Enable weekly check-in": "Haftalık kontrolü aç",
+    "Maybe later": "Belki sonra",
+    "No scans yet": "Henüz tarama yok",
+    "Once you run a scan from Home, your trend, stats, and weekly report will appear here.": "Ana ekrandan bir tarama yapınca trend, istatistikler ve haftalık rapor burada görünür.",
+
+    # App Icon Picker (Pro perk)
+    "Appearance": "Görünüm",
+    "App Icon": "Uygulama Simgesi",
+    "Pick your look": "Görünümünü seç",
+    "Pro unlocks the four alternate icons. The change is instant.": "Pro dört alternatif simgenin kilidini açar. Değişim anında olur.",
+    "Default": "Varsayılan",
+    "Midnight": "Gece Yarısı",
+    "Sunset": "Gün Batımı",
+    "Mono": "Mono",
+    "Alternate icons are a Pulse Pro perk.": "Alternatif simgeler Pulse Pro ayrıcalığıdır.",
+    "4 alternate app icons": "4 alternatif uygulama simgesi",
 }
 
 
