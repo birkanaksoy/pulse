@@ -5,6 +5,9 @@ struct CleanView: View {
     var scanner: CleanScanner
     @State private var presentedCategory: CleanCategory.Kind?
     @State private var showingDuplicates = false
+    @State private var showingBursts = false
+    @State private var showingLargeVideos = false
+    @State private var showingLivePhotos = false
 
     var body: some View {
         ZStack {
@@ -22,8 +25,9 @@ struct CleanView: View {
                         notStartedState
                     } else {
                         bytesFreedBanner
-                        duplicateCard
+                        smartCleaners
                         categoryList
+                        recentlyDeletedNudge
                         disclaimer
                     }
                 }
@@ -39,6 +43,15 @@ struct CleanView: View {
         }
         .sheet(isPresented: $showingDuplicates) {
             NavigationStack { DuplicatesView() }.pulseSheet()
+        }
+        .sheet(isPresented: $showingBursts) {
+            NavigationStack { BurstsView() }.pulseSheet()
+        }
+        .sheet(isPresented: $showingLargeVideos) {
+            NavigationStack { LargeVideosView() }.pulseSheet()
+        }
+        .sheet(isPresented: $showingLivePhotos) {
+            NavigationStack { LivePhotosView() }.pulseSheet()
         }
         .task {
             if scanner.categories.isEmpty { await scanner.scan() }
@@ -85,6 +98,94 @@ struct CleanView: View {
                 .pulseCard()
             }
         }
+    }
+
+    private var smartCleaners: some View {
+        VStack(alignment: .leading, spacing: PulseSpace.s) {
+            SectionHeader("Smart cleaners")
+            VStack(spacing: PulseSpace.m) {
+                cleanerCard(
+                    icon: "rectangle.stack.badge.minus",
+                    title: String(localized: "Find duplicate photos"),
+                    subtitle: String(localized: "Visual fingerprinting, on-device. No upload.")
+                ) { showingDuplicates = true }
+                cleanerCard(
+                    icon: "camera.aperture",
+                    title: String(localized: "Burst photos"),
+                    subtitle: String(localized: "Keep the best of every burst, drop the rest.")
+                ) { showingBursts = true }
+                cleanerCard(
+                    icon: "film",
+                    title: String(localized: "Largest videos"),
+                    subtitle: String(localized: "Sorted by real file size — usually the biggest win.")
+                ) { showingLargeVideos = true }
+                cleanerCard(
+                    icon: "livephoto",
+                    title: String(localized: "Live Photos → still"),
+                    subtitle: String(localized: "Convert to still, save ~60% per photo.")
+                ) { showingLivePhotos = true }
+            }
+        }
+    }
+
+    private func cleanerCard(icon: String, title: String, subtitle: String, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Image(systemName: icon)
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(PulseColor.ringGradient, in: RoundedRectangle(cornerRadius: 12))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(title)
+                        .font(PulseFont.titleM)
+                        .foregroundStyle(PulseColor.textPrimary)
+                    Text(subtitle)
+                        .font(PulseFont.callout)
+                        .foregroundStyle(PulseColor.textSecondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(PulseColor.textTertiary)
+            }
+            .pulseCard()
+        }
+        .buttonStyle(.card)
+    }
+
+    private var recentlyDeletedNudge: some View {
+        Button {
+            Haptics.tap()
+            if let u = URL(string: "photos-redirect://"), UIApplication.shared.canOpenURL(u) {
+                UIApplication.shared.open(u)
+            }
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Image(systemName: "trash")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(PulseColor.critical)
+                    .frame(width: 44, height: 44)
+                    .background(Circle().fill(PulseColor.critical.opacity(0.12)))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Empty Recently Deleted")
+                        .font(PulseFont.titleM)
+                        .foregroundStyle(PulseColor.textPrimary)
+                    Text("iOS keeps deleted photos for 30 days. Empty now to reclaim space instantly.")
+                        .font(PulseFont.callout)
+                        .foregroundStyle(PulseColor.textSecondary)
+                }
+                Spacer()
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(PulseColor.textTertiary)
+            }
+            .pulseCard()
+        }
+        .buttonStyle(.card)
     }
 
     private var duplicateCard: some View {

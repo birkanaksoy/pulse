@@ -8949,6 +8949,256 @@
           }
         }
       }
+    },
+    "Burst photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama çekimleri"
+          }
+        }
+      }
+    },
+    "Burst": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama"
+          }
+        }
+      }
+    },
+    "iOS bursts a dozen shots in a second. The keeper is usually one of them.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS bir saniyede onlarca kare çeker. Saklamak istediğin genelde içlerinden biridir."
+          }
+        }
+      }
+    },
+    "No bursts found": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama çekimi bulunamadı"
+          }
+        }
+      }
+    },
+    "Take a burst with the shutter held down — Pulse will group them here.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deklanşörü basılı tutarak patlama çek — Pulse burada gruplar."
+          }
+        }
+      }
+    },
+    "Large videos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük videolar"
+          }
+        }
+      }
+    },
+    "Largest videos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "En büyük videolar"
+          }
+        }
+      }
+    },
+    "Sorted by real file size. Videos are usually the biggest space-eaters.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek dosya boyutuna göre sıralı. Videolar genelde en büyük alan harcayıcılarıdır."
+          }
+        }
+      }
+    },
+    "No videos found": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video bulunamadı"
+          }
+        }
+      }
+    },
+    "Live Photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Fotoğraflar"
+          }
+        }
+      }
+    },
+    "Each Live Photo carries a 1.5s video. Convert to still and save ~60% per photo — photo stays in your library.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her Canlı Fotoğraf 1.5 saniyelik video taşır. Düz fotoğrafa çevirerek her fotoğrafta ~%60 kazan — fotoğraf kitaplığında kalır."
+          }
+        }
+      }
+    },
+    "No Live Photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Fotoğraf yok"
+          }
+        }
+      }
+    },
+    "Convert": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çevir"
+          }
+        }
+      }
+    },
+    "Converting…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çevriliyor…"
+          }
+        }
+      }
+    },
+    "Converted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çevrildi"
+          }
+        }
+      }
+    },
+    "Live Photos → still": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Fotoğraflar → düz"
+          }
+        }
+      }
+    },
+    "Convert to still, save ~60% per photo.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düz fotoğrafa çevir, fotoğraf başına ~%60 kazan."
+          }
+        }
+      }
+    },
+    "Smart cleaners": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı temizleyiciler"
+          }
+        }
+      }
+    },
+    "Keep the best of every burst, drop the rest.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her patlamadan en iyiyi sakla, gerisini at."
+          }
+        }
+      }
+    },
+    "Sorted by real file size — usually the biggest win.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek dosya boyutuna göre sıralı — genelde en büyük kazanım."
+          }
+        }
+      }
+    },
+    "Empty Recently Deleted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son Silinenleri boşalt"
+          }
+        }
+      }
+    },
+    "iOS keeps deleted photos for 30 days. Empty now to reclaim space instantly.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS silinen fotoğrafları 30 gün tutar. Şimdi boşaltarak alanı anında geri kazan."
+          }
+        }
+      }
+    },
+    "%lld shots": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld kare"
+          }
+        }
+      }
+    },
+    "%lld videos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld video"
+          }
+        }
+      }
+    },
+    "%lld Live Photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld Canlı Fotoğraf"
+          }
+        }
+      }
     }
   },
   "version": "1.1"
