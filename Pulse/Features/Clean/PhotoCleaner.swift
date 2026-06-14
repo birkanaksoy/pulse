@@ -5,7 +5,6 @@ import os.log
 /// Real deletion via PhotoKit. iOS always shows a native confirmation prompt
 /// before actually deleting — there's no way around that, which is exactly
 /// what we want for an "honest cleaner".
-@MainActor
 enum PhotoCleaner {
     private static let log = Logger(subsystem: "app.pulse", category: "cleaner")
 
