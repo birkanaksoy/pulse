@@ -5,6 +5,7 @@ import WidgetKit
 struct HomeView: View {
     @Environment(\.modelContext) private var context
     @Environment(EntitlementStore.self) private var entitlements
+    @Environment(DeepLinkRouter.self) private var router
     @Query(sort: \ScanRecord.timestamp, order: .reverse) private var records: [ScanRecord]
     var engine: ScanEngine
     @State private var presentedDetail: Detail?
@@ -23,6 +24,9 @@ struct HomeView: View {
                     ringSection
                     metricsGrid
                     scanButton
+                    CleanableCard {
+                        router.pendingIntent = .openClean
+                    }
                     recommendationsSection
                     insightsSection
                 }

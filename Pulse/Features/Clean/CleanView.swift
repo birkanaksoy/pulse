@@ -3,6 +3,8 @@ import Photos
 
 struct CleanView: View {
     var scanner: CleanScanner
+    @State private var presentedCategory: CleanCategory.Kind?
+    @State private var showingDuplicates = false
 
     var body: some View {
         ZStack {
@@ -10,9 +12,17 @@ struct CleanView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: PulseSpace.xxl) {
                     header
-                    if scanner.categories.isEmpty {
-                        initialState
+                    if scanner.isScanning {
+                        ProgressView().scaleEffect(1.4).tint(PulseColor.blue500)
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, PulseSpace.xxxl)
+                    } else if scanner.authStatus == .denied || scanner.authStatus == .restricted {
+                        deniedState
+                    } else if scanner.categories.isEmpty {
+                        notStartedState
                     } else {
+                        bytesFreedBanner
+                        duplicateCard
                         categoryList
                         disclaimer
                     }
@@ -23,70 +33,84 @@ struct CleanView: View {
             }
             .scrollContentBackground(.hidden)
         }
+        .sheet(item: $presentedCategory) { kind in
+            NavigationStack { CleanCategoryDetail(kind: kind) }
+                .pulseSheet()
+        }
+        .sheet(isPresented: $showingDuplicates) {
+            NavigationStack { DuplicatesView() }.pulseSheet()
+        }
         .task {
             if scanner.categories.isEmpty { await scanner.scan() }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            // If the user just toggled photo permission in Settings, re-scan.
             Task { await scanner.scan() }
         }
     }
+
+    // MARK: - Sections
 
     private var header: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Clean")
                 .font(PulseFont.titleXL)
                 .foregroundStyle(PulseColor.textPrimary)
-            Text("Pulse suggests. You decide.")
+            Text("Real deletion, real bytes freed. iOS confirms every batch.")
                 .font(PulseFont.body)
                 .foregroundStyle(PulseColor.textSecondary)
         }
     }
 
-    private var initialState: some View {
-        VStack(spacing: PulseSpace.l) {
-            if scanner.isScanning {
-                ProgressView().scaleEffect(1.4).tint(PulseColor.blue500)
-                Text("Scanning your library…")
-                    .font(PulseFont.body)
-                    .foregroundStyle(PulseColor.textSecondary)
-            } else if scanner.authStatus == .denied || scanner.authStatus == .restricted {
-                deniedState
-            } else {
-                Image(systemName: "lock.shield")
-                    .font(.system(size: 48, weight: .light))
-                    .foregroundStyle(PulseColor.blue500)
-                Text("Photo access required")
-                    .font(PulseFont.titleM)
-                    .foregroundStyle(PulseColor.textPrimary)
-                PrimaryButton(title: "Allow & Scan", systemImage: "checkmark") {
-                    Task { await scanner.scan() }
+    private var bytesFreedBanner: some View {
+        Group {
+            if BytesFreedTracker.allTime > 0 {
+                HStack(spacing: PulseSpace.m) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 22, weight: .semibold))
+                        .foregroundStyle(.white)
+                        .frame(width: 44, height: 44)
+                        .background(LinearGradient(colors: [PulseColor.excellent, PulseColor.blue500],
+                                                  startPoint: .topLeading, endPoint: .bottomTrailing),
+                                    in: Circle())
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Freed all-time")
+                            .font(PulseFont.callout)
+                            .foregroundStyle(PulseColor.textSecondary)
+                        Text(BytesFreedTracker.formattedAllTime)
+                            .font(PulseFont.titleM)
+                            .foregroundStyle(PulseColor.textPrimary)
+                    }
+                    Spacer()
                 }
+                .pulseCard()
             }
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, PulseSpace.xxxl)
     }
 
-    private var deniedState: some View {
-        VStack(spacing: PulseSpace.l) {
-            Image(systemName: "exclamationmark.shield")
-                .font(.system(size: 48, weight: .light))
-                .foregroundStyle(PulseColor.fair)
-            Text("Photo access denied")
-                .font(PulseFont.titleM)
-                .foregroundStyle(PulseColor.textPrimary)
-            Text("Pulse needs read access to count photos, videos and screenshots. Enable it in Settings.")
-                .font(PulseFont.body)
-                .foregroundStyle(PulseColor.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, PulseSpace.xl)
-            PrimaryButton(title: "Open Settings", systemImage: "arrow.up.right") {
-                if let url = URL(string: UIApplication.openSettingsURLString) {
-                    UIApplication.shared.open(url)
+    private var duplicateCard: some View {
+        Button { showingDuplicates = true } label: {
+            HStack(spacing: PulseSpace.m) {
+                Image(systemName: "rectangle.stack.badge.minus")
+                    .font(.system(size: 22, weight: .semibold))
+                    .foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .background(PulseColor.ringGradient, in: RoundedRectangle(cornerRadius: 12))
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Find duplicate photos")
+                        .font(PulseFont.titleM)
+                        .foregroundStyle(PulseColor.textPrimary)
+                    Text("Visual fingerprinting, on-device. No upload.")
+                        .font(PulseFont.callout)
+                        .foregroundStyle(PulseColor.textSecondary)
                 }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(PulseColor.textTertiary)
             }
+            .pulseCard()
         }
+        .buttonStyle(.card)
     }
 
     private var categoryList: some View {
@@ -121,14 +145,14 @@ struct CleanView: View {
     private func categoryRow(_ c: CleanCategory) -> some View {
         Button {
             Haptics.tap()
-            openSystem(for: c)
+            presentedCategory = c.kind
         } label: {
             HStack(spacing: PulseSpace.l) {
                 Image(systemName: c.icon)
                     .font(.system(size: 20, weight: .semibold))
-                    .foregroundStyle(PulseColor.blue500)
+                    .foregroundStyle(.white)
                     .frame(width: 44, height: 44)
-                    .background(Circle().fill(PulseColor.blue50))
+                    .background(PulseColor.ringGradient, in: RoundedRectangle(cornerRadius: 12))
                 VStack(alignment: .leading, spacing: 2) {
                     Text(c.title)
                         .font(PulseFont.titleM)
@@ -144,7 +168,7 @@ struct CleanView: View {
             }
             .pulseCard()
         }
-        .buttonStyle(.plain)
+        .buttonStyle(.card)
     }
 
     private func subtitle(for c: CleanCategory) -> Text {
@@ -154,19 +178,107 @@ struct CleanView: View {
             let size = ByteCountFormatter.string(fromByteCount: b, countStyle: .file)
             return items + Text(" · ") + Text(size)
         }
-        return items + Text(" · ") + Text("calculating…").foregroundStyle(PulseColor.textTertiary)
+        return items + Text(" · ") + Text("calculating…")
     }
 
     private var disclaimer: some View {
-        Text("Pulse never deletes anything. Each category opens the relevant Apple app or Settings so you stay in control.")
+        Text("Pulse opens the system delete dialog for every batch. Nothing is deleted without your tap.")
             .font(PulseFont.footnote)
             .foregroundStyle(PulseColor.textTertiary)
             .padding(.horizontal, PulseSpace.s)
     }
 
-    private func openSystem(for c: CleanCategory) {
-        if let u = URL(string: "photos-redirect://"), UIApplication.shared.canOpenURL(u) {
-            UIApplication.shared.open(u)
+    // MARK: - Empty states
+
+    private var deniedState: some View {
+        VStack(spacing: PulseSpace.l) {
+            Image(systemName: "exclamationmark.shield")
+                .font(.system(size: 48, weight: .light))
+                .foregroundStyle(PulseColor.fair)
+            Text("Photo access denied")
+                .font(PulseFont.titleM)
+                .foregroundStyle(PulseColor.textPrimary)
+            Text("Pulse needs read+write access to actually clean. Enable it in Settings.")
+                .font(PulseFont.body)
+                .foregroundStyle(PulseColor.textSecondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, PulseSpace.xl)
+            PrimaryButton(title: "Open Settings", systemImage: "arrow.up.right") {
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
         }
+        .padding(.vertical, PulseSpace.xxxl)
+    }
+
+    private var notStartedState: some View {
+        VStack(spacing: PulseSpace.l) {
+            Image(systemName: "lock.shield")
+                .font(.system(size: 48, weight: .light))
+                .foregroundStyle(PulseColor.blue500)
+            Text("Photo access required")
+                .font(PulseFont.titleM)
+                .foregroundStyle(PulseColor.textPrimary)
+            PrimaryButton(title: "Allow & Scan", systemImage: "checkmark") {
+                Task { await scanner.scan() }
+            }
+        }
+        .padding(.vertical, PulseSpace.xxxl)
+    }
+}
+
+// MARK: - Sheet wrapper
+
+extension CleanCategory.Kind: Identifiable {
+    public var id: String { rawValue }
+}
+
+private struct CleanCategoryDetail: View {
+    var kind: CleanCategory.Kind
+    @State private var assets: [PHAsset] = []
+
+    var body: some View {
+        Group {
+            if assets.isEmpty {
+                ProgressView().tint(PulseColor.blue500)
+            } else {
+                PhotoGridView(assets: assets, title: title)
+            }
+        }
+        .task { await load() }
+    }
+
+    private var title: LocalizedStringKey {
+        switch kind {
+        case .screenshots: return "Screenshots"
+        case .photos:      return "Photos"
+        case .videos:      return "Videos"
+        }
+    }
+
+    @MainActor
+    private func load() async {
+        let assets: [PHAsset] = await Task.detached(priority: .userInitiated) {
+            var out: [PHAsset] = []
+            let fetch: PHFetchResult<PHAsset> = {
+                switch kind {
+                case .screenshots:
+                    let opts = PHFetchOptions()
+                    opts.predicate = NSPredicate(
+                        format: "(mediaSubtypes & %d) != 0",
+                        PHAssetMediaSubtype.photoScreenshot.rawValue
+                    )
+                    return PHAsset.fetchAssets(with: .image, options: opts)
+                case .photos:
+                    return PHAsset.fetchAssets(with: .image, options: nil)
+                case .videos:
+                    return PHAsset.fetchAssets(with: .video, options: nil)
+                }
+            }()
+            fetch.enumerateObjects { a, _, _ in out.append(a) }
+            return out
+        }.value
+        self.assets = assets
     }
 }

@@ -5,8 +5,8 @@ Keep promo text under 170 chars, subtitle under 30 chars, keywords under 100 cha
 
 ## English (en-US) — primary
 
-- **Name:** Pulse — Phone Health Scanner
-- **Subtitle:** Honest device diagnostics
+- **Name:** Pulse — Phone Cleaner & Health
+- **Subtitle:** Real cleaning. Honest data.
 - **Promotional text:** Know your phone's health in seconds. Real iOS signals only — no fake battery cycles, no guessed metrics.
 - **Keywords:** phone health,battery health,storage cleaner,system monitor,performance scanner,phone diagnostic,device care,pulse,iphone health
 - **Description:**

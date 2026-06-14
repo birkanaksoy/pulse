@@ -56,21 +56,23 @@ struct PaywallView: View {
             Text("Unlock Pulse Pro")
                 .font(PulseFont.titleXL)
                 .foregroundStyle(PulseColor.textPrimary)
-            Text("Deeper diagnostics. Honest data.")
+            Text("Real cleaning. Honest diagnostics. No fake metrics.")
                 .font(PulseFont.body)
                 .foregroundStyle(PulseColor.textSecondary)
+                .multilineTextAlignment(.center)
         }
     }
 
     private var bullets: some View {
         VStack(alignment: .leading, spacing: PulseSpace.m) {
-            bullet("waveform", "Pro Insights — patterns from your real scans")
+            bullet("rectangle.stack.badge.minus", "Unlimited duplicate scanning")
+            bullet("trash", "Bulk delete with one tap")
+            bullet("waveform", "Pro Insights — patterns from your scans")
             bullet("thermometer.sun", "Thermal heatmap")
             bullet("chart.xyaxis.line", "Full scan history + iCloud sync")
             bullet("square.and.arrow.up", "Export your data as CSV")
-            bullet("rectangle.stack.badge.plus", "Home & Lock Screen widgets")
+            bullet("rectangle.stack.badge.plus", "Widgets + Watch complication")
             bullet("app.badge", "3 alternate app icons")
-            bullet("heart.text.square", "Support a tiny, honest app")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .pulseCard()

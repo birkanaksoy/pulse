@@ -8649,6 +8649,306 @@
           }
         }
       }
+    },
+    "Real deletion, real bytes freed. iOS confirms every batch.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek silme, gerçek kazanılan alan. iOS her toplu işlemi onaylatır."
+          }
+        }
+      }
+    },
+    "Freed all-time": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toplam kazanılan"
+          }
+        }
+      }
+    },
+    "Find duplicate photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen fotoğrafları bul"
+          }
+        }
+      }
+    },
+    "Visual fingerprinting, on-device. No upload.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görsel parmak izi, cihazda. Yükleme yok."
+          }
+        }
+      }
+    },
+    "Pulse opens the system delete dialog for every batch. Nothing is deleted without your tap.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse her toplu işlem için iOS silme dialogunu açar. Sen onaylamadan hiçbir şey silinmez."
+          }
+        }
+      }
+    },
+    "Pulse needs read+write access to actually clean. Enable it in Settings.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse'ın gerçekten temizlik yapabilmesi için okuma+yazma erişimi gerekir. Ayarlardan etkinleştir."
+          }
+        }
+      }
+    },
+    "Duplicates": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenenler"
+          }
+        }
+      }
+    },
+    "Duplicate photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen fotoğraflar"
+          }
+        }
+      }
+    },
+    "Visually similar images grouped together. The first photo of each group is suggested to keep.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Görsel olarak benzer fotoğraflar gruplandı. Her grupta ilk fotoğraf saklanması önerilir."
+          }
+        }
+      }
+    },
+    "Find duplicates": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenenleri bul"
+          }
+        }
+      }
+    },
+    "Pulse scans your library on-device with perceptual hashing. Nothing is uploaded.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse kitaplığını görsel parmak iziyle cihazında tarar. Hiçbir şey yüklenmez."
+          }
+        }
+      }
+    },
+    "Scan now": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şimdi tara"
+          }
+        }
+      }
+    },
+    "Potential savings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Olası kazanım"
+          }
+        }
+      }
+    },
+    "Duplicate group": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen grubu"
+          }
+        }
+      }
+    },
+    "Tap to toggle. iOS asks you to confirm before anything is deleted.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçmek için dokun. iOS silmeden önce her şeyi onaylatır."
+          }
+        }
+      }
+    },
+    "None": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hiçbiri"
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tümü"
+          }
+        }
+      }
+    },
+    "Tap delete to confirm.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Onaylamak için sil'e dokun."
+          }
+        }
+      }
+    },
+    "Delete": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sil"
+          }
+        }
+      }
+    },
+    "Deleting…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Siliniyor…"
+          }
+        }
+      }
+    },
+    "Deleted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silindi"
+          }
+        }
+      }
+    },
+    "OK": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamam"
+          }
+        }
+      }
+    },
+    "Clean up your photos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraflarını temizle"
+          }
+        }
+      }
+    },
+    "Duplicates, screenshots, large videos.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenenler, ekran görüntüleri, büyük videolar."
+          }
+        }
+      }
+    },
+    "Tap to clean more.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha fazla temizlemek için dokun."
+          }
+        }
+      }
+    },
+    "Real cleaning. Honest diagnostics. No fake metrics.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gerçek temizlik. Dürüst teşhis. Sahte metrik yok."
+          }
+        }
+      }
+    },
+    "Unlimited duplicate scanning": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sınırsız yinelenen tarama"
+          }
+        }
+      }
+    },
+    "Bulk delete with one tap": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek dokunuşta toplu silme"
+          }
+        }
+      }
+    },
+    "Pro Insights — patterns from your scans": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro İçgörüler — taramalarından desenler"
+          }
+        }
+      }
+    },
+    "Widgets + Watch complication": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Widget'lar + Watch complication"
+          }
+        }
+      }
     }
   },
   "version": "1.1"
