@@ -5,6 +5,9 @@ struct PhotoGridView: View {
     var assets: [PHAsset]
     var preselectedSkipFirst: Bool = false
     var title: LocalizedStringKey
+    /// Called after a successful delete with the bytes freed. Parents use this
+    /// to decide whether to remove the group/category from their list.
+    var onDelete: ((Int64) -> Void)? = nil
 
     @Environment(\.dismiss) private var dismiss
     @State private var selection: Set<String> = []
@@ -154,6 +157,7 @@ struct PhotoGridView: View {
         if result.success {
             resultBytes = result.freed
             selection.removeAll()
+            onDelete?(result.freed)
         }
     }
 }

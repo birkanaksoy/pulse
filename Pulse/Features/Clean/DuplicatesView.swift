@@ -35,11 +35,11 @@ struct DuplicatesView: View {
                 PhotoGridView(
                     assets: g.assets,
                     preselectedSkipFirst: true,
-                    title: "Duplicate group"
+                    title: "Duplicate group",
+                    onDelete: { _ in detector.consume(g) }
                 )
             }
             .pulseSheet()
-            .onDisappear { detector.consume(g) }
         }
     }
 

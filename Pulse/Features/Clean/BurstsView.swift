@@ -36,11 +36,11 @@ struct BurstsView: View {
                 PhotoGridView(
                     assets: g.assets,
                     preselectedSkipFirst: true,
-                    title: "Burst"
+                    title: "Burst",
+                    onDelete: { _ in detector.consume(g) }
                 )
             }
             .pulseSheet()
-            .onDisappear { detector.consume(g) }
         }
     }
 
