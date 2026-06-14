@@ -10,13 +10,20 @@ struct SectionHeader: View {
     }
 
     var body: some View {
-        HStack(spacing: PulseSpace.s) {
-            Capsule()
-                .fill(PulseColor.ringGradient)
-                .frame(width: 3, height: 18)
+        HStack(spacing: PulseSpace.m) {
+            ZStack {
+                Capsule()
+                    .fill(PulseColor.ringGradient)
+                    .frame(width: 4, height: 22)
+                Capsule()
+                    .fill(.white.opacity(0.35))
+                    .frame(width: 4, height: 10)
+                    .offset(y: -6)
+            }
             Text(title)
-                .font(PulseFont.titleM)
+                .font(.system(size: 22, weight: .bold, design: .default))
                 .foregroundStyle(PulseColor.textPrimary)
+                .kerning(-0.3)
             Spacer()
             if let trailing { trailing }
         }

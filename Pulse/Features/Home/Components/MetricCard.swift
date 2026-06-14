@@ -7,7 +7,6 @@ struct MetricCard: View {
     var status: String
     var statusColor: Color
     var isScanning: Bool = false
-    /// Optional 0..1 normalised values for a tiny background sparkline.
     var sparkline: [Double] = []
 
     var body: some View {
@@ -15,10 +14,10 @@ struct MetricCard: View {
             // Sparkline ghost behind the content
             if sparkline.count >= 2 {
                 MiniSparkline(values: sparkline, tint: statusColor)
-                    .frame(height: 36)
-                    .padding(.trailing, -6)
-                    .padding(.bottom, -2)
-                    .opacity(0.55)
+                    .frame(height: 42)
+                    .padding(.trailing, -8)
+                    .padding(.bottom, -4)
+                    .opacity(0.5)
                     .allowsHitTesting(false)
             }
 
@@ -26,28 +25,27 @@ struct MetricCard: View {
                 HStack(alignment: .top) {
                     iconChip
                     Spacer()
-                    Circle()
-                        .fill(statusColor)
-                        .frame(width: 8, height: 8)
-                        .shadow(color: statusColor.opacity(0.45), radius: 4)
+                    statusDot
                 }
                 Text(value)
-                    .font(.system(size: 26, weight: .semibold, design: .rounded))
+                    .font(.system(size: 28, weight: .semibold, design: .rounded))
                     .foregroundStyle(PulseColor.textPrimary)
                     .monospacedDigit()
+                    .kerning(-0.8)
                     .redacted(reason: isScanning ? .placeholder : [])
                 VStack(alignment: .leading, spacing: 2) {
                     Text(title)
-                        .font(PulseFont.callout)
+                        .font(.system(size: 15, weight: .medium))
                         .foregroundStyle(PulseColor.textSecondary)
                     Text(status)
-                        .font(PulseFont.footnote)
+                        .font(.system(size: 12, weight: .regular))
                         .foregroundStyle(PulseColor.textTertiary)
+                        .lineLimit(1)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .pulseCard()
+        .pulseCard(padding: PulseSpace.l)
         .overlay(
             RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous)
                 .stroke(PulseColor.blue500.opacity(isScanning ? 0.4 : 0), lineWidth: 1.5)
@@ -62,7 +60,7 @@ struct MetricCard: View {
         Image(systemName: icon)
             .font(.system(size: 16, weight: .semibold))
             .foregroundStyle(.white)
-            .frame(width: 36, height: 36)
+            .frame(width: 38, height: 38)
             .background(
                 LinearGradient(
                     colors: [PulseColor.blue500, PulseColor.blue300],
@@ -70,11 +68,25 @@ struct MetricCard: View {
                 ),
                 in: RoundedRectangle(cornerRadius: 12, style: .continuous)
             )
-            .shadow(color: PulseColor.blue500.opacity(0.35), radius: 8, y: 4)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(.white.opacity(0.25), lineWidth: 0.5)
+            )
+            .shadow(color: PulseColor.blue500.opacity(0.4), radius: 8, y: 4)
+    }
+
+    private var statusDot: some View {
+        Circle()
+            .fill(statusColor)
+            .frame(width: 10, height: 10)
+            .overlay(
+                Circle()
+                    .stroke(.white.opacity(0.4), lineWidth: 0.5)
+            )
+            .shadow(color: statusColor.opacity(0.6), radius: 5)
     }
 }
 
-/// Inline mini chart — 0..1 normalised values rendered as a small line.
 struct MiniSparkline: View {
     var values: [Double]
     var tint: Color
@@ -85,22 +97,40 @@ struct MiniSparkline: View {
             let h = geo.size.height
             let step = values.count > 1 ? w / CGFloat(values.count - 1) : 0
 
-            Path { p in
-                for (i, v) in values.enumerated() {
-                    let x = CGFloat(i) * step
-                    let y = h - (CGFloat(max(0, min(1, v))) * h)
-                    if i == 0 { p.move(to: .init(x: x, y: y)) }
-                    else      { p.addLine(to: .init(x: x, y: y)) }
+            ZStack {
+                // Filled area underneath
+                Path { p in
+                    p.move(to: .init(x: 0, y: h))
+                    for (i, v) in values.enumerated() {
+                        let x = CGFloat(i) * step
+                        let y = h - (CGFloat(max(0, min(1, v))) * h)
+                        p.addLine(to: .init(x: x, y: y))
+                    }
+                    p.addLine(to: .init(x: w, y: h))
+                    p.closeSubpath()
                 }
+                .fill(
+                    LinearGradient(
+                        colors: [tint.opacity(0.3), tint.opacity(0)],
+                        startPoint: .top, endPoint: .bottom
+                    )
+                )
+
+                // Line
+                Path { p in
+                    for (i, v) in values.enumerated() {
+                        let x = CGFloat(i) * step
+                        let y = h - (CGFloat(max(0, min(1, v))) * h)
+                        if i == 0 { p.move(to: .init(x: x, y: y)) }
+                        else      { p.addLine(to: .init(x: x, y: y)) }
+                    }
+                }
+                .stroke(
+                    LinearGradient(colors: [tint.opacity(0.7), tint],
+                                   startPoint: .leading, endPoint: .trailing),
+                    style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
+                )
             }
-            .stroke(
-                LinearGradient(
-                    colors: [tint.opacity(0.6), tint],
-                    startPoint: .leading,
-                    endPoint: .trailing
-                ),
-                style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round)
-            )
         }
     }
 }

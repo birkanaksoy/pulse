@@ -58,7 +58,6 @@ targets:
         buildPhase: resources
     dependencies:
       - target: PulseWidget
-      - target: PulseWatch
       - package: TelemetryDeck
         product: TelemetryDeck
     scheme:
@@ -109,53 +108,8 @@ targets:
         SWIFT_EMIT_LOC_STRINGS: YES
         LOCALIZATION_PREFERS_STRING_CATALOGS: YES
 
-  PulseWatch:
-    type: application
-    platform: watchOS
-    dependencies:
-      - target: PulseWatchWidget
-    sources:
-      - path: PulseWatch
-      - path: Pulse/Core/Persistence/TrendStore.swift
-    info:
-      path: PulseWatch/Info.plist
-      properties:
-        CFBundleDisplayName: Pulse
-        WKApplication: true
-        WKWatchOnly: false
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse.watchkitapp
-        TARGETED_DEVICE_FAMILY: "4"
-        WATCHOS_DEPLOYMENT_TARGET: "10.0"
-        GENERATE_INFOPLIST_FILE: NO
-        CODE_SIGN_ENTITLEMENTS: PulseWatch/PulseWatch.entitlements
-        CODE_SIGN_STYLE: Automatic
-        SWIFT_VERSION: "5.10"
-        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-
-  PulseWatchWidget:
-    type: app-extension
-    platform: watchOS
-    sources:
-      - path: PulseWatchWidget
-      - path: Pulse/Core/Persistence/TrendStore.swift
-    info:
-      path: PulseWatchWidget/Info.plist
-      properties:
-        CFBundleDisplayName: Pulse
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.widgetkit-extension
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse.watchkitapp.complication
-        TARGETED_DEVICE_FAMILY: "4"
-        WATCHOS_DEPLOYMENT_TARGET: "10.0"
-        GENERATE_INFOPLIST_FILE: NO
-        CODE_SIGN_ENTITLEMENTS: PulseWatchWidget/PulseWatchWidget.entitlements
-        CODE_SIGN_STYLE: Automatic
-        SWIFT_VERSION: "5.10"
-        SKIP_INSTALL: YES
+  # Watch targets temporarily disabled — re-enable when going to App Store
+  # by uncommenting and registering iCloud + bundle IDs in developer portal.
 
   PulseWidget:
     type: app-extension

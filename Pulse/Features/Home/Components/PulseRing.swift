@@ -7,70 +7,113 @@ struct PulseRing: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var animatedScore: Double = 0
-    @State private var breathing: Bool = false
+    @State private var breathing = false
     @State private var scanRotation: Double = 0
+    @State private var sparkleAngle: Double = 0
 
     var body: some View {
         let status = PulseStatus(score: score)
         let progress = animatedScore / 100.0
 
         ZStack {
-            // Outer ambient glow tinted by status.
+            // Outer halo — wide, soft, status-tinted
             Circle()
-                .fill(status.color.opacity(0.12))
-                .blur(radius: 40)
-                .scaleEffect(breathing ? 1.08 : 1.0)
+                .fill(
+                    RadialGradient(
+                        colors: [status.color.opacity(0.30), status.color.opacity(0)],
+                        center: .center,
+                        startRadius: size * 0.25,
+                        endRadius: size * 0.65
+                    )
+                )
+                .blur(radius: 24)
+                .scaleEffect(breathing ? 1.10 : 1.0)
 
-            // Background track — fine, low contrast.
+            // Subtle outer ring of dots for premium texture
+            ForEach(0..<48, id: \.self) { i in
+                Circle()
+                    .fill(status.color.opacity(0.10))
+                    .frame(width: 3, height: 3)
+                    .offset(y: -size / 2 + 4)
+                    .rotationEffect(.degrees(Double(i) * 7.5))
+            }
+            .opacity(breathing ? 0.7 : 0.4)
+
+            // Track
             Circle()
                 .stroke(PulseColor.stroke, lineWidth: 6)
                 .padding(20)
 
-            // Mid-ring shadow tray so progress pops.
+            // Inner shadow tray
             Circle()
-                .stroke(PulseColor.stroke.opacity(0.55), lineWidth: 18)
+                .stroke(PulseColor.strokeStrong.opacity(0.55), lineWidth: 20)
                 .padding(8)
 
-            // Score progress — the hero.
+            // Progress arc — status gradient
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    progressGradient(for: status),
-                    style: StrokeStyle(lineWidth: 18, lineCap: .round)
+                    status.gradient,
+                    style: StrokeStyle(lineWidth: 20, lineCap: .round)
                 )
                 .padding(8)
                 .rotationEffect(.degrees(-90))
-                .shadow(color: status.color.opacity(0.35), radius: 16, y: 6)
+                .shadow(color: status.color.opacity(0.40), radius: 14, y: 6)
 
-            // Scanning sweep — overlays a rotating dot at the head.
+            // Sparkle dot at progress head
+            if progress > 0 {
+                Circle()
+                    .fill(.white)
+                    .frame(width: 14, height: 14)
+                    .overlay(Circle().stroke(status.color, lineWidth: 3))
+                    .offset(y: -(size / 2 - 18))
+                    .rotationEffect(.degrees(progress * 360))
+                    .shadow(color: status.color.opacity(0.6), radius: 6)
+                    .opacity(isScanning ? 0 : 1)
+            }
+
+            // Scanning sweep
             if isScanning && !reduceMotion {
                 Circle()
                     .trim(from: 0, to: 0.001)
-                    .stroke(.white, style: StrokeStyle(lineWidth: 18, lineCap: .round))
+                    .stroke(.white, style: StrokeStyle(lineWidth: 20, lineCap: .round))
                     .padding(8)
                     .rotationEffect(.degrees(scanRotation - 90))
                     .opacity(0.9)
                     .shadow(color: .white.opacity(0.5), radius: 8)
             }
 
-            // Centre stack — number, label, status pill.
-            VStack(spacing: 6) {
+            // Centre stack
+            VStack(spacing: 4) {
                 Text("\(Int(animatedScore))")
-                    .font(.system(size: 76, weight: .semibold, design: .rounded))
+                    .font(.system(size: 84, weight: .semibold, design: .rounded))
                     .foregroundStyle(
                         LinearGradient(
-                            colors: [PulseColor.textPrimary, PulseColor.textPrimary.opacity(0.78)],
+                            colors: [PulseColor.textPrimary, PulseColor.textPrimary.opacity(0.7)],
                             startPoint: .top, endPoint: .bottom
                         )
                     )
                     .contentTransition(.numericText(value: animatedScore))
                     .monospacedDigit()
+                    .kerning(-2)
                 Text("PULSE")
-                    .font(.system(size: 11, weight: .semibold))
-                    .tracking(2.5)
+                    .font(.system(size: 11, weight: .bold))
+                    .tracking(3)
                     .foregroundStyle(PulseColor.textTertiary)
-                statusPill(status)
-                    .padding(.top, 4)
+                Text(status.label)
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(status.color)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 5)
+                    .background(
+                        Capsule()
+                            .fill(status.color.opacity(0.14))
+                    )
+                    .overlay(
+                        Capsule()
+                            .strokeBorder(status.color.opacity(0.28), lineWidth: 0.5)
+                    )
+                    .padding(.top, 6)
             }
         }
         .frame(width: size, height: size)
@@ -83,48 +126,13 @@ struct PulseRing: View {
         .onChange(of: isScanning) { _, scanning in updateScanningState(scanning) }
     }
 
-    // MARK: - Sub-views
-
-    private func statusPill(_ status: PulseStatus) -> some View {
-        Text(status.label)
-            .font(.system(size: 13, weight: .semibold))
-            .foregroundStyle(status.color)
-            .padding(.horizontal, 12)
-            .padding(.vertical, 5)
-            .background(
-                Capsule().fill(status.color.opacity(0.12))
-            )
-            .overlay(
-                Capsule().strokeBorder(status.color.opacity(0.25), lineWidth: 1)
-            )
-    }
-
-    // MARK: - Status-tinted gradient
-
-    private func progressGradient(for status: PulseStatus) -> AngularGradient {
-        let colors: [Color] = {
-            switch status {
-            case .excellent: return [PulseColor.blue500, PulseColor.blue300, PulseColor.excellent]
-            case .good:      return [PulseColor.blue500, PulseColor.blue300]
-            case .fair:      return [PulseColor.blue500, PulseColor.fair]
-            case .critical:  return [PulseColor.critical, PulseColor.fair]
-            }
-        }()
-        return AngularGradient(
-            colors: colors,
-            center: .center,
-            startAngle: .degrees(-90),
-            endAngle: .degrees(270)
-        )
-    }
-
     // MARK: - Animation
 
     private func startAnimations(score: Int) {
         if reduceMotion {
             animatedScore = Double(score)
         } else {
-            withAnimation(.spring(response: 1.0, dampingFraction: 0.78)) {
+            withAnimation(.spring(response: 1.1, dampingFraction: 0.78)) {
                 animatedScore = Double(score)
             }
             withAnimation(.easeInOut(duration: 2.4).repeatForever(autoreverses: true)) {
@@ -138,7 +146,7 @@ struct PulseRing: View {
         if reduceMotion {
             animatedScore = Double(new)
         } else {
-            withAnimation(.spring(response: 1.0, dampingFraction: 0.78)) {
+            withAnimation(.spring(response: 1.1, dampingFraction: 0.78)) {
                 animatedScore = Double(new)
             }
         }
@@ -163,7 +171,7 @@ struct PulseRing: View {
 #Preview {
     VStack(spacing: 40) {
         PulseRing(score: 92)
-        PulseRing(score: 35, isScanning: true)
+        PulseRing(score: 35, isScanning: true, size: 200)
     }
     .padding()
     .background(PulseColor.muted)

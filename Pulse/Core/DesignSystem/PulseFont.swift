@@ -29,19 +29,53 @@ enum PulseSpace {
 }
 
 struct PulseCardStyle: ViewModifier {
+    var elevated: Bool = false
+    var padding: CGFloat = PulseSpace.xl
+
     func body(content: Content) -> some View {
         content
-            .padding(PulseSpace.xl)
-            .background(PulseColor.card, in: RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous))
+            .padding(padding)
+            .background(
+                RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous)
+                    .fill(elevated ? PulseColor.cardElevated : PulseColor.card)
+            )
             .overlay(
                 RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous)
-                    .strokeBorder(PulseColor.stroke, lineWidth: 1)
+                    .strokeBorder(PulseColor.stroke, lineWidth: 0.6)
             )
-            .shadow(color: Color.black.opacity(0.04), radius: 2, x: 0, y: 1)
-            .shadow(color: Color.black.opacity(0.06), radius: 24, x: 0, y: 8)
+            .shadow(color: Color.black.opacity(elevated ? 0.06 : 0.03), radius: 1, x: 0, y: 1)
+            .shadow(color: Color.black.opacity(elevated ? 0.10 : 0.05), radius: 18, x: 0, y: 10)
+    }
+}
+
+struct PulseGlassCardStyle: ViewModifier {
+    var padding: CGFloat = PulseSpace.xl
+
+    func body(content: Content) -> some View {
+        content
+            .padding(padding)
+            .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous)
+                    .strokeBorder(
+                        LinearGradient(
+                            colors: [.white.opacity(0.35), .white.opacity(0.06)],
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        ),
+                        lineWidth: 0.5
+                    )
+            )
+            .shadow(color: Color.black.opacity(0.08), radius: 24, y: 12)
     }
 }
 
 extension View {
-    func pulseCard() -> some View { modifier(PulseCardStyle()) }
+    func pulseCard(elevated: Bool = false, padding: CGFloat = PulseSpace.xl) -> some View {
+        modifier(PulseCardStyle(elevated: elevated, padding: padding))
+    }
+
+    func pulseGlassCard(padding: CGFloat = PulseSpace.xl) -> some View {
+        modifier(PulseGlassCardStyle(padding: padding))
+    }
 }

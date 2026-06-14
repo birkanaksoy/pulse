@@ -25,22 +25,33 @@ struct CustomTabBar: View {
             }
         }
         .padding(.horizontal, 6)
-        .frame(height: 56)
+        .frame(height: 58)
         .background(
-            Capsule(style: .continuous)
-                .fill(.ultraThinMaterial)
-                .overlay(
-                    Capsule().strokeBorder(
+            ZStack {
+                Capsule(style: .continuous)
+                    .fill(.ultraThinMaterial)
+                Capsule(style: .continuous)
+                    .fill(
                         LinearGradient(
-                            colors: [.white.opacity(0.4), .white.opacity(0.08)],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        ),
-                        lineWidth: 0.5
+                            colors: [.white.opacity(0.12), .white.opacity(0.0)],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
                     )
-                )
+                    .blendMode(.overlay)
+            }
         )
-        .shadow(color: .black.opacity(0.14), radius: 18, y: 8)
+        .overlay(
+            Capsule().strokeBorder(
+                LinearGradient(
+                    colors: [.white.opacity(0.45), .white.opacity(0.10)],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                ),
+                lineWidth: 0.6
+            )
+        )
+        .shadow(color: .black.opacity(0.18), radius: 22, y: 12)
         .padding(.horizontal, 20)
         .padding(.bottom, 8)
     }
@@ -55,7 +66,7 @@ struct CustomTabBar: View {
             if reduceMotion {
                 selection = item.id
             } else {
-                withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
+                withAnimation(.spring(response: 0.34, dampingFraction: 0.78)) {
                     selection = item.id
                 }
             }
@@ -69,7 +80,6 @@ struct CustomTabBar: View {
                         .font(.system(size: 13, weight: .semibold))
                         .lineLimit(1)
                         .fixedSize(horizontal: true, vertical: false)
-                        .truncationMode(.tail)
                         .transition(
                             .asymmetric(
                                 insertion: .scale(scale: 0.6).combined(with: .opacity),
@@ -78,16 +88,17 @@ struct CustomTabBar: View {
                         )
                 }
             }
-            .foregroundStyle(active ? PulseColor.blue500 : PulseColor.textTertiary)
-            .padding(.horizontal, active ? 14 : 6)
-            .frame(height: 40)
-            .frame(minWidth: active ? nil : 44, maxWidth: active ? nil : .infinity)
+            .foregroundStyle(active ? Color.white : PulseColor.textTertiary)
+            .padding(.horizontal, active ? 16 : 6)
+            .frame(height: 42)
+            .frame(minWidth: active ? nil : 46, maxWidth: active ? nil : .infinity)
             .background(
                 ZStack {
                     if active {
                         Capsule(style: .continuous)
-                            .fill(PulseColor.blue500.opacity(0.12))
+                            .fill(PulseColor.ringGradient)
                             .matchedGeometryEffect(id: "tabHighlight", in: ns)
+                            .shadow(color: PulseColor.blue500.opacity(0.45), radius: 8, y: 4)
                     }
                 }
             )
