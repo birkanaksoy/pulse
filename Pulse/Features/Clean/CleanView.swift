@@ -8,7 +8,6 @@ struct CleanView: View {
     @State private var showingBursts = false
     @State private var showingLargeVideos = false
     @State private var showingLivePhotos = false
-    @State private var showingMagicCleanup = false
 
     var body: some View {
         ZStack {
@@ -25,7 +24,6 @@ struct CleanView: View {
                     } else if scanner.categories.isEmpty {
                         notStartedState
                     } else {
-                        magicCleanupHero
                         bytesFreedBanner
                         smartCleaners
                         categoryList
@@ -55,9 +53,6 @@ struct CleanView: View {
         .sheet(isPresented: $showingLivePhotos) {
             NavigationStack { LivePhotosView() }.pulseSheet()
         }
-        .sheet(isPresented: $showingMagicCleanup) {
-            NavigationStack { MagicCleanupView() }.pulseSheet()
-        }
         .task {
             if scanner.categories.isEmpty { await scanner.scan() }
         }
@@ -77,52 +72,6 @@ struct CleanView: View {
                 .font(PulseFont.body)
                 .foregroundStyle(PulseColor.textSecondary)
         }
-    }
-
-    private var magicCleanupHero: some View {
-        Button {
-            Haptics.tap()
-            showingMagicCleanup = true
-        } label: {
-            ZStack {
-                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                    .fill(
-                        LinearGradient(
-                            colors: [PulseColor.blue500, PulseColor.purple, PulseColor.teal],
-                            startPoint: .topLeading,
-                            endPoint: .bottomTrailing
-                        )
-                    )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .strokeBorder(.white.opacity(0.25), lineWidth: 0.5)
-                    )
-
-                HStack(spacing: PulseSpace.l) {
-                    ZStack {
-                        Circle().fill(.white.opacity(0.18)).frame(width: 56, height: 56)
-                        Image(systemName: "wand.and.stars")
-                            .font(.system(size: 26, weight: .semibold))
-                            .foregroundStyle(.white)
-                    }
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text("Magic Cleanup")
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundStyle(.white)
-                        Text("One tap. We find everything safe to delete.")
-                            .font(PulseFont.callout)
-                            .foregroundStyle(.white.opacity(0.85))
-                    }
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .font(.system(size: 14, weight: .bold))
-                        .foregroundStyle(.white.opacity(0.85))
-                }
-                .padding(PulseSpace.xl)
-            }
-            .shadow(color: PulseColor.blue500.opacity(0.4), radius: 22, y: 12)
-        }
-        .buttonStyle(.card)
     }
 
     private var bytesFreedBanner: some View {

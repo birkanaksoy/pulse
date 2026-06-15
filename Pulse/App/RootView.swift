@@ -2,20 +2,18 @@ import SwiftUI
 
 struct RootView: View {
     @State private var selection: Tab = .home
-    /// Owned at root so state survives tab switches.
     @State private var engine = ScanEngine()
     @State private var cleanScanner = CleanScanner()
     @Environment(DeepLinkRouter.self) private var router
     @Environment(\.modelContext) private var context
 
-    enum Tab: Hashable { case home, clean, health, settings }
+    enum Tab: Hashable { case home, health, settings }
 
     var body: some View {
         ZStack(alignment: .bottom) {
             Group {
                 switch selection {
-                case .home:     HomeView(engine: engine)
-                case .clean:    CleanView(scanner: cleanScanner)
+                case .home:     HomeView(engine: engine, scanner: cleanScanner)
                 case .health:   HealthView()
                 case .settings: SettingsView()
                 }
@@ -53,15 +51,14 @@ struct RootView: View {
                         score: r.pulseScore,
                         status: PulseStatus(score: r.pulseScore).label,
                         timestamp: r.timestamp,
-                        isPro: false  // Pro flag tracked elsewhere
+                        isPro: false
                     ))
                 }
             }
         case .openHealth:   selection = .health
-        case .openClean:    selection = .clean
+        case .openClean:    selection = .home  // Clean is now a sheet on Home
         case .openSettings: selection = .settings
         case .openPaywall:
-            // Paywall is a sheet, not a tab. Show it from Settings for now.
             selection = .settings
         }
         router.pendingIntent = nil

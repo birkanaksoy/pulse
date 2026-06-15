@@ -480,6 +480,16 @@
         }
       }
     },
+    "Across %lld items.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld öğeden."
+          }
+        }
+      }
+    },
     "Across %lld scans, you average %lld. Best: %lld. Worst: %lld.": {
       "localizations": {
         "tr": {
@@ -558,6 +568,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tüm veri silindi"
+          }
+        }
+      }
+    },
+    "All done": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tamamlandı"
           }
         }
       }
@@ -1189,6 +1209,16 @@
         }
       }
     },
+    "Big videos": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük videolar"
+          }
+        }
+      }
+    },
     "Built like a doctor for your phone": {
       "extractionState": "stale",
       "localizations": {
@@ -1293,6 +1323,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Patlama"
+          }
+        }
+      }
+    },
+    "Burst extras": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama fazlalıkları"
           }
         }
       }
@@ -1535,6 +1575,16 @@
         }
       }
     },
+    "Clean it all": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hepsini temizle"
+          }
+        }
+      }
+    },
     "Clean up your photos": {
       "localizations": {
         "tr": {
@@ -1715,6 +1765,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Çevrildi"
+          }
+        }
+      }
+    },
+    "Converting Live Photos…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Fotoğraflar dönüştürülüyor…"
           }
         }
       }
@@ -2041,6 +2101,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Siliniyor…"
+          }
+        }
+      }
+    },
+    "Detecting Live Photos…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Canlı Fotoğraflar belirleniyor…"
           }
         }
       }
@@ -2500,6 +2570,16 @@
         }
       }
     },
+    "Every byte counts.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her bayt değerlidir."
+          }
+        }
+      }
+    },
     "Every number you see is read from iOS itself. We never guess, never round up, and never invent metrics to look impressive.": {
       "localizations": {
         "tr": {
@@ -2735,6 +2815,16 @@
         }
       }
     },
+    "Finding big videos…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük videolar bulunuyor…"
+          }
+        }
+      }
+    },
     "First scan": {
       "localizations": {
         "tr": {
@@ -2774,6 +2864,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Yer aç"
+          }
+        }
+      }
+    },
+    "freed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kazanıldı"
+          }
+        }
+      }
+    },
+    "Freed": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kazanıldı"
           }
         }
       }
@@ -3018,6 +3128,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Anladım"
+          }
+        }
+      }
+    },
+    "Grouping bursts…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama çekimleri gruplanıyor…"
           }
         }
       }
@@ -3775,6 +3895,16 @@
         }
       }
     },
+    "iOS will ask you to confirm each batch. Nothing is deleted without your tap.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS her toplu işlemi onaylatır. Sen onaylamadan hiçbir şey silinmez."
+          }
+        }
+      }
+    },
     "Is my storage too full?": {
       "extractionState": "stale",
       "localizations": {
@@ -4057,6 +4187,16 @@
         }
       }
     },
+    "Live Photos to convert": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dönüştürülecek Canlı Fotoğraflar"
+          }
+        }
+      }
+    },
     "Locked, %lld%%": {
       "comment": "A label that describes the progress of unlocking an achievement.",
       "isCommentAutoGenerated": true
@@ -4068,6 +4208,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Uzun kamera, AR veya video kullanımı"
+          }
+        }
+      }
+    },
+    "Looking for duplicates…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenenler aranıyor…"
           }
         }
       }
@@ -4176,6 +4326,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Güç Tasarrufu kullanımı"
+          }
+        }
+      }
+    },
+    "Magic Cleanup": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sihirli Temizlik"
           }
         }
       }
@@ -4424,6 +4584,16 @@
         }
       }
     },
+    "No duplicates, no bursts, no oversized videos. Nice.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenen yok, fazla patlama yok, büyük video yok. Aferin."
+          }
+        }
+      }
+    },
     "No file deletion": {
       "localizations": {
         "tr": {
@@ -4659,6 +4829,16 @@
         }
       }
     },
+    "Nothing to delete. You're already running clean.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Silinecek bir şey yok. Zaten temizsin."
+          }
+        }
+      }
+    },
     "Notifications": {
       "localizations": {
         "tr": {
@@ -4870,6 +5050,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gerçek iOS sinyallerinden tek skor."
+          }
+        }
+      }
+    },
+    "One tap. We find everything safe to delete.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek dokunuş. Güvenli silinebilecek her şeyi buluruz."
           }
         }
       }
@@ -6199,6 +6389,36 @@
         }
       }
     },
+    "Removing big videos…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Büyük videolar siliniyor…"
+          }
+        }
+      }
+    },
+    "Removing duplicates…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yinelenenler siliniyor…"
+          }
+        }
+      }
+    },
+    "Removing extra burst shots…": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Patlama fazlalıkları siliniyor…"
+          }
+        }
+      }
+    },
     "Reported directly by iOS — these numbers are real.": {
       "comment": "A description of the storage usage numbers.",
       "isCommentAutoGenerated": true,
@@ -6534,7 +6754,6 @@
     },
     "Scanning your library…": {
       "comment": "A description of the scanning process.",
-      "extractionState": "stale",
       "isCommentAutoGenerated": true,
       "localizations": {
         "tr": {
@@ -7194,6 +7413,17 @@
         }
       }
     },
+    "Starting…": {
+      "extractionState": "stale",
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Başlatılıyor…"
+          }
+        }
+      }
+    },
     "State": {
       "extractionState": "stale",
       "localizations": {
@@ -7736,6 +7966,26 @@
         }
       }
     },
+    "That's about 250 photos worth. Your phone thanks you.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yaklaşık 250 fotoğraf kadar. Telefonun sana teşekkür ediyor."
+          }
+        }
+      }
+    },
+    "That's roughly 1,200 photos of breathing room. Nice work.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu yaklaşık 1.200 fotoğraflık nefes alanı. Harikasın."
+          }
+        }
+      }
+    },
     "The Pulse Score (0–100)": {
       "localizations": {
         "tr": {
@@ -7845,6 +8095,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "3 günlük seri"
+          }
+        }
+      }
+    },
+    "Tidy. Your phone has a little more room to think.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenli. Telefonun düşünmek için biraz daha alan kazandı."
           }
         }
       }
@@ -8790,6 +9050,16 @@
         }
       }
     },
+    "We can free up": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şu kadar yer açabiliriz"
+          }
+        }
+      }
+    },
     "We may update these terms. Material changes are announced in the app before they take effect.": {
       "localizations": {
         "tr": {
@@ -9088,6 +9358,16 @@
         }
       }
     },
+    "You're already clean ✨": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaten tertemizsin ✨"
+          }
+        }
+      }
+    },
     "You're at %lld%% used. iOS may start refusing updates above 95%%.": {
       "localizations": {
         "tr": {
@@ -9296,282 +9576,32 @@
         }
       }
     },
-    "Magic Cleanup": {
+    "Now": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sihirli Temizlik"
+            "value": "Şimdi"
           }
         }
       }
     },
-    "One tap. We find everything safe to delete.": {
+    "Manual cleanup options": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tek dokunuş. Güvenli silinebilecek her şeyi buluruz."
+            "value": "Manuel temizlik seçenekleri"
           }
         }
       }
     },
-    "Looking for duplicates…": {
+    "Freed %@ so far. Tap to clean more.": {
       "localizations": {
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yinelenenler aranıyor…"
-          }
-        }
-      }
-    },
-    "Grouping bursts…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Patlama çekimleri gruplanıyor…"
-          }
-        }
-      }
-    },
-    "Finding big videos…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük videolar bulunuyor…"
-          }
-        }
-      }
-    },
-    "Detecting Live Photos…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Canlı Fotoğraflar belirleniyor…"
-          }
-        }
-      }
-    },
-    "Removing duplicates…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yinelenenler siliniyor…"
-          }
-        }
-      }
-    },
-    "Removing extra burst shots…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Patlama fazlalıkları siliniyor…"
-          }
-        }
-      }
-    },
-    "Removing big videos…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük videolar siliniyor…"
-          }
-        }
-      }
-    },
-    "Converting Live Photos…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Canlı Fotoğraflar dönüştürülüyor…"
-          }
-        }
-      }
-    },
-    "We can free up": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Şu kadar yer açabiliriz"
-          }
-        }
-      }
-    },
-    "Across %lld items.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%lld öğeden."
-          }
-        }
-      }
-    },
-    "You're already clean ✨": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zaten tertemizsin ✨"
-          }
-        }
-      }
-    },
-    "No duplicates, no bursts, no oversized videos. Nice.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yinelenen yok, fazla patlama yok, büyük video yok. Aferin."
-          }
-        }
-      }
-    },
-    "Clean it all": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hepsini temizle"
-          }
-        }
-      }
-    },
-    "iOS will ask you to confirm each batch. Nothing is deleted without your tap.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "iOS her toplu işlemi onaylatır. Sen onaylamadan hiçbir şey silinmez."
-          }
-        }
-      }
-    },
-    "Burst extras": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Patlama fazlalıkları"
-          }
-        }
-      }
-    },
-    "Big videos": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Büyük videolar"
-          }
-        }
-      }
-    },
-    "Live Photos to convert": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dönüştürülecek Canlı Fotoğraflar"
-          }
-        }
-      }
-    },
-    "freed": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "kazanıldı"
-          }
-        }
-      }
-    },
-    "Freed": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kazanıldı"
-          }
-        }
-      }
-    },
-    "All done": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tamamlandı"
-          }
-        }
-      }
-    },
-    "Starting…": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Başlatılıyor…"
-          }
-        }
-      }
-    },
-    "That's roughly 1,200 photos of breathing room. Nice work.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bu yaklaşık 1.200 fotoğraflık nefes alanı. Harikasın."
-          }
-        }
-      }
-    },
-    "That's about 250 photos worth. Your phone thanks you.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yaklaşık 250 fotoğraf kadar. Telefonun sana teşekkür ediyor."
-          }
-        }
-      }
-    },
-    "Tidy. Your phone has a little more room to think.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Düzenli. Telefonun düşünmek için biraz daha alan kazandı."
-          }
-        }
-      }
-    },
-    "Every byte counts.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Her bayt değerlidir."
-          }
-        }
-      }
-    },
-    "Nothing to delete. You're already running clean.": {
-      "localizations": {
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Silinecek bir şey yok. Zaten temizsin."
+            "value": "Şimdiye kadar %@ kazandın. Daha fazlası için dokun."
           }
         }
       }

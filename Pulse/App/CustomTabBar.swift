@@ -12,8 +12,7 @@ struct CustomTabBar: View {
     }
 
     private let items: [Item] = [
-        .init(id: .home,     icon: "waveform.path.ecg", label: "Home"),
-        .init(id: .clean,    icon: "sparkles",          label: "Clean"),
+        .init(id: .home,     icon: "waveform.path.ecg", label: "Now"),
         .init(id: .health,   icon: "chart.xyaxis.line", label: "Health"),
         .init(id: .settings, icon: "gearshape",         label: "Settings"),
     ]
