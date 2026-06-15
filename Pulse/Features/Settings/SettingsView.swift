@@ -13,6 +13,8 @@ struct SettingsView: View {
     @State private var showingHowItWorks = false
     @State private var showingAchievements = false
     @State private var showingSmartAlerts = false
+    @State private var showingReplayConfirm = false
+    @AppStorage("pulse.didOnboard") private var didOnboard = false
     @State private var pendingDeletion: [ScanRecord] = []
     @State private var showingUndo = false
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
@@ -82,6 +84,8 @@ struct SettingsView: View {
                 section("About") {
                     row("Version", trailing: "0.1.0")
                     Divider().background(PulseColor.stroke)
+                    button("Replay tutorial") { showingReplayConfirm = true }
+                    Divider().background(PulseColor.stroke)
                     button("How it works") { showingHowItWorks = true }
                     Divider().background(PulseColor.stroke)
                     button("Privacy Policy") { showingPrivacy = true }
@@ -121,6 +125,19 @@ struct SettingsView: View {
         .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() }.pulseSheet() }
         .sheet(isPresented: $showingAchievements) { NavigationStack { AchievementsView() }.pulseSheet() }
         .sheet(isPresented: $showingSmartAlerts) { NavigationStack { SmartAlertsView() }.pulseSheet() }
+        .confirmationDialog(
+            "Replay the tutorial?",
+            isPresented: $showingReplayConfirm,
+            titleVisibility: .visible
+        ) {
+            Button("Replay") {
+                Haptics.tap()
+                didOnboard = false
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("You'll see the welcome and permission screens again. Your data stays where it is.")
+        }
         .confirmationDialog(
             "Delete all Pulse data?",
             isPresented: $showingDeleteConfirm,
