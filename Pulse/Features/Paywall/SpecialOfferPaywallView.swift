@@ -79,13 +79,7 @@ struct SpecialOfferPaywallView: View {
                     .rotationEffect(.degrees(-90))
                     .frame(width: 200, height: 200)
                     .animation(.easeInOut(duration: 0.5), value: prepareProgress)
-                Image(systemName: "sparkles")
-                    .font(.system(size: 56, weight: .light))
-                    .foregroundStyle(
-                        LinearGradient(colors: [PulseColor.blue500, PulseColor.teal],
-                                       startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
-                    .symbolEffect(.variableColor.iterative, options: .repeating)
+                PulseLogo(size: 120, shadow: true)
             }
             VStack(spacing: 6) {
                 Text("Preparing your best offer")

@@ -51,7 +51,8 @@ struct OnboardingView: View {
         ParallaxPage(page: page, index: 0) {
             VStack(spacing: PulseSpace.xl) {
                 Spacer()
-                glyph(systemName: "waveform.path.ecg")
+                PulseLogo(size: 140)
+                    .shadow(color: PulseColor.blue500.opacity(0.25), radius: 30, y: 12)
                 VStack(spacing: PulseSpace.s) {
                     Text("Know your phone's\nhealth in seconds.")
                         .font(PulseFont.titleXL)
