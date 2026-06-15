@@ -9755,6 +9755,176 @@
           }
         }
       }
+    },
+    "About your phone": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonun hakkında"
+          }
+        }
+      }
+    },
+    "Quick — and skippable. Helps us tailor suggestions.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hızlı — ve atlanabilir. Önerileri sana göre ayarlamamıza yardımcı olur."
+          }
+        }
+      }
+    },
+    "How long have you had it?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ne kadar süredir kullanıyorsun?"
+          }
+        }
+      }
+    },
+    "Less than 6 months": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 aydan kısa"
+          }
+        }
+      }
+    },
+    "6–12 months": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6–12 ay"
+          }
+        }
+      }
+    },
+    "1–2 years": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1–2 yıl"
+          }
+        }
+      }
+    },
+    "2–3 years": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2–3 yıl"
+          }
+        }
+      }
+    },
+    "3+ years": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3+ yıl"
+          }
+        }
+      }
+    },
+    "About you": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senin hakkında"
+          }
+        }
+      }
+    },
+    "Still skippable — these just shape your first scan's tone.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hâlâ atlanabilir — bunlar yalnızca ilk taramanın tonunu belirler."
+          }
+        }
+      }
+    },
+    "How often do you clean your phone?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefonunu ne sıklıkla temizliyorsun?"
+          }
+        }
+      }
+    },
+    "Never — I just let it pile up": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Asla — birikmesine izin veririm"
+          }
+        }
+      }
+    },
+    "Sometimes — every few months": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ara sıra — birkaç ayda bir"
+          }
+        }
+      }
+    },
+    "Regularly — I like a clean phone": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Düzenli — temiz telefon severim"
+          }
+        }
+      }
+    },
+    "Skip this": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bunu atla"
+          }
+        }
+      }
+    },
+    "Granted": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin verildi"
+          }
+        }
+      }
+    },
+    "Not granted — you can enable later in Settings": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İzin verilmedi — sonra Ayarlar'dan açabilirsin"
+          }
+        }
+      }
     }
   },
   "version": "1.1"

@@ -23,11 +23,47 @@ enum UserConcern: String, CaseIterable, Identifiable, Codable {
     }
 }
 
+enum OwnershipAge: String, CaseIterable, Identifiable, Codable {
+    case lessThan6Months, sixToTwelveMonths, oneToTwoYears, twoToThreeYears, threePlusYears
+    var id: String { rawValue }
+    var label: String {
+        switch self {
+        case .lessThan6Months:   return String(localized: "Less than 6 months")
+        case .sixToTwelveMonths: return String(localized: "6–12 months")
+        case .oneToTwoYears:     return String(localized: "1–2 years")
+        case .twoToThreeYears:   return String(localized: "2–3 years")
+        case .threePlusYears:    return String(localized: "3+ years")
+        }
+    }
+}
+
+enum CleaningHabit: String, CaseIterable, Identifiable, Codable {
+    case never, sometimes, regular
+    var id: String { rawValue }
+
+    var emoji: String {
+        switch self {
+        case .never:     return "📥"
+        case .sometimes: return "🧽"
+        case .regular:   return "✨"
+        }
+    }
+    var label: String {
+        switch self {
+        case .never:     return String(localized: "Never — I just let it pile up")
+        case .sometimes: return String(localized: "Sometimes — every few months")
+        case .regular:   return String(localized: "Regularly — I like a clean phone")
+        }
+    }
+}
+
 /// Persisted on first launch. Anonymous, never leaves the device.
 struct UserProfile: Codable, Equatable {
-    var detectedModel: String   // e.g. "iPhone 15 Pro"
-    var selectedModel: String   // user can override
+    var detectedModel: String
+    var selectedModel: String?
+    var ownershipAge: OwnershipAge?
     var concern: UserConcern?
+    var cleaningHabit: CleaningHabit?
 }
 
 @MainActor
@@ -48,11 +84,9 @@ enum UserProfileStore {
     }
 }
 
-/// Maps Apple's machine identifier ("iPhone17,2") to a marketing name.
 enum DeviceModel {
     static var displayName: String {
-        let id = identifier
-        return mapping[id] ?? "iPhone"
+        mapping[identifier] ?? "iPhone"
     }
 
     static var identifier: String {
@@ -65,8 +99,6 @@ enum DeviceModel {
         }
     }
 
-    /// Common picker list — keeps onboarding short. User can pick "Other" if
-    /// they're on something old/unusual.
     static let pickerList: [String] = [
         "iPhone 17 Pro", "iPhone 17",
         "iPhone 16 Pro", "iPhone 16",
@@ -76,32 +108,26 @@ enum DeviceModel {
     ]
 
     private static let mapping: [String: String] = [
-        // iPhone 17 family (Sept 2025)
         "iPhone18,3": "iPhone 17 Pro Max",
         "iPhone18,2": "iPhone 17 Pro",
         "iPhone18,1": "iPhone 17",
-        // iPhone 16 family
         "iPhone17,1": "iPhone 16 Pro Max",
         "iPhone17,2": "iPhone 16 Pro",
         "iPhone17,3": "iPhone 16 Plus",
         "iPhone17,4": "iPhone 16",
         "iPhone17,5": "iPhone 16e",
-        // iPhone 15 family
         "iPhone16,1": "iPhone 15 Pro",
         "iPhone16,2": "iPhone 15 Pro Max",
         "iPhone15,4": "iPhone 15",
         "iPhone15,5": "iPhone 15 Plus",
-        // iPhone 14 family
         "iPhone15,2": "iPhone 14 Pro",
         "iPhone15,3": "iPhone 14 Pro Max",
         "iPhone14,7": "iPhone 14",
         "iPhone14,8": "iPhone 14 Plus",
-        // iPhone 13 family
         "iPhone14,2": "iPhone 13 Pro",
         "iPhone14,3": "iPhone 13 Pro Max",
         "iPhone14,4": "iPhone 13 mini",
         "iPhone14,5": "iPhone 13",
-        // iPhone 12 / SE
         "iPhone13,1": "iPhone 12 mini",
         "iPhone13,2": "iPhone 12",
         "iPhone13,3": "iPhone 12 Pro",

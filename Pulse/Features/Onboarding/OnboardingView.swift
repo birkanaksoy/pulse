@@ -8,13 +8,16 @@ struct OnboardingView: View {
     @State private var notifRequested = false
     @State private var photoRequested = false
 
+    // Profile state
     @State private var selectedModel: String = DeviceModel.displayName
+    @State private var ownershipAge: OwnershipAge?
     @State private var selectedConcern: UserConcern?
+    @State private var cleaningHabit: CleaningHabit?
 
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let totalPages = 6
+    private let totalPages = 7
 
     var body: some View {
         ZStack {
@@ -24,10 +27,11 @@ struct OnboardingView: View {
                 TabView(selection: $page) {
                     welcomePage.tag(0)
                     valuePropsPage.tag(1)
-                    profilePage.tag(2)
-                    photoPage.tag(3)
-                    notificationPage.tag(4)
-                    firstScanPage.tag(5)
+                    profilePhonePage.tag(2)
+                    profileNeedsPage.tag(3)
+                    photoPage.tag(4)
+                    notificationPage.tag(5)
+                    firstScanPage.tag(6)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
                 .animation(reduceMotion ? nil : .smooth(duration: 0.55), value: page)
@@ -84,33 +88,30 @@ struct OnboardingView: View {
         }
     }
 
-    private var profilePage: some View {
+    // MARK: - Profile A: about the phone
+
+    private var profilePhonePage: some View {
         ParallaxPage(page: page, index: 2) {
             ScrollView {
-                VStack(alignment: .leading, spacing: PulseSpace.xl) {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
                     VStack(alignment: .leading, spacing: 6) {
-                        Text("Quick profile")
+                        Text("About your phone")
                             .font(PulseFont.titleXL)
                             .foregroundStyle(PulseColor.textPrimary)
-                        Text("Helps us tailor suggestions for you.")
+                        Text("Quick — and skippable. Helps us tailor suggestions.")
                             .font(PulseFont.body)
                             .foregroundStyle(PulseColor.textSecondary)
                     }
                     .padding(.top, PulseSpace.xxxl)
 
-                    VStack(alignment: .leading, spacing: PulseSpace.m) {
-                        Text("Your iPhone model")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(PulseColor.textSecondary)
+                    section(title: "Your iPhone model") {
                         modelPicker
                     }
 
-                    VStack(alignment: .leading, spacing: PulseSpace.m) {
-                        Text("What brings you here?")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(PulseColor.textSecondary)
-                        concernPicker
+                    section(title: "How long have you had it?") {
+                        ownershipPicker
                     }
+
                     Spacer(minLength: 20)
                 }
                 .padding(.horizontal, PulseSpace.xl)
@@ -125,84 +126,78 @@ struct OnboardingView: View {
             spacing: 8
         ) {
             ForEach(DeviceModel.pickerList, id: \.self) { model in
-                modelChip(model)
+                chipButton(label: model, selected: selectedModel == model) {
+                    selectedModel = model
+                }
             }
         }
     }
 
-    private func modelChip(_ model: String) -> some View {
-        let selected = selectedModel == model
-        return Button {
-            Haptics.tap(0.3)
-            selectedModel = model
-        } label: {
-            HStack {
-                Text(model)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
-                Spacer()
-                if selected {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(.white)
+    private var ownershipPicker: some View {
+        VStack(spacing: 8) {
+            ForEach(OwnershipAge.allCases) { age in
+                rowButton(label: age.label, selected: ownershipAge == age) {
+                    ownershipAge = age
                 }
             }
-            .padding(.horizontal, PulseSpace.m)
-            .padding(.vertical, PulseSpace.m)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
-            )
         }
-        .buttonStyle(.plain)
+    }
+
+    // MARK: - Profile B: about needs
+
+    private var profileNeedsPage: some View {
+        ParallaxPage(page: page, index: 3) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("About you")
+                            .font(PulseFont.titleXL)
+                            .foregroundStyle(PulseColor.textPrimary)
+                        Text("Still skippable — these just shape your first scan's tone.")
+                            .font(PulseFont.body)
+                            .foregroundStyle(PulseColor.textSecondary)
+                    }
+                    .padding(.top, PulseSpace.xxxl)
+
+                    section(title: "What brings you here?") {
+                        concernPicker
+                    }
+
+                    section(title: "How often do you clean your phone?") {
+                        cleaningPicker
+                    }
+
+                    Spacer(minLength: 20)
+                }
+                .padding(.horizontal, PulseSpace.xl)
+            }
+        }
     }
 
     private var concernPicker: some View {
         VStack(spacing: 8) {
             ForEach(UserConcern.allCases) { c in
-                concernRow(c)
-            }
-        }
-    }
-
-    private func concernRow(_ c: UserConcern) -> some View {
-        let selected = selectedConcern == c
-        return Button {
-            Haptics.tap(0.3)
-            selectedConcern = c
-        } label: {
-            HStack(spacing: PulseSpace.m) {
-                Text(c.emoji).font(.system(size: 22))
-                Text(c.label)
-                    .font(PulseFont.body)
-                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
-                Spacer()
-                if selected {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(.white)
+                emojiRowButton(emoji: c.emoji, label: c.label, selected: selectedConcern == c) {
+                    selectedConcern = c
                 }
             }
-            .padding(.horizontal, PulseSpace.l)
-            .padding(.vertical, PulseSpace.m)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
-            )
         }
-        .buttonStyle(.plain)
     }
 
+    private var cleaningPicker: some View {
+        VStack(spacing: 8) {
+            ForEach(CleaningHabit.allCases) { h in
+                emojiRowButton(emoji: h.emoji, label: h.label, selected: cleaningHabit == h) {
+                    cleaningHabit = h
+                }
+            }
+        }
+    }
+
+    // MARK: - Permissions
+
     private var photoPage: some View {
-        ParallaxPage(page: page, index: 3) {
+        ParallaxPage(page: page, index: 4) {
             VStack(spacing: PulseSpace.xxl) {
                 Spacer()
                 glyph(systemName: "photo.on.rectangle.angled")
@@ -216,6 +211,10 @@ struct OnboardingView: View {
                         .foregroundStyle(PulseColor.textSecondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, PulseSpace.xxl)
+                    permissionStatusLine(
+                        granted: photoRequested && photoAuthGranted,
+                        requested: photoRequested
+                    )
                 }
                 Spacer()
             }
@@ -223,7 +222,7 @@ struct OnboardingView: View {
     }
 
     private var notificationPage: some View {
-        ParallaxPage(page: page, index: 4) {
+        ParallaxPage(page: page, index: 5) {
             VStack(spacing: PulseSpace.xxl) {
                 Spacer()
                 glyph(systemName: "bell.badge")
@@ -237,6 +236,10 @@ struct OnboardingView: View {
                         .foregroundStyle(PulseColor.textSecondary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, PulseSpace.xxl)
+                    permissionStatusLine(
+                        granted: notifRequested && notifAuthGranted,
+                        requested: notifRequested
+                    )
                 }
                 Spacer()
             }
@@ -244,7 +247,7 @@ struct OnboardingView: View {
     }
 
     private var firstScanPage: some View {
-        ParallaxPage(page: page, index: 5) {
+        ParallaxPage(page: page, index: 6) {
             VStack(spacing: PulseSpace.xl) {
                 Spacer()
                 ZStack {
@@ -272,7 +275,107 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Reusable parts
+    // MARK: - Reusable bits
+
+    private func section<C: View>(title: LocalizedStringKey, @ViewBuilder content: () -> C) -> some View {
+        VStack(alignment: .leading, spacing: PulseSpace.m) {
+            Text(title)
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(PulseColor.textSecondary)
+            content()
+        }
+    }
+
+    private func chipButton(label: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap(0.3)
+            action()
+        } label: {
+            HStack {
+                Text(label)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, PulseSpace.m)
+            .padding(.vertical, PulseSpace.m)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func rowButton(label: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap(0.3)
+            action()
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Text(label)
+                    .font(PulseFont.body)
+                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, PulseSpace.l)
+            .padding(.vertical, PulseSpace.m)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func emojiRowButton(emoji: String, label: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap(0.3)
+            action()
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Text(emoji).font(.system(size: 22))
+                Text(label)
+                    .font(PulseFont.body)
+                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, PulseSpace.l)
+            .padding(.vertical, PulseSpace.m)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
 
     private func glyph(systemName: String) -> some View {
         Image(systemName: systemName)
@@ -308,7 +411,21 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Indicator + CTA
+    private func permissionStatusLine(granted: Bool, requested: Bool) -> some View {
+        Group {
+            if requested {
+                HStack(spacing: 6) {
+                    Image(systemName: granted ? "checkmark.circle.fill" : "exclamationmark.circle.fill")
+                    Text(granted ? String(localized: "Granted") : String(localized: "Not granted — you can enable later in Settings"))
+                }
+                .font(PulseFont.footnote)
+                .foregroundStyle(granted ? PulseColor.excellent : PulseColor.fair)
+                .padding(.top, PulseSpace.s)
+            }
+        }
+    }
+
+    // MARK: - Indicator + CTA + Skip
 
     private var indicator: some View {
         HStack(spacing: PulseSpace.s) {
@@ -334,28 +451,39 @@ struct OnboardingView: View {
 
     private var ctaTitle: LocalizedStringKey {
         switch page {
-        case 2: return "Continue"
-        case 3: return photoRequested ? "Continue" : "Allow photo access"
-        case 4: return notifRequested ? "Continue" : "Enable smart alerts"
-        case 5: return "Run my first scan"
-        default: return "Continue"
+        case 2, 3: return "Continue"
+        case 4:    return photoRequested ? "Continue" : "Allow photo access"
+        case 5:    return notifRequested ? "Continue" : "Enable smart alerts"
+        case 6:    return "Run my first scan"
+        default:   return "Continue"
         }
     }
 
     private var skipLink: some View {
         Group {
-            if (page == 3 && !photoRequested) || (page == 4 && !notifRequested) {
+            if shouldShowSkip {
                 Button {
                     Haptics.tap(0.2)
                     advance()
                 } label: {
-                    Text("Skip — I'll decide later")
-                        .font(PulseFont.callout)
+                    Text(page == 4 || page == 5 ? "Skip — I'll decide later" : "Skip this")
+                        .font(.system(size: 14, weight: .medium))
                         .foregroundStyle(PulseColor.textTertiary)
-                        .padding(.top, PulseSpace.s)
+                        .padding(.top, PulseSpace.m)
                 }
                 .buttonStyle(.plain)
+            } else {
+                Color.clear.frame(height: PulseSpace.l)
             }
+        }
+    }
+
+    private var shouldShowSkip: Bool {
+        switch page {
+        case 2, 3: return true
+        case 4:    return !photoRequested
+        case 5:    return !notifRequested
+        default:   return false
         }
     }
 
@@ -363,12 +491,12 @@ struct OnboardingView: View {
 
     private func handleCTA() {
         switch page {
-        case 2:
+        case 2, 3:
             saveProfile()
             advance()
-        case 3 where !photoRequested:
+        case 4 where !photoRequested:
             Task { await requestPhotoPermission() }
-        case 4 where !notifRequested:
+        case 5 where !notifRequested:
             Task { await requestNotificationPermission() }
         default:
             advance()
@@ -387,14 +515,20 @@ struct OnboardingView: View {
         let profile = UserProfile(
             detectedModel: DeviceModel.displayName,
             selectedModel: selectedModel,
-            concern: selectedConcern
+            ownershipAge: ownershipAge,
+            concern: selectedConcern,
+            cleaningHabit: cleaningHabit
         )
         UserProfileStore.save(profile)
     }
 
+    @State private var photoAuthGranted = false
+    @State private var notifAuthGranted = false
+
     @MainActor
     private func requestPhotoPermission() async {
-        _ = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+        let status = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+        photoAuthGranted = (status == .authorized || status == .limited)
         photoRequested = true
         advance()
     }
@@ -402,6 +536,7 @@ struct OnboardingView: View {
     @MainActor
     private func requestNotificationPermission() async {
         let granted = await NotificationScheduler.requestAuthorization()
+        notifAuthGranted = granted
         notifRequested = true
         if granted {
             NotificationScheduler.scheduleWeeklyReminder()
@@ -411,7 +546,6 @@ struct OnboardingView: View {
     }
 }
 
-/// Wraps an onboarding page with subtle parallax + scale based on swipe position.
 private struct ParallaxPage<Content: View>: View {
     var page: Int
     var index: Int
