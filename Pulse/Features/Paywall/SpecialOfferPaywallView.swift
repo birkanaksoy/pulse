@@ -13,6 +13,14 @@ struct SpecialOfferPaywallView: View {
     @State private var selectedPlan: Plan = .lifetime
     @State private var prepareProgress: Double = 0
     @State private var prepareStage: String = ""
+    @State private var canSkip = false
+    @State private var closeButtonVisible = false
+
+    /// Seconds before the "No thanks" text link fades in.
+    private let skipDelay: TimeInterval = 3.0
+    /// Seconds before the small X close button appears (Apple still requires
+    /// an obvious dismissal — we keep it short so we're compliant).
+    private let closeButtonDelay: TimeInterval = 1.5
 
     enum Phase { case preparing, offering }
 
@@ -133,6 +141,18 @@ struct SpecialOfferPaywallView: View {
         }
         .overlay(alignment: .topTrailing) { closeButton }
         .transition(.opacity.combined(with: .move(edge: .bottom)))
+        .task { await runSkipTimers() }
+    }
+
+    @MainActor
+    private func runSkipTimers() async {
+        // Close button — Apple requires reasonably discoverable dismissal.
+        try? await Task.sleep(nanoseconds: UInt64(closeButtonDelay * 1_000_000_000))
+        withAnimation(.easeIn(duration: 0.5)) { closeButtonVisible = true }
+        // 'No thanks' text link — appears later, subtler.
+        let remaining = skipDelay - closeButtonDelay
+        try? await Task.sleep(nanoseconds: UInt64(max(0, remaining) * 1_000_000_000))
+        withAnimation(.easeIn(duration: 0.5)) { canSkip = true }
     }
 
     private var header: some View {
@@ -301,20 +321,32 @@ struct SpecialOfferPaywallView: View {
     }
 
     private var legalRow: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 12) {
             Text("Subscriptions auto-renew unless cancelled at least 24 hours before the end of the period. Manage anytime in your App Store account.")
                 .font(.system(size: 11))
                 .foregroundStyle(PulseColor.textTertiary)
                 .multilineTextAlignment(.center)
-            HStack(spacing: PulseSpace.l) {
-                Button("Restore") { Task { await entitlements.restore(); finishIfPro() } }
-                Button("Skip") {
-                    Haptics.tap(0.3)
-                    finish()
-                }
+
+            Button("Restore") {
+                Task { await entitlements.restore(); finishIfPro() }
             }
             .font(PulseFont.footnote)
             .foregroundStyle(PulseColor.textTertiary)
+
+            // Delayed-skip text link — invisible until skipDelay elapses.
+            Button {
+                Haptics.tap(0.2)
+                finish()
+            } label: {
+                Text("No thanks, continue with limited features")
+                    .font(.system(size: 12, weight: .regular))
+                    .foregroundStyle(PulseColor.textTertiary.opacity(0.7))
+                    .underline()
+            }
+            .buttonStyle(.plain)
+            .opacity(canSkip ? 1 : 0)
+            .disabled(!canSkip)
+            .animation(.easeIn(duration: 0.5), value: canSkip)
         }
     }
 
@@ -324,12 +356,15 @@ struct SpecialOfferPaywallView: View {
             finish()
         } label: {
             Image(systemName: "xmark")
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(PulseColor.textTertiary)
-                .padding(10)
-                .background(Circle().fill(PulseColor.muted))
+                .font(.system(size: 10, weight: .bold))
+                .foregroundStyle(PulseColor.textTertiary.opacity(0.6))
+                .padding(8)
+                .background(Circle().fill(PulseColor.muted.opacity(0.6)))
         }
         .padding(PulseSpace.l)
+        .opacity(closeButtonVisible ? 1 : 0)
+        .disabled(!closeButtonVisible)
+        .animation(.easeIn(duration: 0.5), value: closeButtonVisible)
     }
 
     @MainActor
