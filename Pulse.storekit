@@ -1,6 +1,27 @@
 {
   "identifier" : "B5E1D2A0-8F4C-4C84-A7E1-PULSE000001",
-  "nonRenewingSubscriptions" : [],
+  "nonRenewingSubscriptions" : [
+    {
+      "displayPrice" : "19.99",
+      "familyShareable" : false,
+      "internalID" : "PULSE_LIFETIME",
+      "localizations" : [
+        {
+          "description" : "Pulse Pro — one-time purchase, yours forever",
+          "displayName" : "Lifetime",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "Pulse Pro — tek seferlik, sonsuza dek senin",
+          "displayName" : "Yaşam Boyu",
+          "locale" : "tr_TR"
+        }
+      ],
+      "productID" : "com.birkan.pulse.lifetime",
+      "referenceName" : "Pulse Pro Lifetime",
+      "type" : "NonRenewingSubscription"
+    }
+  ],
   "products" : [],
   "settings" : {
     "_failTransactionsEnabled" : false,
@@ -13,12 +34,12 @@
       "id" : "PULSE_PRO_GROUP",
       "localizations" : [
         {
-          "description" : "Pulse Pro — honest deeper diagnostics",
+          "description" : "Pulse Pro — phone cleaner & honest diagnostics",
           "displayName" : "Pulse Pro",
           "locale" : "en_US"
         },
         {
-          "description" : "Pulse Pro — dürüst ve daha derin teşhis",
+          "description" : "Pulse Pro — telefon temizleyici & dürüst teşhis",
           "displayName" : "Pulse Pro",
           "locale" : "tr_TR"
         }
@@ -28,49 +49,45 @@
         {
           "adHocOffers" : [],
           "codeOffers" : [],
-          "displayPrice" : "29.99",
+          "displayPrice" : "1.99",
           "familyShareable" : false,
           "groupNumber" : 1,
-          "internalID" : "PULSE_ANNUAL",
-          "introductoryOffer" : {
-            "internalID" : "PULSE_ANNUAL_TRIAL",
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
-          },
+          "internalID" : "PULSE_WEEKLY",
+          "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Pulse Pro — annual subscription",
-              "displayName" : "Annual",
+              "description" : "Pulse Pro — weekly",
+              "displayName" : "Weekly",
               "locale" : "en_US"
             },
             {
-              "description" : "Pulse Pro — yıllık abonelik",
-              "displayName" : "Yıllık",
+              "description" : "Pulse Pro — haftalık",
+              "displayName" : "Haftalık",
               "locale" : "tr_TR"
             }
           ],
-          "productID" : "com.birkan.pulse.pro.annual",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Pulse Pro Annual",
+          "productID" : "com.birkan.pulse.pro.weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Pulse Pro Weekly",
           "subscriptionGroupID" : "PULSE_PRO_GROUP",
           "type" : "RecurringSubscription"
         },
         {
           "adHocOffers" : [],
           "codeOffers" : [],
-          "displayPrice" : "5.99",
+          "displayPrice" : "3.99",
           "familyShareable" : false,
           "groupNumber" : 2,
           "internalID" : "PULSE_MONTHLY",
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Pulse Pro — monthly subscription",
+              "description" : "Pulse Pro — monthly",
               "displayName" : "Monthly",
               "locale" : "en_US"
             },
             {
-              "description" : "Pulse Pro — aylık abonelik",
+              "description" : "Pulse Pro — aylık",
               "displayName" : "Aylık",
               "locale" : "tr_TR"
             }

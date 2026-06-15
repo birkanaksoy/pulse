@@ -11,7 +11,7 @@ struct OnboardingView: View {
     // Profile state
     @State private var selectedModel: String = DeviceModel.displayName
     @State private var ownershipAge: OwnershipAge?
-    @State private var selectedConcern: UserConcern?
+    @State private var selectedConcerns: Set<UserConcern> = []
     @State private var cleaningHabit: CleaningHabit?
 
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
@@ -159,7 +159,7 @@ struct OnboardingView: View {
                     }
                     .padding(.top, PulseSpace.xxxl)
 
-                    section(title: "What brings you here?") {
+                    section(title: "What brings you here? (pick any)") {
                         concernPicker
                     }
 
@@ -177,8 +177,12 @@ struct OnboardingView: View {
     private var concernPicker: some View {
         VStack(spacing: 8) {
             ForEach(UserConcern.allCases) { c in
-                emojiRowButton(emoji: c.emoji, label: c.label, selected: selectedConcern == c) {
-                    selectedConcern = c
+                emojiRowButton(emoji: c.emoji, label: c.label, selected: selectedConcerns.contains(c)) {
+                    if selectedConcerns.contains(c) {
+                        selectedConcerns.remove(c)
+                    } else {
+                        selectedConcerns.insert(c)
+                    }
                 }
             }
         }
@@ -516,7 +520,7 @@ struct OnboardingView: View {
             detectedModel: DeviceModel.displayName,
             selectedModel: selectedModel,
             ownershipAge: ownershipAge,
-            concern: selectedConcern,
+            concerns: Array(selectedConcerns),
             cleaningHabit: cleaningHabit
         )
         UserProfileStore.save(profile)
@@ -561,6 +565,7 @@ private struct ParallaxPage<Content: View>: View {
             let scale = 0.96 + (1 - min(1, abs(offset))) * 0.04
 
             content()
+                .frame(width: proxy.size.width, height: proxy.size.height, alignment: .center)
                 .opacity(opacity)
                 .scaleEffect(scale)
                 .offset(y: abs(offset) * 8)

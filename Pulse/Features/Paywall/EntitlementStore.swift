@@ -12,8 +12,9 @@ final class EntitlementStore {
 
     /// Configure these IDs in App Store Connect (and Pulse.storekit for local dev).
     static let productIDs: Set<String> = [
-        "com.birkan.pulse.pro.annual",
-        "com.birkan.pulse.pro.monthly"
+        "com.birkan.pulse.pro.weekly",
+        "com.birkan.pulse.pro.monthly",
+        "com.birkan.pulse.lifetime"
     ]
 
     private var updatesTask: Task<Void, Never>?

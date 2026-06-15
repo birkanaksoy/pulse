@@ -62,7 +62,7 @@ struct UserProfile: Codable, Equatable {
     var detectedModel: String
     var selectedModel: String?
     var ownershipAge: OwnershipAge?
-    var concern: UserConcern?
+    var concerns: [UserConcern] = []   // multi-select
     var cleaningHabit: CleaningHabit?
 }
 
