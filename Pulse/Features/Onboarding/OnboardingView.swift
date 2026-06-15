@@ -1,14 +1,20 @@
 import SwiftUI
 import UserNotifications
+import Photos
 
 struct OnboardingView: View {
     @Binding var didOnboard: Bool
     @State private var page: Int = 0
-    @State private var weeklyReminderRequested = false
+    @State private var notifRequested = false
+    @State private var photoRequested = false
+
+    @State private var selectedModel: String = DeviceModel.displayName
+    @State private var selectedConcern: UserConcern?
+
     @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
-    private let totalPages = 4
+    private let totalPages = 6
 
     var body: some View {
         ZStack {
@@ -18,16 +24,18 @@ struct OnboardingView: View {
                 TabView(selection: $page) {
                     welcomePage.tag(0)
                     valuePropsPage.tag(1)
-                    notificationPage.tag(2)
-                    firstScanPage.tag(3)
+                    profilePage.tag(2)
+                    photoPage.tag(3)
+                    notificationPage.tag(4)
+                    firstScanPage.tag(5)
                 }
                 .tabViewStyle(.page(indexDisplayMode: .never))
-                .animation(reduceMotion ? nil : .smooth(duration: 0.6), value: page)
+                .animation(reduceMotion ? nil : .smooth(duration: 0.55), value: page)
 
                 Spacer(minLength: 0)
                 indicator
                 cta
-                if page == 2 { skipReminder }
+                skipLink
             }
             .padding(.bottom, PulseSpace.xxl)
         }
@@ -45,7 +53,7 @@ struct OnboardingView: View {
                         .font(PulseFont.titleXL)
                         .foregroundStyle(PulseColor.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("Pulse is your phone's diagnostic system.")
+                    Text("Real cleaning. Honest diagnostics. No fake metrics.")
                         .font(PulseFont.body)
                         .foregroundStyle(PulseColor.textSecondary)
                         .multilineTextAlignment(.center)
@@ -60,15 +68,15 @@ struct OnboardingView: View {
         ParallaxPage(page: page, index: 1) {
             VStack(spacing: PulseSpace.xxl) {
                 Spacer()
-                Text("Honest signals. No guesswork.")
+                Text("Built like a doctor for your phone")
                     .font(PulseFont.titleL)
                     .foregroundStyle(PulseColor.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, PulseSpace.xxl)
                 VStack(spacing: PulseSpace.l) {
                     valueProp("waveform.path.ecg", "Diagnose", "One score from real iOS signals.")
-                    valueProp("sparkles",          "Suggest",  "We recommend. You decide.")
-                    valueProp("chart.xyaxis.line", "Track",    "Watch your phone over time.")
+                    valueProp("wand.and.stars",   "Clean", "Real deletion with iOS confirmation.")
+                    valueProp("chart.xyaxis.line", "Track", "Watch your phone over time.")
                 }
                 .padding(.horizontal, PulseSpace.xxl)
                 Spacer()
@@ -76,17 +84,155 @@ struct OnboardingView: View {
         }
     }
 
-    private var notificationPage: some View {
+    private var profilePage: some View {
         ParallaxPage(page: page, index: 2) {
+            ScrollView {
+                VStack(alignment: .leading, spacing: PulseSpace.xl) {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text("Quick profile")
+                            .font(PulseFont.titleXL)
+                            .foregroundStyle(PulseColor.textPrimary)
+                        Text("Helps us tailor suggestions for you.")
+                            .font(PulseFont.body)
+                            .foregroundStyle(PulseColor.textSecondary)
+                    }
+                    .padding(.top, PulseSpace.xxxl)
+
+                    VStack(alignment: .leading, spacing: PulseSpace.m) {
+                        Text("Your iPhone model")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(PulseColor.textSecondary)
+                        modelPicker
+                    }
+
+                    VStack(alignment: .leading, spacing: PulseSpace.m) {
+                        Text("What brings you here?")
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(PulseColor.textSecondary)
+                        concernPicker
+                    }
+                    Spacer(minLength: 20)
+                }
+                .padding(.horizontal, PulseSpace.xl)
+            }
+        }
+    }
+
+    private var modelPicker: some View {
+        LazyVGrid(
+            columns: [GridItem(.flexible(), spacing: 8),
+                      GridItem(.flexible(), spacing: 8)],
+            spacing: 8
+        ) {
+            ForEach(DeviceModel.pickerList, id: \.self) { model in
+                modelChip(model)
+            }
+        }
+    }
+
+    private func modelChip(_ model: String) -> some View {
+        let selected = selectedModel == model
+        return Button {
+            Haptics.tap(0.3)
+            selectedModel = model
+        } label: {
+            HStack {
+                Text(model)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, PulseSpace.m)
+            .padding(.vertical, PulseSpace.m)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var concernPicker: some View {
+        VStack(spacing: 8) {
+            ForEach(UserConcern.allCases) { c in
+                concernRow(c)
+            }
+        }
+    }
+
+    private func concernRow(_ c: UserConcern) -> some View {
+        let selected = selectedConcern == c
+        return Button {
+            Haptics.tap(0.3)
+            selectedConcern = c
+        } label: {
+            HStack(spacing: PulseSpace.m) {
+                Text(c.emoji).font(.system(size: 22))
+                Text(c.label)
+                    .font(PulseFont.body)
+                    .foregroundStyle(selected ? .white : PulseColor.textPrimary)
+                Spacer()
+                if selected {
+                    Image(systemName: "checkmark")
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(.white)
+                }
+            }
+            .padding(.horizontal, PulseSpace.l)
+            .padding(.vertical, PulseSpace.m)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(selected ? AnyShapeStyle(PulseColor.ringGradient) : AnyShapeStyle(PulseColor.card))
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(selected ? .clear : PulseColor.stroke, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+    }
+
+    private var photoPage: some View {
+        ParallaxPage(page: page, index: 3) {
+            VStack(spacing: PulseSpace.xxl) {
+                Spacer()
+                glyph(systemName: "photo.on.rectangle.angled")
+                VStack(spacing: PulseSpace.s) {
+                    Text("Allow photo access")
+                        .font(PulseFont.titleL)
+                        .foregroundStyle(PulseColor.textPrimary)
+                        .multilineTextAlignment(.center)
+                    Text("Pulse needs read+write access to find duplicates, big videos, and Live Photos. Nothing is uploaded.")
+                        .font(PulseFont.body)
+                        .foregroundStyle(PulseColor.textSecondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, PulseSpace.xxl)
+                }
+                Spacer()
+            }
+        }
+    }
+
+    private var notificationPage: some View {
+        ParallaxPage(page: page, index: 4) {
             VStack(spacing: PulseSpace.xxl) {
                 Spacer()
                 glyph(systemName: "bell.badge")
                 VStack(spacing: PulseSpace.s) {
-                    Text("One nudge a week.")
+                    Text("Smart alerts")
                         .font(PulseFont.titleL)
                         .foregroundStyle(PulseColor.textPrimary)
                         .multilineTextAlignment(.center)
-                    Text("A Sunday reminder to scan. Local only — nothing leaves your phone.")
+                    Text("Get a weekly check-in and timely heads-up when storage fills or your phone runs hot.")
                         .font(PulseFont.body)
                         .foregroundStyle(PulseColor.textSecondary)
                         .multilineTextAlignment(.center)
@@ -98,7 +244,7 @@ struct OnboardingView: View {
     }
 
     private var firstScanPage: some View {
-        ParallaxPage(page: page, index: 3) {
+        ParallaxPage(page: page, index: 5) {
             VStack(spacing: PulseSpace.xl) {
                 Spacer()
                 ZStack {
@@ -115,7 +261,7 @@ struct OnboardingView: View {
                     Text("Ready when you are")
                         .font(PulseFont.titleL)
                         .foregroundStyle(PulseColor.textPrimary)
-                    Text("Your first real scan starts on the next screen. Everything is computed on-device.")
+                    Text("Everything runs on your device.")
                         .font(PulseFont.body)
                         .foregroundStyle(PulseColor.textSecondary)
                         .multilineTextAlignment(.center)
@@ -126,7 +272,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - Glyph
+    // MARK: - Reusable parts
 
     private func glyph(systemName: String) -> some View {
         Image(systemName: systemName)
@@ -149,10 +295,8 @@ struct OnboardingView: View {
                 .foregroundStyle(.white)
                 .frame(width: 48, height: 48)
                 .background(
-                    LinearGradient(
-                        colors: [PulseColor.blue500, PulseColor.blue300],
-                        startPoint: .topLeading, endPoint: .bottomTrailing
-                    ),
+                    LinearGradient(colors: [PulseColor.blue500, PulseColor.blue300],
+                                   startPoint: .topLeading, endPoint: .bottomTrailing),
                     in: RoundedRectangle(cornerRadius: 14, style: .continuous)
                 )
                 .shadow(color: PulseColor.blue500.opacity(0.3), radius: 8, y: 4)
@@ -164,7 +308,7 @@ struct OnboardingView: View {
         }
     }
 
-    // MARK: - CTA
+    // MARK: - Indicator + CTA
 
     private var indicator: some View {
         HStack(spacing: PulseSpace.s) {
@@ -190,29 +334,41 @@ struct OnboardingView: View {
 
     private var ctaTitle: LocalizedStringKey {
         switch page {
-        case 2:  return weeklyReminderRequested ? "Continue" : "Enable weekly check-in"
-        case 3:  return "Run my first scan"
+        case 2: return "Continue"
+        case 3: return photoRequested ? "Continue" : "Allow photo access"
+        case 4: return notifRequested ? "Continue" : "Enable smart alerts"
+        case 5: return "Run my first scan"
         default: return "Continue"
         }
     }
 
-    private var skipReminder: some View {
-        Button {
-            advance()
-        } label: {
-            Text("Maybe later")
-                .font(PulseFont.callout)
-                .foregroundStyle(PulseColor.textTertiary)
-                .padding(.top, PulseSpace.s)
+    private var skipLink: some View {
+        Group {
+            if (page == 3 && !photoRequested) || (page == 4 && !notifRequested) {
+                Button {
+                    Haptics.tap(0.2)
+                    advance()
+                } label: {
+                    Text("Skip — I'll decide later")
+                        .font(PulseFont.callout)
+                        .foregroundStyle(PulseColor.textTertiary)
+                        .padding(.top, PulseSpace.s)
+                }
+                .buttonStyle(.plain)
+            }
         }
-        .buttonStyle(.plain)
     }
 
     // MARK: - Actions
 
     private func handleCTA() {
         switch page {
-        case 2 where !weeklyReminderRequested:
+        case 2:
+            saveProfile()
+            advance()
+        case 3 where !photoRequested:
+            Task { await requestPhotoPermission() }
+        case 4 where !notifRequested:
             Task { await requestNotificationPermission() }
         default:
             advance()
@@ -221,21 +377,36 @@ struct OnboardingView: View {
 
     private func advance() {
         if page < totalPages - 1 {
-            withAnimation(reduceMotion ? nil : .smooth(duration: 0.5)) { page += 1 }
+            withAnimation(reduceMotion ? nil : .smooth(duration: 0.45)) { page += 1 }
         } else {
             didOnboard = true
         }
     }
 
+    private func saveProfile() {
+        let profile = UserProfile(
+            detectedModel: DeviceModel.displayName,
+            selectedModel: selectedModel,
+            concern: selectedConcern
+        )
+        UserProfileStore.save(profile)
+    }
+
+    @MainActor
+    private func requestPhotoPermission() async {
+        _ = await PHPhotoLibrary.requestAuthorization(for: .readWrite)
+        photoRequested = true
+        advance()
+    }
+
     @MainActor
     private func requestNotificationPermission() async {
         let granted = await NotificationScheduler.requestAuthorization()
-        weeklyReminderRequested = true
+        notifRequested = true
         if granted {
             NotificationScheduler.scheduleWeeklyReminder()
             weeklyReminder = true
         }
-        // Always advance — granted or not, we move on. User can revisit in Settings.
         advance()
     }
 }

@@ -1564,7 +1564,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temizlik"
+            "value": "Temizle"
           }
         },
         "zh-Hans": {
@@ -9602,6 +9602,156 @@
           "stringUnit": {
             "state": "translated",
             "value": "Şimdiye kadar %@ kazandın. Daha fazlası için dokun."
+          }
+        }
+      }
+    },
+    "Real deletion with iOS confirmation.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iOS onayıyla gerçek silme."
+          }
+        }
+      }
+    },
+    "Quick profile": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kısa profil"
+          }
+        }
+      }
+    },
+    "Helps us tailor suggestions for you.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Senin için önerileri özelleştirmemize yardımcı olur."
+          }
+        }
+      }
+    },
+    "Your iPhone model": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iPhone modelin"
+          }
+        }
+      }
+    },
+    "What brings you here?": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seni buraya ne getirdi?"
+          }
+        }
+      }
+    },
+    "Phone feels slow": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Telefon yavaş hissettiriyor"
+          }
+        }
+      }
+    },
+    "Battery dies fast": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pil çok çabuk bitiyor"
+          }
+        }
+      }
+    },
+    "Just curious": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sadece merak"
+          }
+        }
+      }
+    },
+    "Other": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diğer"
+          }
+        }
+      }
+    },
+    "Allow photo access": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fotoğraf erişimine izin ver"
+          }
+        }
+      }
+    },
+    "Pulse needs read+write access to find duplicates, big videos, and Live Photos. Nothing is uploaded.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pulse'ın yinelenenleri, büyük videoları ve Canlı Fotoğrafları bulabilmesi için okuma+yazma izni gerekir. Hiçbir şey yüklenmez."
+          }
+        }
+      }
+    },
+    "Smart alerts": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı uyarılar"
+          }
+        }
+      }
+    },
+    "Get a weekly check-in and timely heads-up when storage fills or your phone runs hot.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftalık kontrol ve depolama dolduğunda veya telefon ısındığında zamanında uyarı al."
+          }
+        }
+      }
+    },
+    "Skip — I'll decide later": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Şimdilik geç — sonra karar veririm"
+          }
+        }
+      }
+    },
+    "Everything runs on your device.": {
+      "localizations": {
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her şey cihazında çalışır."
           }
         }
       }
