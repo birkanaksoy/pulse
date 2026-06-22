@@ -37,6 +37,18 @@ targets:
       - path: Pulse
       - path: Pulse/Resources/Localizable.xcstrings
       - path: Pulse.storekit
+      - path: Pulse/Resources/AppIcon-TwoTone@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-TwoTone@3x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Gauge@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Gauge@3x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Sonar@2x.png
+        buildPhase: resources
+      - path: Pulse/Resources/AppIcon-Sonar@3x.png
+        buildPhase: resources
     info:
       path: Pulse/Resources/Info.plist
       properties:
@@ -49,6 +61,17 @@ targets:
         ITSAppUsesNonExemptEncryption: false
         NSPhotoLibraryUsageDescription: "Pulse reads your photo library to suggest items to delete. Nothing is uploaded."
         NSPhotoLibraryAddUsageDescription: "Pulse can save shareable cards to your library."
+        CFBundleIcons:
+          CFBundleAlternateIcons:
+            TwoTone:
+              CFBundleIconFiles: ["AppIcon-TwoTone"]
+              UIPrerenderedIcon: false
+            Gauge:
+              CFBundleIconFiles: ["AppIcon-Gauge"]
+              UIPrerenderedIcon: false
+            Sonar:
+              CFBundleIconFiles: ["AppIcon-Sonar"]
+              UIPrerenderedIcon: false
         CFBundleLocalizations:
           - en
           - tr
