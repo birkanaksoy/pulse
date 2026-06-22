@@ -1,7 +1,6 @@
 import Foundation
 import StoreKit
 import Observation
-import WidgetKit
 
 @Observable
 @MainActor
@@ -66,12 +65,6 @@ final class EntitlementStore {
             }
         }
         isPro = unlocked
-        // Refresh widget so it can lock/unlock immediately after a purchase.
-        if var snap = SharedScoreStore.load() {
-            snap.isPro = unlocked
-            SharedScoreStore.save(snap)
-        }
-        WidgetCenter.shared.reloadAllTimelines()
     }
 
     private func listenForUpdates() async {
@@ -86,12 +79,5 @@ final class EntitlementStore {
     // MARK: - Dev helpers
 
     /// Toggle Pro locally without StoreKit — useful before products are configured.
-    func devTogglePro() {
-        isPro.toggle()
-        if var snap = SharedScoreStore.load() {
-            snap.isPro = isPro
-            SharedScoreStore.save(snap)
-        }
-        WidgetCenter.shared.reloadAllTimelines()
-    }
+    func devTogglePro() { isPro.toggle() }
 }

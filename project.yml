@@ -1,15 +1,10 @@
 name: Pulse
 options:
-  bundleIdPrefix: app.pulse
+  bundleIdPrefix: com.birkan
   deploymentTarget:
     iOS: "17.0"
-    watchOS: "10.0"
   createIntermediateGroups: true
   developmentLanguage: en
-packages:
-  TelemetryDeck:
-    url: https://github.com/TelemetryDeck/SwiftSDK
-    from: 2.0.0
 fileGroups:
   - Pulse/Resources/Localizable.xcstrings
 knownRegions:
@@ -31,7 +26,7 @@ settings:
   base:
     SWIFT_VERSION: "5.10"
     DEVELOPMENT_TEAM: ""
-    MARKETING_VERSION: "0.1.0"
+    MARKETING_VERSION: "0.2.0"
     CURRENT_PROJECT_VERSION: "1"
     ENABLE_USER_SCRIPT_SANDBOXING: NO
 targets:
@@ -42,26 +37,6 @@ targets:
       - path: Pulse
       - path: Pulse/Resources/Localizable.xcstrings
       - path: Pulse.storekit
-      - path: Pulse/Resources/AppIcon-Midnight@2x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Midnight@3x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Health@2x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Health@3x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Sunset@2x.png
-        buildPhase: resources
-      - path: Pulse/Resources/AppIcon-Sunset@3x.png
-        buildPhase: resources
-      - path: Pulse/Resources/PrivacyInfo.xcprivacy
-        buildPhase: resources
-    dependencies:
-      - target: PulseWidget
-      - package: TelemetryDeck
-        product: TelemetryDeck
-    scheme:
-      storeKitConfiguration: Pulse.storekit
     info:
       path: Pulse/Resources/Info.plist
       properties:
@@ -72,30 +47,22 @@ targets:
           - UIInterfaceOrientationPortrait
         UIRequiresFullScreen: false
         ITSAppUsesNonExemptEncryption: false
-        UIBackgroundModes:
-          - fetch
-          - processing
-        BGTaskSchedulerPermittedIdentifiers:
-          - app.pulse.weeklyScan
-        NSSupportsLiveActivities: true
-        WKCompanionAppBundleIdentifier: com.birkan.pulse
-        WKAppBundleIdentifier: com.birkan.pulse.watchkitapp
-        NSPhotoLibraryUsageDescription: "Pulse needs read access to estimate photo, video, and screenshot usage. Nothing is uploaded."
-        NSPhotoLibraryAddUsageDescription: "Pulse can save shareable score cards to your library."
-        CFBundleURLTypes:
-          - CFBundleURLName: app.pulse
-            CFBundleURLSchemes: ["pulse"]
-        CFBundleIcons:
-          CFBundleAlternateIcons:
-            Midnight:
-              CFBundleIconFiles: ["AppIcon-Midnight"]
-              UIPrerenderedIcon: false
-            Health:
-              CFBundleIconFiles: ["AppIcon-Health"]
-              UIPrerenderedIcon: false
-            Sunset:
-              CFBundleIconFiles: ["AppIcon-Sunset"]
-              UIPrerenderedIcon: false
+        NSPhotoLibraryUsageDescription: "Pulse reads your photo library to suggest items to delete. Nothing is uploaded."
+        NSPhotoLibraryAddUsageDescription: "Pulse can save shareable cards to your library."
+        CFBundleLocalizations:
+          - en
+          - tr
+          - es
+          - pt-BR
+          - fr
+          - de
+          - it
+          - ru
+          - ja
+          - ko
+          - zh-Hans
+          - ar
+          - hi
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse
@@ -107,34 +74,5 @@ targets:
         CODE_SIGN_STYLE: Automatic
         SWIFT_EMIT_LOC_STRINGS: YES
         LOCALIZATION_PREFERS_STRING_CATALOGS: YES
-
-  # Watch targets temporarily disabled — re-enable when going to App Store
-  # by uncommenting and registering iCloud + bundle IDs in developer portal.
-
-  PulseWidget:
-    type: app-extension
-    platform: iOS
-    sources:
-      - path: PulseWidget
-      - path: Pulse/Core/Persistence/SharedScoreStore.swift
-      - path: Pulse/Features/Scan/Probes/BatteryProbe.swift
-      - path: Pulse/Features/Scan/Probes/StorageProbe.swift
-      - path: Pulse/Features/Scan/Probes/ThermalProbe.swift
-      - path: Pulse/Features/Scan/ScanIntent.swift
-      - path: Pulse/Features/Scan/ScanActivity.swift
-      - path: PulseWidget/PrivacyInfo.xcprivacy
-        buildPhase: resources
-    info:
-      path: PulseWidget/Info.plist
-      properties:
-        CFBundleDisplayName: Pulse
-        NSExtension:
-          NSExtensionPointIdentifier: com.apple.widgetkit-extension
-    settings:
-      base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.birkan.pulse.widget
-        TARGETED_DEVICE_FAMILY: "1"
-        GENERATE_INFOPLIST_FILE: NO
-        CODE_SIGN_ENTITLEMENTS: PulseWidget/PulseWidget.entitlements
-        CODE_SIGN_STYLE: Automatic
-        SKIP_INSTALL: YES
+    scheme:
+      storeKitConfiguration: Pulse.storekit

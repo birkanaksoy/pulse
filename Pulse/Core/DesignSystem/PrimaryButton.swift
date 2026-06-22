@@ -14,15 +14,13 @@ struct PrimaryButton: View {
             Haptics.tap(0.5)
             action()
         } label: {
-            HStack(spacing: PulseSpace.s) {
+            HStack(spacing: 8) {
                 if isLoading {
                     ProgressView().tint(.white)
                 } else {
-                    Text(title)
-                        .font(.system(size: 17, weight: .semibold))
+                    Text(title).font(.system(size: 17, weight: .semibold))
                     if let s = systemImage {
-                        Image(systemName: s)
-                            .font(.system(size: 14, weight: .bold))
+                        Image(systemName: s).font(.system(size: 14, weight: .bold))
                     }
                 }
             }
@@ -30,22 +28,16 @@ struct PrimaryButton: View {
             .foregroundStyle(.white)
             .background(
                 ZStack {
-                    RoundedRectangle(cornerRadius: PulseRadius.button, style: .continuous)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
                         .fill(PulseColor.ringGradient)
-                    // Top highlight for depth
-                    RoundedRectangle(cornerRadius: PulseRadius.button, style: .continuous)
-                        .fill(
-                            LinearGradient(
-                                colors: [.white.opacity(0.20), .white.opacity(0)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(LinearGradient(colors: [.white.opacity(0.20), .white.opacity(0)],
+                                             startPoint: .top, endPoint: .bottom))
                         .blendMode(.overlay)
                 }
             )
             .overlay(
-                RoundedRectangle(cornerRadius: PulseRadius.button, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .strokeBorder(.white.opacity(0.30), lineWidth: 0.5)
             )
             .shadow(color: PulseColor.blue500.opacity(0.45), radius: 18, y: 10)

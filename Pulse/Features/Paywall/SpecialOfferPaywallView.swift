@@ -184,23 +184,8 @@ struct SpecialOfferPaywallView: View {
         .padding(.top, PulseSpace.xxl)
     }
 
-    /// Personalised tagline based on the saved profile.
     private var headlineCopy: LocalizedStringKey {
-        let p = UserProfileStore.current
-        let concerns = p?.concerns ?? []
-        if concerns.contains(.storage) && concerns.contains(.battery) {
-            return "Free up gigabytes and watch your phone stay healthy."
-        }
-        if concerns.contains(.storage) {
-            return "We can free up gigabytes for you. Real, on-device, honest."
-        }
-        if concerns.contains(.battery) {
-            return "Track battery patterns, get smart alerts, keep it healthy."
-        }
-        if concerns.contains(.speed) {
-            return "Find what's slowing you down — and fix it in one tap."
-        }
-        return "Real cleaning. Honest diagnostics. No fake metrics."
+        "Real cleaning. Honest diagnostics. No fake metrics."
     }
 
     private var bullets: some View {

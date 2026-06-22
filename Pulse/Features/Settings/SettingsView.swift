@@ -1,283 +1,183 @@
 import SwiftUI
-import SwiftData
-import WidgetKit
+import StoreKit
 
 struct SettingsView: View {
     @Environment(EntitlementStore.self) private var entitlements
-    @Environment(\.modelContext) private var context
+    @Environment(\.dismiss) private var dismiss
     @State private var showingPaywall = false
-    @State private var showingDeleteConfirm = false
     @State private var showingTerms = false
     @State private var showingPrivacy = false
-    @State private var showingIconPicker = false
     @State private var showingHowItWorks = false
-    @State private var showingAchievements = false
-    @State private var showingSmartAlerts = false
-    @State private var showingReplayConfirm = false
     @AppStorage("pulse.didOnboard") private var didOnboard = false
-    @State private var pendingDeletion: [ScanRecord] = []
-    @State private var showingUndo = false
-    @AppStorage("pulse.weeklyReminder") private var weeklyReminder = false
-    @State private var notifAuthorized = false
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
             AmbientBackground(tint: PulseColor.blue500)
             ScrollView {
-                VStack(alignment: .leading, spacing: PulseSpace.xxl) {
-                    Text("Settings")
-                        .font(PulseFont.titleXL)
-                        .foregroundStyle(PulseColor.textPrimary)
-
-                if !entitlements.isPro {
-                    proBanner
-                }
-
-                section("Appearance") {
-                    button("App Icon") { showingIconPicker = true }
-                }
-
-                section("Activity") {
-                    button("Achievements") { showingAchievements = true }
-                }
-
-                section("Live Activity") {
-                    button("Dismiss live activity") {
-                        ScanLiveActivityController.dismissAll()
-                        Haptics.success()
+                VStack(alignment: .leading, spacing: 24) {
+                    header
+                    if entitlements.isPro { proActive } else { proBanner }
+                    section("Activity") {
+                        statRow("All-time freed", value: BytesFreedTracker.formattedAllTime)
                     }
-                }
-
-                section("Reminders") {
-                    button("Smart Alerts") { showingSmartAlerts = true }
-                    Divider().background(PulseColor.stroke)
-                    Toggle(isOn: weeklyToggleBinding) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text("Weekly check-in")
-                                .font(PulseFont.body)
-                                .foregroundStyle(PulseColor.textPrimary)
-                            Text("Every Sunday at 10:00 — a nudge to run a fresh scan.")
-                                .font(PulseFont.footnote)
-                                .foregroundStyle(PulseColor.textTertiary)
-                        }
-                    }
-                    .tint(PulseColor.blue500)
-                    .padding(.vertical, PulseSpace.s)
-                }
-
-                section("Account") {
-                    row("Pulse Pro", trailing: entitlements.isPro ? "Active" : "Free")
-                    Divider().background(PulseColor.stroke)
-                    button("Restore Purchases") { Task { await entitlements.restore() } }
-                    Divider().background(PulseColor.stroke)
-                    button("Toggle Pro (dev)") { entitlements.devTogglePro() }
-                }
-
-                section("Privacy") {
-                    row("On-device analysis", trailing: "Always")
-                    Divider().background(PulseColor.stroke)
-                    row("Diagnostics shared", trailing: "Never")
-                    Divider().background(PulseColor.stroke)
-                    button("Delete all data") { showingDeleteConfirm = true }
-                }
-
-                section("About") {
-                    row("Version", trailing: "0.1.0")
-                    Divider().background(PulseColor.stroke)
-                    button("Replay tutorial") { showingReplayConfirm = true }
-                    Divider().background(PulseColor.stroke)
-                    button("How it works") { showingHowItWorks = true }
-                    Divider().background(PulseColor.stroke)
-                    button("Privacy Policy") { showingPrivacy = true }
-                    Divider().background(PulseColor.stroke)
-                    button("Terms of Use") { showingTerms = true }
-                    Divider().background(PulseColor.stroke)
-                    button("Support") {
-                        if let url = URL(string: "mailto:support@pulseapp.app") {
-                            UIApplication.shared.open(url)
+                    section("About") {
+                        row("Version", value: "0.2.0")
+                        Divider().background(PulseColor.stroke)
+                        link("Replay tutorial") { didOnboard = false }
+                        Divider().background(PulseColor.stroke)
+                        link("How it works") { showingHowItWorks = true }
+                        Divider().background(PulseColor.stroke)
+                        link("Privacy Policy") { showingPrivacy = true }
+                        Divider().background(PulseColor.stroke)
+                        link("Terms of Use") { showingTerms = true }
+                        Divider().background(PulseColor.stroke)
+                        link("Restore purchases") {
+                            Task { await entitlements.restore() }
                         }
                     }
                 }
-            }
-            .padding(.horizontal, PulseSpace.xl)
-            .padding(.top, PulseSpace.l)
-            .padding(.bottom, PulseSpace.xxxl)
+                .padding(20)
+                .padding(.bottom, 40)
             }
             .scrollContentBackground(.hidden)
-
-            if showingUndo {
-                UndoSnackbar(
-                    message: "All data deleted",
-                    onUndo: { undoDelete() },
-                    onDismiss: {
-                        withAnimation { showingUndo = false }
-                        pendingDeletion = []
-                    }
-                )
-                .padding(.bottom, 96)   // clears tab bar
-            }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.78), value: showingUndo)
-        .sheet(isPresented: $showingPaywall) { PaywallView().pulseSheet() }
-        .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) }.pulseSheet() }
-        .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) }.pulseSheet() }
-        .sheet(isPresented: $showingIconPicker) { NavigationStack { AppIconPicker() }.pulseSheet() }
-        .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() }.pulseSheet() }
-        .sheet(isPresented: $showingAchievements) { NavigationStack { AchievementsView() }.pulseSheet() }
-        .sheet(isPresented: $showingSmartAlerts) { NavigationStack { SmartAlertsView() }.pulseSheet() }
-        .confirmationDialog(
-            "Replay the tutorial?",
-            isPresented: $showingReplayConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Replay") {
-                Haptics.tap()
-                didOnboard = false
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("You'll see the welcome and permission screens again. Your data stays where it is.")
+        .sheet(isPresented: $showingPaywall) {
+            SpecialOfferPaywallView(seenOffer: .constant(false))
+                .presentationDragIndicator(.visible)
         }
-        .confirmationDialog(
-            "Delete all Pulse data?",
-            isPresented: $showingDeleteConfirm,
-            titleVisibility: .visible
-        ) {
-            Button("Delete everything", role: .destructive) { deleteAllData() }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            Text("This removes every scan record, the widget snapshot, and the weekly reminder. Onboarding stays done. This cannot be undone.")
-        }
-        .task {
-            let status = await NotificationScheduler.currentStatus()
-            notifAuthorized = (status == .authorized || status == .provisional)
-        }
+        .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) } }
+        .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) } }
+        .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() } }
     }
 
-    private func deleteAllData() {
-        // Snapshot all records into pendingDeletion so undo can restore them.
-        let descriptor = FetchDescriptor<ScanRecord>()
-        if let all = try? context.fetch(descriptor) {
-            pendingDeletion = all.map { record in
-                ScanRecord(
-                    timestamp: record.timestamp,
-                    pulseScore: record.pulseScore,
-                    storageUsed: record.storageUsed,
-                    thermalRaw: record.thermalRaw,
-                    batteryLevel: record.batteryLevel,
-                    batteryStateRaw: record.batteryStateRaw,
-                    lowPowerMode: record.lowPowerMode
-                )
-            }
-            for r in all { context.delete(r) }
-            try? context.save()
+    private var header: some View {
+        HStack {
+            Text("Settings")
+                .font(.system(size: 32, weight: .bold))
+                .foregroundStyle(PulseColor.textPrimary)
+            Spacer()
+            Button("Done") { dismiss() }
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(PulseColor.blue500)
         }
-        // Widget snapshot + spotlight
-        if let defaults = UserDefaults(suiteName: SharedScoreStore.suiteName) {
-            defaults.removeObject(forKey: "pulse.snapshot")
-        }
-        SpotlightIndexer.clear()
-        NotificationScheduler.cancelWeeklyReminder()
-        weeklyReminder = false
-        WidgetCenter.shared.reloadAllTimelines()
-        Haptics.success()
-        withAnimation { showingUndo = true }
-    }
-
-    private func undoDelete() {
-        for r in pendingDeletion { context.insert(r) }
-        try? context.save()
-        pendingDeletion = []
-        Haptics.success()
-    }
-
-    private var weeklyToggleBinding: Binding<Bool> {
-        Binding(
-            get: { weeklyReminder },
-            set: { new in
-                Haptics.tap()
-                if new {
-                    Task {
-                        let granted = await NotificationScheduler.requestAuthorization()
-                        notifAuthorized = granted
-                        if granted {
-                            NotificationScheduler.scheduleWeeklyReminder()
-                            weeklyReminder = true
-                        } else {
-                            weeklyReminder = false
-                        }
-                    }
-                } else {
-                    NotificationScheduler.cancelWeeklyReminder()
-                    weeklyReminder = false
-                }
-            }
-        )
     }
 
     private var proBanner: some View {
         Button { showingPaywall = true } label: {
-            HStack(spacing: PulseSpace.m) {
-                Image(systemName: "sparkles")
-                    .font(.system(size: 22, weight: .semibold))
-                    .foregroundStyle(.white)
-                    .frame(width: 44, height: 44)
-                    .background(Circle().fill(.white.opacity(0.2)))
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Unlock Pulse Pro")
-                        .font(PulseFont.titleM)
+            ZStack {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(
+                        LinearGradient(colors: [PulseColor.blue500, PulseColor.purple, PulseColor.teal],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                HStack(spacing: 14) {
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 24, weight: .semibold))
                         .foregroundStyle(.white)
-                    Text("Deeper diagnostics. Unlimited Doctor.")
-                        .font(PulseFont.callout)
+                        .frame(width: 50, height: 50)
+                        .background(Circle().fill(.white.opacity(0.18)))
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Unlock Pulse Pro")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundStyle(.white)
+                        Text("Unlimited sweeps · widgets · support a tiny app")
+                            .font(.system(size: 13))
+                            .foregroundStyle(.white.opacity(0.85))
+                            .lineLimit(2)
+                    }
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .bold))
                         .foregroundStyle(.white.opacity(0.85))
                 }
-                Spacer()
-                Image(systemName: "chevron.right")
-                    .foregroundStyle(.white)
+                .padding(20)
             }
-            .padding(PulseSpace.xl)
-            .background(
-                RoundedRectangle(cornerRadius: PulseRadius.card, style: .continuous)
-                    .fill(PulseColor.ringGradient)
-            )
+            .shadow(color: PulseColor.blue500.opacity(0.4), radius: 18, y: 10)
         }
         .buttonStyle(.plain)
+    }
+
+    private var proActive: some View {
+        HStack(spacing: 14) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 22, weight: .semibold))
+                .foregroundStyle(.white)
+                .frame(width: 50, height: 50)
+                .background(
+                    LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
+                                   startPoint: .topLeading, endPoint: .bottomTrailing),
+                    in: Circle()
+                )
+            VStack(alignment: .leading, spacing: 2) {
+                Text("Pulse Pro active")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(PulseColor.textPrimary)
+                Text("Thanks for backing the app ❤️")
+                    .font(.system(size: 13))
+                    .foregroundStyle(PulseColor.textSecondary)
+            }
+            Spacer()
+        }
+        .padding(20)
+        .background(RoundedRectangle(cornerRadius: 20).fill(PulseColor.card))
+        .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(PulseColor.stroke))
     }
 
     @ViewBuilder
-    private func section<C: View>(_ title: String, @ViewBuilder content: () -> C) -> some View {
-        VStack(alignment: .leading, spacing: PulseSpace.s) {
-            Text(title.uppercased())
-                .font(PulseFont.footnote.weight(.semibold))
+    private func section<C: View>(_ title: LocalizedStringKey, @ViewBuilder content: () -> C) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title.uppercasedKey())
+                .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(PulseColor.textTertiary)
                 .tracking(0.6)
-            VStack(spacing: 0) { content() }.pulseCard()
+            VStack(spacing: 0) { content() }
+                .padding(.horizontal, 16)
+                .background(RoundedRectangle(cornerRadius: 18).fill(PulseColor.card))
+                .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(PulseColor.stroke))
         }
     }
 
-    private func row(_ title: String, trailing: String) -> some View {
+    private func row(_ title: LocalizedStringKey, value: String) -> some View {
         HStack {
-            Text(title).font(PulseFont.body).foregroundStyle(PulseColor.textPrimary)
+            Text(title).font(.system(size: 15)).foregroundStyle(PulseColor.textPrimary)
             Spacer()
-            Text(trailing).font(PulseFont.body).foregroundStyle(PulseColor.textSecondary)
+            Text(value).font(.system(size: 15)).foregroundStyle(PulseColor.textSecondary)
         }
-        .padding(.vertical, PulseSpace.m)
+        .padding(.vertical, 14)
     }
 
-    private func button(_ title: String, action: @escaping () -> Void) -> some View {
-        let isDestructive = title.localizedCaseInsensitiveContains("delete")
-        return Button(action: action) {
+    private func statRow(_ title: LocalizedStringKey, value: String) -> some View {
+        row(title, value: value)
+    }
+
+    private func link(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap(0.25)
+            action()
+        } label: {
             HStack {
-                Text(title)
-                    .font(PulseFont.body)
-                    .foregroundStyle(isDestructive ? PulseColor.critical : PulseColor.blue500)
+                Text(title).font(.system(size: 15)).foregroundStyle(PulseColor.blue500)
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                     .foregroundStyle(PulseColor.textTertiary)
             }
-            .padding(.vertical, PulseSpace.m)
+            .padding(.vertical, 14)
         }
         .buttonStyle(.plain)
+    }
+}
+
+private extension LocalizedStringKey {
+    /// Returns an uppercased localized string for use as a small caps section header.
+    func uppercasedKey() -> String {
+        // Mirror's reflection of LocalizedStringKey to extract the underlying key isn't
+        // available; we just present the key value as-is and rely on Text rendering.
+        // Settings section headers are short and don't need real uppercasing.
+        let mirror = Mirror(reflecting: self)
+        if let key = mirror.children.first(where: { $0.label == "key" })?.value as? String {
+            return key.uppercased()
+        }
+        return ""
     }
 }
