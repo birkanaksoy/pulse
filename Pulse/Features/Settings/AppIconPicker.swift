@@ -88,35 +88,47 @@ struct AppIconPicker: View {
             }
             Task {
                 try? await AppIconManager.setIcon(opt.name)
-                currentName = AppIconManager.current
+                withAnimation(.spring(response: 0.4, dampingFraction: 0.7)) {
+                    currentName = AppIconManager.current
+                }
             }
         } label: {
-            VStack(spacing: 8) {
+            VStack(spacing: 10) {
                 ZStack(alignment: .topTrailing) {
-                    Image(opt.previewAsset)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 110, height: 110)
-                        .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 26, style: .continuous)
-                                .strokeBorder(selected ? PulseColor.blue500 : PulseColor.stroke,
-                                              lineWidth: selected ? 3 : 1)
-                        )
-                        .shadow(color: .black.opacity(0.10), radius: 14, y: 6)
+                    ZStack {
+                        if selected {
+                            RoundedRectangle(cornerRadius: 30, style: .continuous)
+                                .fill(
+                                    LinearGradient(colors: [PulseColor.blue500, PulseColor.purple],
+                                                   startPoint: .topLeading, endPoint: .bottomTrailing)
+                                )
+                                .frame(width: 124, height: 124)
+                                .shadow(color: PulseColor.blue500.opacity(0.35), radius: 16, y: 8)
+                        }
+                        Image(opt.previewAsset)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 110, height: 110)
+                            .clipShape(RoundedRectangle(cornerRadius: 26, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 26, style: .continuous)
+                                    .strokeBorder(.white.opacity(selected ? 0.4 : 0), lineWidth: 1)
+                            )
+                            .shadow(color: .black.opacity(selected ? 0.12 : 0.08), radius: 12, y: 6)
+                    }
 
                     if locked {
                         badge(systemImage: "lock.fill", color: PulseColor.blue500)
                     } else if selected {
-                        badge(systemImage: "checkmark", color: PulseColor.blue500)
+                        badge(systemImage: "checkmark", color: PulseColor.excellent)
                     }
                 }
                 Text(opt.displayName)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundStyle(PulseColor.textPrimary)
+                    .font(.system(size: 14, weight: selected ? .semibold : .medium))
+                    .foregroundStyle(selected ? PulseColor.blue500 : PulseColor.textPrimary)
             }
             .frame(maxWidth: .infinity)
-            .padding(.vertical, 14)
+            .padding(.vertical, 16)
             .padding(.horizontal, 8)
             .background(RoundedRectangle(cornerRadius: 20).fill(PulseColor.card))
             .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(PulseColor.stroke))

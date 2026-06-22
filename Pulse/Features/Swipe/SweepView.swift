@@ -120,58 +120,113 @@ struct SweepView: View {
     }
 
     private var doneScreen: some View {
-        VStack(spacing: 24) {
-            Spacer()
-            Image(systemName: "sparkles")
-                .font(.system(size: 72, weight: .light))
-                .foregroundStyle(
-                    LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
-                                   startPoint: .topLeading, endPoint: .bottomTrailing)
-                )
-                .symbolEffect(.bounce, value: sessionFreed)
-            VStack(spacing: 8) {
-                Text("Freed")
-                    .font(.system(size: 14, weight: .medium))
+        ZStack {
+            ConfettiBurst()
+                .offset(y: -40)
+
+            VStack(spacing: 24) {
+                Spacer()
+                ZStack {
+                    Circle()
+                        .fill(
+                            RadialGradient(
+                                colors: [PulseColor.excellent.opacity(0.20), .clear],
+                                center: .center, startRadius: 0, endRadius: 160
+                            )
+                        )
+                        .frame(width: 240, height: 240)
+                        .blur(radius: 16)
+                    Image(systemName: "sparkles")
+                        .font(.system(size: 80, weight: .light))
+                        .foregroundStyle(
+                            LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
+                                           startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .symbolEffect(.bounce, value: sessionFreed)
+                }
+
+                VStack(spacing: 6) {
+                    Text("Freed")
+                        .font(.system(size: 13, weight: .semibold))
+                        .tracking(2)
+                        .foregroundStyle(PulseColor.textSecondary)
+                    Text(ByteCountFormatter.string(fromByteCount: sessionFreed, countStyle: .file))
+                        .font(.system(size: 72, weight: .bold, design: .rounded))
+                        .foregroundStyle(
+                            LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
+                                           startPoint: .topLeading, endPoint: .bottomTrailing)
+                        )
+                        .monospacedDigit()
+                        .kerning(-1.5)
+                        .contentTransition(.numericText(value: Double(sessionFreed)))
+                }
+
+                Text(doneSubtitle)
+                    .font(.system(size: 15))
                     .foregroundStyle(PulseColor.textSecondary)
-                Text(ByteCountFormatter.string(fromByteCount: sessionFreed, countStyle: .file))
-                    .font(.system(size: 64, weight: .bold, design: .rounded))
-                    .foregroundStyle(
-                        LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
-                                       startPoint: .topLeading, endPoint: .bottomTrailing)
-                    )
-                    .monospacedDigit()
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 36)
+
+                Spacer()
+
+                PrimaryButton(title: sweepAgainCTA, systemImage: "arrow.clockwise") {
+                    Task { await restart() }
+                }
+                .padding(.horizontal, 24)
+                Spacer().frame(height: 24)
             }
-            Text("Your phone has a bit more room. Want to keep going?")
-                .font(.system(size: 15))
-                .foregroundStyle(PulseColor.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 36)
-            Spacer()
-            PrimaryButton(title: sweepAgainCTA, systemImage: "arrow.clockwise") {
-                Task { await restart() }
-            }
-            .padding(.horizontal, 24)
-            Spacer().frame(height: 24)
         }
         .onAppear { Haptics.success() }
     }
 
+    private var doneSubtitle: LocalizedStringKey {
+        let mb = Double(sessionFreed) / (1024 * 1024)
+        if mb >= 5000 { return "That's roughly 1,200 photos of breathing room. Nice work." }
+        if mb >= 1000 { return "About 250 photos worth. Your phone thanks you." }
+        if mb >= 100  { return "Tidy. Your phone has a little more room to think." }
+        if mb > 0     { return "Every byte counts." }
+        return "Your phone is squeaky clean."
+    }
+
+    @State private var emptyPulse = false
+
     private var emptyScreen: some View {
-        VStack(spacing: 18) {
+        VStack(spacing: 22) {
             Spacer()
-            Image(systemName: "checkmark.seal.fill")
-                .font(.system(size: 72, weight: .light))
-                .foregroundStyle(PulseColor.excellent)
-            Text("All clear ✨")
-                .font(.system(size: 24, weight: .bold))
-                .foregroundStyle(PulseColor.textPrimary)
-            Text("Nothing obvious to clean right now. Check back after you've taken more photos.")
-                .font(.system(size: 15))
-                .foregroundStyle(PulseColor.textSecondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 32)
+            ZStack {
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [PulseColor.excellent.opacity(0.22), .clear],
+                            center: .center, startRadius: 0, endRadius: 140
+                        )
+                    )
+                    .frame(width: 240, height: 240)
+                    .blur(radius: 16)
+                    .scaleEffect(emptyPulse ? 1.06 : 1.0)
+                Image(systemName: "checkmark.seal.fill")
+                    .font(.system(size: 80, weight: .light))
+                    .foregroundStyle(
+                        LinearGradient(colors: [PulseColor.excellent, PulseColor.teal],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .scaleEffect(emptyPulse ? 1.03 : 1.0)
+            }
+            .animation(.easeInOut(duration: 2.2).repeatForever(autoreverses: true), value: emptyPulse)
+
+            VStack(spacing: 8) {
+                Text("All clear ✨")
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(PulseColor.textPrimary)
+                Text("Nothing obvious to clean right now. Check back after you've taken more photos.")
+                    .font(.system(size: 15))
+                    .foregroundStyle(PulseColor.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
             Spacer()
         }
+        .onAppear { emptyPulse = true }
     }
 
     // MARK: - Helpers

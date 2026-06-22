@@ -153,13 +153,27 @@ struct SwipeStackView: View {
 
     private func actionButton(icon: String, tint: Color, accessibilityLabel: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         Button(action: action) {
-            Image(systemName: icon)
-                .font(.system(size: 26, weight: .bold))
-                .foregroundStyle(tint)
-                .frame(width: 64, height: 64)
-                .background(Circle().fill(PulseColor.card))
-                .overlay(Circle().strokeBorder(tint.opacity(0.3), lineWidth: 1.5))
-                .shadow(color: tint.opacity(0.25), radius: 12, y: 6)
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(
+                            colors: [PulseColor.card, PulseColor.card.opacity(0.92)],
+                            startPoint: .top, endPoint: .bottom
+                        )
+                    )
+                Circle()
+                    .strokeBorder(
+                        LinearGradient(colors: [tint.opacity(0.5), tint.opacity(0.2)],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing),
+                        lineWidth: 1.5
+                    )
+                Image(systemName: icon)
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(tint)
+            }
+            .frame(width: 68, height: 68)
+            .shadow(color: tint.opacity(0.30), radius: 14, y: 6)
+            .shadow(color: .black.opacity(0.06), radius: 2, y: 1)
         }
         .buttonStyle(.plain)
         .accessibilityLabel(Text(accessibilityLabel))

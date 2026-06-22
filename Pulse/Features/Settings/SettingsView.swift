@@ -19,18 +19,24 @@ struct SettingsView: View {
                     header
                     if entitlements.isPro { proActive } else { proBanner }
                     section("Activity") {
-                        statRow("All-time freed", value: BytesFreedTracker.formattedAllTime)
+                        iconRow(systemName: "trash.fill", tint: PulseColor.excellent,
+                                title: "All-time freed",
+                                value: BytesFreedTracker.formattedAllTime)
                         Divider().background(PulseColor.stroke)
-                        statRow("Today's sweeps", value: "\(SweepLimits.todayCount)" + (entitlements.isPro ? "" : " / \(SweepLimits.freeDailyLimit)"))
+                        iconRow(systemName: "rectangle.on.rectangle.angled", tint: PulseColor.blue500,
+                                title: "Today's sweeps",
+                                value: "\(SweepLimits.todayCount)" + (entitlements.isPro ? "" : " / \(SweepLimits.freeDailyLimit)"))
                     }
 
                     section("Appearance") {
-                        link("App icon") { showingIconPicker = true }
+                        iconLink(systemName: "square.on.square", tint: PulseColor.purple,
+                                 title: "App icon") { showingIconPicker = true }
                     }
 
                     if entitlements.isPro {
                         section("Subscription") {
-                            link("Manage subscription") {
+                            iconLink(systemName: "creditcard", tint: PulseColor.teal,
+                                     title: "Manage subscription") {
                                 if let url = URL(string: "itms-apps://apps.apple.com/account/subscriptions") {
                                     UIApplication.shared.open(url)
                                 }
@@ -38,17 +44,23 @@ struct SettingsView: View {
                         }
                     }
                     section("About") {
-                        row("Version", value: "0.2.0")
+                        iconRow(systemName: "info.circle", tint: PulseColor.textTertiary,
+                                title: "Version", value: "0.2.0")
                         Divider().background(PulseColor.stroke)
-                        link("Replay tutorial") { didOnboard = false }
+                        iconLink(systemName: "play.circle", tint: PulseColor.blue500,
+                                 title: "Replay tutorial") { didOnboard = false }
                         Divider().background(PulseColor.stroke)
-                        link("How it works") { showingHowItWorks = true }
+                        iconLink(systemName: "book.closed", tint: PulseColor.blue500,
+                                 title: "How it works") { showingHowItWorks = true }
                         Divider().background(PulseColor.stroke)
-                        link("Privacy Policy") { showingPrivacy = true }
+                        iconLink(systemName: "hand.raised.fill", tint: PulseColor.excellent,
+                                 title: "Privacy Policy") { showingPrivacy = true }
                         Divider().background(PulseColor.stroke)
-                        link("Terms of Use") { showingTerms = true }
+                        iconLink(systemName: "doc.text", tint: PulseColor.textSecondary,
+                                 title: "Terms of Use") { showingTerms = true }
                         Divider().background(PulseColor.stroke)
-                        link("Restore purchases") {
+                        iconLink(systemName: "arrow.clockwise.circle", tint: PulseColor.purple,
+                                 title: "Restore purchases") {
                             Task { await entitlements.restore() }
                         }
                     }
@@ -169,6 +181,52 @@ struct SettingsView: View {
 
     private func statRow(_ title: LocalizedStringKey, value: String) -> some View {
         row(title, value: value)
+    }
+
+    private func iconRow(systemName: String, tint: Color, title: LocalizedStringKey, value: String) -> some View {
+        HStack(spacing: 12) {
+            iconChip(systemName: systemName, tint: tint)
+            Text(title).font(.system(size: 15)).foregroundStyle(PulseColor.textPrimary)
+            Spacer()
+            Text(value).font(.system(size: 15)).foregroundStyle(PulseColor.textSecondary)
+        }
+        .padding(.vertical, 12)
+    }
+
+    private func iconLink(systemName: String, tint: Color, title: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        Button {
+            Haptics.tap(0.25)
+            action()
+        } label: {
+            HStack(spacing: 12) {
+                iconChip(systemName: systemName, tint: tint)
+                Text(title).font(.system(size: 15)).foregroundStyle(PulseColor.textPrimary)
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(PulseColor.textTertiary)
+            }
+            .padding(.vertical, 12)
+        }
+        .buttonStyle(.plain)
+    }
+
+    private func iconChip(systemName: String, tint: Color) -> some View {
+        Image(systemName: systemName)
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(.white)
+            .frame(width: 28, height: 28)
+            .background(
+                LinearGradient(
+                    colors: [tint, tint.opacity(0.78)],
+                    startPoint: .topLeading, endPoint: .bottomTrailing
+                ),
+                in: RoundedRectangle(cornerRadius: 7, style: .continuous)
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 7, style: .continuous)
+                    .strokeBorder(.white.opacity(0.25), lineWidth: 0.5)
+            )
     }
 
     private func link(_ title: LocalizedStringKey, action: @escaping () -> Void) -> some View {

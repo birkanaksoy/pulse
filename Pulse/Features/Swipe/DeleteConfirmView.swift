@@ -22,16 +22,44 @@ struct DeleteConfirmView: View {
         .padding(.horizontal, 24)
     }
 
+    @State private var heroScale: CGFloat = 0.7
+    @State private var heroOpacity: Double = 0
+
     private var hero: some View {
-        VStack(spacing: 10) {
-            Image(systemName: session.marked.isEmpty ? "checkmark.seal.fill" : "trash.fill")
-                .font(.system(size: 56, weight: .light))
-                .foregroundStyle(
-                    session.marked.isEmpty ? PulseColor.excellent : PulseColor.critical
-                )
+        VStack(spacing: 12) {
+            ZStack {
+                let tint = session.marked.isEmpty ? PulseColor.excellent : PulseColor.critical
+                Circle()
+                    .fill(
+                        RadialGradient(
+                            colors: [tint.opacity(0.20), .clear],
+                            center: .center, startRadius: 0, endRadius: 110
+                        )
+                    )
+                    .frame(width: 180, height: 180)
+                    .blur(radius: 14)
+
+                Image(systemName: session.marked.isEmpty ? "checkmark.seal.fill" : "trash.fill")
+                    .font(.system(size: 60, weight: .light))
+                    .foregroundStyle(
+                        LinearGradient(
+                            colors: [tint, tint.opacity(0.7)],
+                            startPoint: .topLeading, endPoint: .bottomTrailing
+                        )
+                    )
+                    .scaleEffect(heroScale)
+                    .opacity(heroOpacity)
+            }
             Text(session.marked.isEmpty ? "Nothing marked" : "Ready to delete")
-                .font(.system(size: 24, weight: .bold))
+                .font(.system(size: 26, weight: .bold))
                 .foregroundStyle(PulseColor.textPrimary)
+                .opacity(heroOpacity)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.7)) {
+                heroScale = 1
+                heroOpacity = 1
+            }
         }
     }
 
