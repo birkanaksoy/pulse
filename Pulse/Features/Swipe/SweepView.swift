@@ -27,7 +27,9 @@ struct SweepView: View {
         case .swiping:    SwipeStackView(session: session) { phase = .confirming }
         case .confirming: DeleteConfirmView(session: session) { freed in
                               sessionFreed = freed
-                              if freed > 0 { phase = .done } else { phase = .empty }
+                              // freed=0 + finished queue → done with celebration "All clear"
+                              // freed=0 + not finished → user dismissed, treat as done too
+                              phase = freed > 0 ? .done : .empty
                           } onContinueSwiping: {
                               phase = .swiping
                           }

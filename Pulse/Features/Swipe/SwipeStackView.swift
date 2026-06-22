@@ -18,14 +18,20 @@ struct SwipeStackView: View {
         VStack(spacing: 18) {
             topBar
             ZStack {
+                if session.currentAsset == nil && session.nextAsset == nil {
+                    Color.clear
+                        .onAppear { onFinish() }
+                }
                 if let next = session.nextAsset {
                     cardView(for: next)
+                        .id("next-\(next.localIdentifier)")
                         .scaleEffect(0.94)
                         .opacity(0.5)
                         .allowsHitTesting(false)
                 }
                 if let current = session.currentAsset {
                     cardView(for: current)
+                        .id("current-\(current.localIdentifier)")
                         .offset(dragOffset)
                         .rotationEffect(.degrees(dragRotation))
                         .overlay(directionStamp)
@@ -215,8 +221,13 @@ struct SwipeStackView: View {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.22) {
             session.decide(d)
-            dragOffset = .zero
-            dragRotation = 0
+            // Reset offset WITHOUT animation so the new card doesn't slide in.
+            var t = Transaction()
+            t.disablesAnimations = true
+            withTransaction(t) {
+                dragOffset = .zero
+                dragRotation = 0
+            }
             isAnimatingOut = false
             if session.isFinished { onFinish() }
         }

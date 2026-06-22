@@ -9,7 +9,6 @@ struct DeleteConfirmView: View {
     var onContinueSwiping: () -> Void
 
     @State private var deleting = false
-    @State private var resultBytes: Int64?
 
     var body: some View {
         VStack(spacing: 24) {
@@ -21,16 +20,6 @@ struct DeleteConfirmView: View {
             Spacer().frame(height: 24)
         }
         .padding(.horizontal, 24)
-        .alert("Deleted", isPresented: .init(
-            get: { resultBytes != nil },
-            set: { _ in resultBytes = nil }
-        )) {
-            Button("OK", role: .cancel) { onDone(resultBytes ?? 0) }
-        } message: {
-            if let b = resultBytes {
-                Text("Freed \(ByteCountFormatter.string(fromByteCount: b, countStyle: .file)).")
-            }
-        }
     }
 
     private var hero: some View {
@@ -108,17 +97,33 @@ struct DeleteConfirmView: View {
                 .disabled(deleting)
             }
 
-            Button(action: onContinueSwiping) {
-                Text("Keep swiping")
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(PulseColor.blue500)
-                    .frame(maxWidth: .infinity, minHeight: 48)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(PulseColor.blue50)
-                    )
+            // Only show "Keep swiping" if there are still assets to swipe.
+            if !session.isFinished {
+                Button(action: onContinueSwiping) {
+                    Text("Keep swiping")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(PulseColor.blue500)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .background(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .fill(PulseColor.blue50)
+                        )
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
+
+            // If nothing was marked, give the user a graceful exit.
+            if session.marked.isEmpty {
+                Button {
+                    onDone(0)
+                } label: {
+                    Text("All done")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(PulseColor.textSecondary)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                }
+                .buttonStyle(.plain)
+            }
         }
     }
 
@@ -129,9 +134,10 @@ struct DeleteConfirmView: View {
         let result = await PhotoCleaner.delete(session.marked)
         deleting = false
         if result.success {
-            resultBytes = result.freed
-        } else {
-            // User cancelled iOS dialog — stay on this screen
+            Haptics.success()
+            // Hand the real freed-byte count straight to the parent.
+            onDone(result.freed)
         }
+        // If the user cancelled iOS's confirmation, stay on this screen.
     }
 }

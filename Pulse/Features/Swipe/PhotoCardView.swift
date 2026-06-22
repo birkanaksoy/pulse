@@ -32,7 +32,7 @@ struct PhotoCardView: View {
             }
             .padding(16)
         }
-        .task { await load() }
+        .task(id: asset.localIdentifier) { await load() }
     }
 
     private var metaChip: some View {
@@ -76,7 +76,9 @@ struct PhotoCardView: View {
 
     @MainActor
     private func load() async {
-        guard image == nil else { return }
+        // Reset for the new asset so the previous image doesn't briefly stick.
+        image = nil
+        size = 0
         let target = CGSize(width: 1200, height: 1600)
         let opts = PHImageRequestOptions()
         opts.deliveryMode = .opportunistic
