@@ -50,7 +50,10 @@ final class SwipeSession {
         guard let asset = currentAsset else { return }
         switch d {
         case .delete: marked.append(asset)
-        case .keep:   kept.append(asset)
+        case .keep:
+            kept.append(asset)
+            // Persist immediately so we don't re-show this photo next session.
+            PhotoMemory.recordKept([asset.localIdentifier])
         }
         history.append(d)
         currentIndex += 1

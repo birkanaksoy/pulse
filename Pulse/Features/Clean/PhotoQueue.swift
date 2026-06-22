@@ -25,8 +25,11 @@ final class PhotoQueue {
             return
         }
 
+        // Skip anything the user already kept in a previous session.
+        let alreadyKept = PhotoMemory.kept
+
         let collected: [PHAsset] = await Task.detached(priority: .userInitiated) {
-            var seen = Set<String>()
+            var seen = alreadyKept
             var out: [PHAsset] = []
 
             func add(_ list: PHFetchResult<PHAsset>, limit: Int? = nil) {

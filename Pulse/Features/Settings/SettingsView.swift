@@ -8,6 +8,7 @@ struct SettingsView: View {
     @State private var showingTerms = false
     @State private var showingPrivacy = false
     @State private var showingHowItWorks = false
+    @State private var showingIconPicker = false
     @AppStorage("pulse.didOnboard") private var didOnboard = false
 
     var body: some View {
@@ -19,6 +20,22 @@ struct SettingsView: View {
                     if entitlements.isPro { proActive } else { proBanner }
                     section("Activity") {
                         statRow("All-time freed", value: BytesFreedTracker.formattedAllTime)
+                        Divider().background(PulseColor.stroke)
+                        statRow("Today's sweeps", value: "\(SweepLimits.todayCount)" + (entitlements.isPro ? "" : " / \(SweepLimits.freeDailyLimit)"))
+                    }
+
+                    section("Appearance") {
+                        link("App icon") { showingIconPicker = true }
+                    }
+
+                    if entitlements.isPro {
+                        section("Subscription") {
+                            link("Manage subscription") {
+                                if let url = URL(string: "itms-apps://apps.apple.com/account/subscriptions") {
+                                    UIApplication.shared.open(url)
+                                }
+                            }
+                        }
                     }
                     section("About") {
                         row("Version", value: "0.2.0")
@@ -48,6 +65,10 @@ struct SettingsView: View {
         .sheet(isPresented: $showingTerms)   { NavigationStack { LegalView(kind: .terms) } }
         .sheet(isPresented: $showingPrivacy) { NavigationStack { LegalView(kind: .privacy) } }
         .sheet(isPresented: $showingHowItWorks) { NavigationStack { HowItWorksView() } }
+        .sheet(isPresented: $showingIconPicker) {
+            NavigationStack { AppIconPicker() }
+                .presentationDragIndicator(.visible)
+        }
     }
 
     private var header: some View {

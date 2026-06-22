@@ -4,12 +4,14 @@ import Photos
 /// Top-level container that loads the photo queue, hosts the swipe stack,
 /// and finally shows the delete-confirm screen.
 struct SweepView: View {
+    @Environment(EntitlementStore.self) private var entitlements
     @State private var queue = PhotoQueue()
     @State private var session = SwipeSession()
     @State private var phase: Phase = .loading
     @State private var sessionFreed: Int64 = 0
+    @State private var showingPaywall = false
 
-    enum Phase { case loading, denied, swiping, confirming, done, empty }
+    enum Phase { case loading, denied, swiping, confirming, done, empty, limitReached }
 
     var body: some View {
         ZStack {
@@ -17,28 +19,33 @@ struct SweepView: View {
             content
         }
         .task { await start() }
+        .sheet(isPresented: $showingPaywall) {
+            SpecialOfferPaywallView(seenOffer: .constant(true))
+                .presentationDragIndicator(.visible)
+        }
     }
 
     @ViewBuilder
     private var content: some View {
         switch phase {
-        case .loading:    loadingScreen
-        case .denied:     deniedScreen
-        case .swiping:    SwipeStackView(session: session) { phase = .confirming }
-        case .confirming: DeleteConfirmView(session: session) { freed in
-                              sessionFreed = freed
-                              // freed=0 + finished queue → done with celebration "All clear"
-                              // freed=0 + not finished → user dismissed, treat as done too
-                              phase = freed > 0 ? .done : .empty
-                          } onContinueSwiping: {
-                              phase = .swiping
-                          }
-        case .done:       doneScreen
-        case .empty:      emptyScreen
+        case .loading:      loadingScreen
+        case .denied:       deniedScreen
+        case .limitReached: limitReachedScreen
+        case .swiping:      SwipeStackView(session: session) { phase = .confirming }
+        case .confirming:   DeleteConfirmView(session: session) { freed in
+                                sessionFreed = freed
+                                phase = freed > 0 ? .done : .empty
+                                Analytics.track(.scanCompleted(scoreBucket: .good))
+                                askForRatingIfAppropriate()
+                            } onContinueSwiping: {
+                                phase = .swiping
+                            }
+        case .done:         doneScreen
+        case .empty:        emptyScreen
         }
     }
 
-    // MARK: - Loading
+    // MARK: - Screens
 
     private var loadingScreen: some View {
         VStack(spacing: 18) {
@@ -76,7 +83,41 @@ struct SweepView: View {
         }
     }
 
-    // MARK: - Done (after delete)
+    private var limitReachedScreen: some View {
+        VStack(spacing: 22) {
+            Spacer()
+            ZStack {
+                Circle()
+                    .fill(
+                        LinearGradient(colors: [PulseColor.blue500, PulseColor.purple, PulseColor.teal],
+                                       startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                    .frame(width: 120, height: 120)
+                Image(systemName: "infinity")
+                    .font(.system(size: 56, weight: .light))
+                    .foregroundStyle(.white)
+            }
+            .shadow(color: PulseColor.blue500.opacity(0.4), radius: 22, y: 10)
+
+            VStack(spacing: 8) {
+                Text("Daily sweep used")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(PulseColor.textPrimary)
+                Text("Free includes one sweep a day. Go Pro for unlimited sweeps and an icon picker.")
+                    .font(.system(size: 15))
+                    .foregroundStyle(PulseColor.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 28)
+            }
+
+            Spacer()
+            PrimaryButton(title: "Go Pro", systemImage: "arrow.right") {
+                showingPaywall = true
+            }
+            .padding(.horizontal, 24)
+            Spacer().frame(height: 24)
+        }
+    }
 
     private var doneScreen: some View {
         VStack(spacing: 24) {
@@ -106,7 +147,7 @@ struct SweepView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 36)
             Spacer()
-            PrimaryButton(title: "Sweep again", systemImage: "arrow.clockwise") {
+            PrimaryButton(title: sweepAgainCTA, systemImage: "arrow.clockwise") {
                 Task { await restart() }
             }
             .padding(.horizontal, 24)
@@ -114,8 +155,6 @@ struct SweepView: View {
         }
         .onAppear { Haptics.success() }
     }
-
-    // MARK: - Empty (no candidates found)
 
     private var emptyScreen: some View {
         VStack(spacing: 18) {
@@ -135,9 +174,30 @@ struct SweepView: View {
         }
     }
 
+    // MARK: - Helpers
+
+    private var sweepAgainCTA: LocalizedStringKey {
+        entitlements.isPro ? "Sweep again" : "Sweep again (Pro)"
+    }
+
+    private func askForRatingIfAppropriate() {
+        guard sessionFreed > 0 else { return }
+        if let scene = UIApplication.shared.connectedScenes
+            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+            RatingPrompt.recordScan()
+            RatingPrompt.maybeAsk(currentScore: 90, in: scene)
+        }
+    }
+
     // MARK: - Actions
 
     private func start() async {
+        // Enforce daily limit before doing anything else.
+        if !SweepLimits.canStart(isPro: entitlements.isPro) {
+            phase = .limitReached
+            return
+        }
+
         if queue.state == .idle { await queue.load() }
         switch queue.state {
         case .denied:
@@ -147,6 +207,7 @@ struct SweepView: View {
                 phase = .empty
             } else {
                 session.load(queue.assets)
+                SweepLimits.recordStart()
                 phase = .swiping
             }
         default:
@@ -155,6 +216,11 @@ struct SweepView: View {
     }
 
     private func restart() async {
+        // 'Sweep again' is a brand-new session — also counts toward the limit.
+        if !SweepLimits.canStart(isPro: entitlements.isPro) {
+            showingPaywall = true
+            return
+        }
         queue = PhotoQueue()
         session = SwipeSession()
         sessionFreed = 0
